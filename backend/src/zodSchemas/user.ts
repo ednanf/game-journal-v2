@@ -15,6 +15,4 @@ const userRegisterSchema = userBaseSchema.pick({
 
 const userLoginSchema = userRegisterSchema;
 
-const userPatchSchema = userBaseSchema.partial();
-
-export { userRegisterSchema, userLoginSchema, userPatchSchema };
+export { userRegisterSchema, userLoginSchema };
