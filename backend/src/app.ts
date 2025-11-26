@@ -3,6 +3,8 @@ import morgan from 'morgan';
 
 import authRoutes from './routes/authRoutes.js';
 
+import errorHandler from './middlewares/errorHandler.js';
+
 const app = express();
 
 // Middleware
@@ -13,5 +15,7 @@ app.use(morgan('tiny'));
 app.use('/api/v1/auth', authRoutes);
 
 // Errors
+app.use(errorHandler);
+//TODO: add 404 error handler
 
 export default app;
