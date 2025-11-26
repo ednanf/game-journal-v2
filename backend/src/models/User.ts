@@ -12,7 +12,10 @@ export interface IUser {
     updatedAt?: Date;
 }
 
-export interface IUserDocument extends IUser, HydratedDocument<IUser> {}
+export interface IUserDocument extends IUser, HydratedDocument<IUser> {
+    createJWT(payload?: Record<string, unknown>): Promise<string>;
+    comparePassword(candidatePassword: string): Promise<boolean>;
+}
 
 const UserSchema = new Schema<IUserDocument>(
     {
