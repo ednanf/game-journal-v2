@@ -10,6 +10,8 @@
         "outDir": "./dist",
         "strict": true,
         "noImplicitAny": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "resolveJsonModule": true,
