@@ -18,7 +18,8 @@
         "forceConsistentCasingInFileNames": true,
         "isolatedModules": true,
         // required by tsx and most ESM setups
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "ignoreDeprecations": "5.0"
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "dist"]

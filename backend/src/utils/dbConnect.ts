@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { DatabaseError } from '../errors';
+import { DatabaseError } from '../errors/index.js';
 
 const dbConnect = async (uri: string | undefined): Promise<void> => {
     if (!uri) {
