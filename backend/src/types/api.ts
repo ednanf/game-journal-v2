@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { userRegisterSchema } from '../zodSchemas/user.js';
+import { userLoginSchema, userRegisterSchema } from '../zodSchemas/user.js';
 // Generic types
 export interface ApiResponse<T = never> {
     status: 'success' | 'error';
@@ -19,6 +19,8 @@ export interface MongoDatabaseError {
 
 export type UserRegistrationBody = z.infer<typeof userRegisterSchema>;
 
+export type UserLoginBody = z.infer<typeof userLoginSchema>;
+
 export interface UserBase {
     message: string;
     email: string;
@@ -28,3 +30,5 @@ export interface UserRegistrationSuccess extends UserBase {
     id: string;
     token: string;
 }
+
+export type UserLoginSuccess = UserRegistrationSuccess;
