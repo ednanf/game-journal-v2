@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import comparePasswords from '../utils/comparePasswords.js';
 import User, { IUserDocument } from '../models/User.js';
-import { UnauthenticatedError, UnauthorizedError } from '../errors/index.js';
+import { UnauthorizedError } from '../errors/index.js';
 import {
     ApiResponse,
     UserLoginBody,
@@ -10,9 +10,7 @@ import {
     UserLogoutSuccess,
     UserRegistrationBody,
     UserRegistrationSuccess,
-    UserWhoAmISuccess,
 } from '../types/api.js';
-import { AuthenticatedRequest } from '../types/express.js';
 
 const registerUser = async (
     req: Request,
@@ -111,36 +109,4 @@ const logoutUser = (_req: Request, res: Response, _next: NextFunction) => {
     res.status(StatusCodes.OK).json(response);
 };
 
-const me = async (
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction,
-) => {
-    // Extract the user from the incoming token (added to the request via middleware) - type AuthenticatedRequest instead of Request
-    const { userId } = req.user;
-
-    try {
-        // Find the current logged-in user if there's one
-        const currentUser: IUserDocument | null = await User.findById(userId);
-
-        if (!currentUser) {
-            next(new UnauthenticatedError('User is not authenticated.'));
-            return;
-        }
-
-        const response: ApiResponse<UserWhoAmISuccess> = {
-            status: 'success',
-            data: {
-                message: 'User retrieved successfully.',
-                id: currentUser._id.toString(),
-                email: currentUser.email,
-            },
-        };
-
-        res.status(StatusCodes.OK).json(response);
-    } catch (e) {
-        next(e);
-    }
-};
-
-export { registerUser, loginUser, logoutUser, me };
+export { registerUser, loginUser, logoutUser };
