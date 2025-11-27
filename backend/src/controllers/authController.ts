@@ -100,7 +100,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const logoutUser = (req: Request, res: Response, next: NextFunction) => {
+const logoutUser = (_req: Request, res: Response, _next: NextFunction) => {
     const response: ApiResponse<UserLogoutSuccess> = {
         status: 'success',
         data: {
