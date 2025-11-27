@@ -32,3 +32,11 @@ export interface UserRegistrationSuccess extends UserBase {
 }
 
 export type UserLoginSuccess = UserRegistrationSuccess;
+
+export interface UserLogoutSuccess {
+    message: string;
+}
+
+export interface UserWhoAmISuccess extends UserBase {
+    id: string;
+}

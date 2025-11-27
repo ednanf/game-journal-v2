@@ -2,14 +2,17 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import comparePasswords from '../utils/comparePasswords.js';
 import User, { IUserDocument } from '../models/User.js';
-import { UnauthorizedError } from '../errors/index.js';
+import { UnauthenticatedError, UnauthorizedError } from '../errors/index.js';
 import {
     ApiResponse,
     UserLoginBody,
     UserLoginSuccess,
+    UserLogoutSuccess,
     UserRegistrationBody,
     UserRegistrationSuccess,
+    UserWhoAmISuccess,
 } from '../types/api.js';
+import { AuthenticatedRequest } from '../types/express.js';
 
 const registerUser = async (
     req: Request,
@@ -98,11 +101,46 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const logoutUser = (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json({ message: 'logout route hit' });
+    const response: ApiResponse<UserLogoutSuccess> = {
+        status: 'success',
+        data: {
+            message: 'Good Bye!',
+        },
+    };
+
+    res.status(StatusCodes.OK).json(response);
 };
 
-const me = (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json({ message: 'me route hit' });
+const me = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+) => {
+    // Extract the user from the incoming token (added to the request via middleware) - type AuthenticatedRequest instead of Request
+    const { userId } = req.user;
+
+    try {
+        // Find the current logged-in user if there's one
+        const currentUser: IUserDocument | null = await User.findById(userId);
+
+        if (!currentUser) {
+            next(new UnauthenticatedError('User is not authenticated.'));
+            return;
+        }
+
+        const response: ApiResponse<UserWhoAmISuccess> = {
+            status: 'success',
+            data: {
+                message: 'User retrieved successfully.',
+                id: currentUser._id.toString(),
+                email: currentUser.email,
+            },
+        };
+
+        res.status(StatusCodes.OK).json(response);
+    } catch (e) {
+        next(e);
+    }
 };
 
 export { registerUser, loginUser, logoutUser, me };
