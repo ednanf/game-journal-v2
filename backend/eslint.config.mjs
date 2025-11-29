@@ -15,5 +15,11 @@ export default defineConfig(
                 { argsIgnorePattern: '^_' },
             ],
         },
+        languageOptions: {
+            parserOptions: {
+                // this prevents TS’s own no-unused checks from surfacing in ESLint
+                projectService: false,
+            },
+        },
     },
 );
