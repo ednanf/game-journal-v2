@@ -1,5 +1,9 @@
 import { z } from 'zod';
-import { userLoginSchema, userRegisterSchema } from '../zodSchemas/user.js';
+import {
+    userLoginSchema,
+    userPatchSchema,
+    userRegisterSchema,
+} from '../zodSchemas/user.js';
 // Generic types
 export interface ApiResponse<T = never> {
     status: 'success' | 'error';
@@ -37,6 +41,18 @@ export interface UserLogoutSuccess {
     message: string;
 }
 
+// User types
+
 export interface UserWhoAmISuccess extends UserBase {
     id: string;
+}
+
+export type UserPatchBody = z.infer<typeof userPatchSchema>;
+
+export interface UserPatchSuccess extends UserBase {
+    id: string;
+}
+
+export interface UserDeleteSuccess {
+    message: string;
 }
