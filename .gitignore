@@ -7,7 +7,7 @@
 *.njsproj
 *.sln
 *.sw?
-*.idea
+*.idea/
 
 # Dependencies
 node_modules/
