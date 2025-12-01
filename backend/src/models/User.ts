@@ -1,4 +1,4 @@
-import mongoose, { Types, HydratedDocument, Schema, model } from 'mongoose';
+import mongoose, {Types, HydratedDocument, Schema, model} from 'mongoose';
 import validator from 'validator';
 import hashPassword from '../utils/hashPassword.js';
 import createJWT from '../utils/createJWT.js';
@@ -8,12 +8,14 @@ export interface IUser {
     _id: Types.ObjectId;
     email: string;
     password: string;
+    verified: boolean;
     createdAt?: Date;
     updatedAt?: Date;
 }
 
 export interface IUserDocument extends IUser, HydratedDocument<IUser> {
     createJWT(payload?: Record<string, unknown>): Promise<string>;
+
     comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -39,8 +41,13 @@ const UserSchema = new Schema<IUserDocument>(
             minlength: [6, 'Password must be at least 6 characters long'],
             select: false,
         },
+        verified: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
     },
-    { timestamps: true },
+    {timestamps: true},
 );
 
 // Hash password only if it was modified
@@ -54,7 +61,7 @@ UserSchema.methods.createJWT = async function createUserJWT(
     payload: Record<string, unknown>,
 ): Promise<string> {
     // Embeds the userId into the JWT for authentication
-    return createJWT({ userId: this._id, ...payload });
+    return createJWT({userId: this._id, ...payload});
 };
 
 UserSchema.methods.comparePassword = async function compareUserPassword(
