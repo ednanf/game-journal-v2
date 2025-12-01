@@ -17,7 +17,7 @@ export default defineConfig(
         },
         languageOptions: {
             parserOptions: {
-                // this prevents TS’s own no-unused checks from surfacing in ESLint
+                // this prevents TS own no-unused checks from surfacing in ESLint
                 projectService: false,
             },
         },
