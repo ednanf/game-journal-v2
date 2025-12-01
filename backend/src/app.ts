@@ -3,6 +3,7 @@ import morgan from 'morgan';
 
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import journalEntryRoutes from './routes/journalEntriesRoutes.js';
 
 import errorHandler from './middlewares/errorHandler.js';
 
@@ -15,6 +16,7 @@ app.use(morgan('tiny'));
 // Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/entries', journalEntryRoutes);
 
 // Errors
 app.use(errorHandler);

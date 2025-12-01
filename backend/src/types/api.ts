@@ -4,6 +4,8 @@ import {
     userPatchSchema,
     userRegisterSchema,
 } from '../zodSchemas/user.js';
+import { IJournalEntry } from '../models/JournalEntry.js';
+
 // Generic types
 export interface ApiResponse<T = never> {
     status: 'success' | 'error';
@@ -55,4 +57,13 @@ export interface UserPatchSuccess extends UserBase {
 
 export interface UserDeleteSuccess {
     message: string;
+}
+
+// Journal entry types
+export interface JournalEntryBase {
+    message: string;
+}
+
+export interface CreateJournalEntrySuccess extends JournalEntryBase {
+    content: IJournalEntry;
 }
