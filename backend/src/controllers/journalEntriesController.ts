@@ -4,9 +4,10 @@ import JournalEntry, { IJournalEntry } from '../models/JournalEntry.js';
 import { AuthenticatedRequest } from '../types/express.js';
 import {
     ApiResponse,
-    CreateJournalEntrySuccess,
+    CreateJournalEntrySuccess, FindJournalEntryByIdSuccess,
 } from '../types/api.js';
 import { StatusCodes } from 'http-status-codes';
+import { NotFoundError } from '../errors/index.js';
 
 const getJournalEntries = async (
     req: AuthenticatedRequest,
@@ -90,9 +91,33 @@ const getJournalEntries = async (
     }
 };
 
-const getJournalEntryById = (req: Request, res: Response, next: NextFunction) => {
-    res.status(200)
-       .json({ message: 'get journal entry by id hit' });
+const getJournalEntryById = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    const { userId } = req.user; // Validated by authentication middleware
+    const entryId = req.params.id; // Validated by validateObjectId middleware
+
+    try {
+        const journalEntry = await JournalEntry.findOne({
+            _id: entryId,
+            createdBy: userId,
+        });
+        if (!journalEntry) {
+            next(new NotFoundError('Journal entry not found.'));
+            return;
+        }
+
+        const response: ApiResponse<FindJournalEntryByIdSuccess> = {
+            status: 'success',
+            data: {
+                message: 'Journal entry found.',
+                content: journalEntry,
+            },
+        };
+
+        res.status(StatusCodes.OK)
+           .json(response);
+    } catch (e) {
+        next(e);
+    }
 };
 
 const getJournalEntriesStatistics = (req: Request, res: Response, next: NextFunction) => {

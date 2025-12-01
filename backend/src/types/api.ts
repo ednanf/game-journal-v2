@@ -67,3 +67,7 @@ export interface JournalEntryBase {
 export interface CreateJournalEntrySuccess extends JournalEntryBase {
     content: IJournalEntry;
 }
+
+export interface FindJournalEntryByIdSuccess extends JournalEntryBase {
+    content: IJournalEntry;
+}
