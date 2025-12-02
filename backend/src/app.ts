@@ -7,6 +7,7 @@ import journalEntryRoutes from './routes/journalEntriesRoutes.js';
 
 import errorHandler from './middlewares/errorHandler.js';
 import authenticate from './middlewares/authenticate.js';
+import notFound from './middlewares/notFound.js';
 
 const app = express();
 
@@ -21,6 +22,6 @@ app.use('/api/v1/entries', authenticate, journalEntryRoutes);
 
 // Errors
 app.use(errorHandler);
-//TODO: add 404 error handler
+app.use(notFound);
 
 export default app;
