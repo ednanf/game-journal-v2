@@ -4,17 +4,18 @@ import JournalEntry, { IJournalEntry } from '../models/JournalEntry.js';
 import { AuthenticatedRequest } from '../types/express.js';
 import {
     ApiResponse,
-    CreateJournalEntrySuccess, FindJournalEntryByIdSuccess, JournalStatsSuccess,
+    CreateJournalEntrySuccess, FindJournalEntryByIdSuccess,
+    JournalEntryPatchBody, JournalStatsSuccess, PatchJournalEntrySuccess,
 } from '../types/api.js';
 import { StatusCodes } from 'http-status-codes';
-import { NotFoundError } from '../errors/index.js';
+import { BadRequestError, NotFoundError } from '../errors/index.js';
 
 const getJournalEntries = async (
     req: AuthenticatedRequest,
     res: Response,
     next: NextFunction,
 ) => {
-    const { userId } = req.user; // Ensured to exist by middleware
+    const { userId } = req.user; // Validated by authentication middleware
 
     try {
 
@@ -183,7 +184,7 @@ const getJournalEntriesStatistics = async (req: AuthenticatedRequest, res: Respo
 };
 
 const createJournalEntry = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const { userId } = req.user;
+    const { userId } = req.user; // Validated by authentication middleware
 
     try {
         const journalEntryContent = req.body; // Validated by Zod
@@ -208,9 +209,62 @@ const createJournalEntry = async (req: AuthenticatedRequest, res: Response, next
     }
 };
 
-const patchJournalEntry = (req: Request, res: Response, next: NextFunction) => {
-    res.status(200)
-       .json({ message: 'update entry hit' });
+const patchJournalEntry = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    const { userId } = req.user; // Validated by authentication middleware
+    const entryId = req.params.id; // Validated by validateObjectId middleware
+    const updatePayload: JournalEntryPatchBody = req.body; // Validated by Zod
+
+    // Ensure only these fields are acceptable
+    const allowedFields: (keyof JournalEntryPatchBody)[] = [
+        'title',
+        'platform',
+        'status',
+        'rating',
+        'notes',
+    ];
+
+    try {
+        // Create a safe payload to loop through
+        const safeUpdatePayload: Partial<JournalEntryPatchBody> = {};
+
+        // Add only allowed properties to safeUpdatePayload
+        for (const key of allowedFields) {
+            if (Object.prototype.hasOwnProperty.call(updatePayload, key)) {
+                // @ts-expect-error - already validated by Zod
+                safeUpdatePayload[key] = updatePayload[key];
+            }
+        }
+
+        // If update payload does not contain any valid value
+        if (Object.keys(safeUpdatePayload).length === 0) {
+            next(new BadRequestError('No valid update data provided.'));
+            return;
+        }
+
+        // Update entry in the DB
+        const patchedJournalEntry = await JournalEntry.findOneAndUpdate({
+            _id: entryId,
+            createdBy: userId,
+        }, safeUpdatePayload, { new: true, runValidators: true });
+
+        if (!patchedJournalEntry) {
+            next(new NotFoundError('Journal entry was not found.'));
+            return;
+        }
+
+        const response: ApiResponse<PatchJournalEntrySuccess> = {
+            status: 'success',
+            data: {
+                message: 'Journal entry updated.',
+                journalEntry: patchedJournalEntry,
+            },
+        };
+
+        res.status(StatusCodes.OK)
+           .json(response);
+    } catch (e) {
+        next(e);
+    }
 };
 
 const deleteJournalEntry = (req: Request, res: Response, next: NextFunction) => {

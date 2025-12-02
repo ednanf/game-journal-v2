@@ -5,6 +5,7 @@ import {
     userRegisterSchema,
 } from '../zodSchemas/user.js';
 import { IJournalEntry } from '../models/JournalEntry.js';
+import { patchJournalEntryBodySchema } from '../zodSchemas/journalEntry.js';
 
 // Generic types
 export interface ApiResponse<T = never> {
@@ -75,4 +76,10 @@ export interface FindJournalEntryByIdSuccess extends JournalEntryBase {
 export interface JournalStatsSuccess extends JournalEntryBase {
     lifetime: Record<string, number>;
     byYear: Record<string, Record<string, number>>;
+}
+
+export type JournalEntryPatchBody = z.infer<typeof patchJournalEntryBodySchema>
+
+export interface PatchJournalEntrySuccess extends JournalEntryBase {
+    journalEntry: JournalEntryPatchBody;
 }
