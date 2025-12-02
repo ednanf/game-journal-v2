@@ -10,6 +10,7 @@ import {
     UserWhoAmISuccess,
 } from '../types/api.js';
 import { StatusCodes } from 'http-status-codes';
+import JournalEntry from '../models/JournalEntry.js';
 
 const whoAmI = async (
     req: AuthenticatedRequest,
@@ -37,7 +38,8 @@ const whoAmI = async (
             },
         };
 
-        res.status(StatusCodes.OK).json(response);
+        res.status(StatusCodes.OK)
+           .json(response);
     } catch (e) {
         next(e);
     }
@@ -63,7 +65,8 @@ const patchUser = async (
         }
 
         // Load the user with password enabled
-        const user = await User.findById(userId).select('+password');
+        const user = await User.findById(userId)
+                               .select('+password');
         if (!user) {
             next(new NotFoundError('User does not exist.'));
             return;
@@ -84,7 +87,8 @@ const patchUser = async (
             },
         };
 
-        res.status(StatusCodes.OK).json(response);
+        res.status(StatusCodes.OK)
+           .json(response);
     } catch (e) {
         next(e);
     }
@@ -103,9 +107,11 @@ const deleteUser = async (
             next(new NotFoundError('User was not found.'));
             return;
         }
-
-        // TODO: remember to delete all entries related to the user!
-        await Promise.all([User.findByIdAndDelete(userId)]);
+        
+        await Promise.all([
+            JournalEntry.deleteMany({ createdBy: userId }),
+            User.findByIdAndDelete(userId),
+        ]);
 
         const response: ApiResponse<UserDeleteSuccess> = {
             status: 'success',
@@ -114,7 +120,8 @@ const deleteUser = async (
             },
         };
 
-        res.status(StatusCodes.OK).json(response);
+        res.status(StatusCodes.OK)
+           .json(response);
     } catch (e) {
         next(e);
     }
