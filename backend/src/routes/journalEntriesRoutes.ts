@@ -23,14 +23,25 @@ const {
 router
     .route('/')
     .get(getJournalEntries as RequestHandler)
-    .post(xss(), zodValidate(createJournalEntryBodySchema), createJournalEntry as RequestHandler);
+    .post(
+        xss(),
+        zodValidate(createJournalEntryBodySchema),
+        createJournalEntry as RequestHandler);
 
 router.get('/statistics', getJournalEntriesStatistics as RequestHandler);
 
 router
     .route('/:id')
-    .get(validateObjectId('id'), getJournalEntryById as RequestHandler)
-    .patch(validateObjectId('id'), xss(), zodValidate(patchJournalEntryBodySchema), patchJournalEntry as RequestHandler)
-    .delete(validateObjectId('id'), deleteJournalEntry);
+    .get(
+        validateObjectId('id'),
+        getJournalEntryById as RequestHandler)
+    .patch(
+        validateObjectId('id'),
+        xss(),
+        zodValidate(patchJournalEntryBodySchema),
+        patchJournalEntry as RequestHandler)
+    .delete(
+        validateObjectId('id'),
+        deleteJournalEntry as RequestHandler);
 
 export default router;

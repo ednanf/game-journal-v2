@@ -16,7 +16,7 @@ app.use(morgan('tiny'));
 
 // Routes
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/user', authenticate, userRoutes);
 app.use('/api/v1/entries', authenticate, journalEntryRoutes);
 
 // Errors
