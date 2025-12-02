@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import JournalEntry, { IJournalEntry } from '../models/JournalEntry.js';
 import { AuthenticatedRequest } from '../types/express.js';
