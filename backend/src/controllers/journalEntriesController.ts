@@ -4,7 +4,8 @@ import JournalEntry, { IJournalEntry } from '../models/JournalEntry.js';
 import { AuthenticatedRequest } from '../types/express.js';
 import {
     ApiResponse,
-    CreateJournalEntrySuccess, FindJournalEntryByIdSuccess,
+    CreateJournalEntrySuccess,
+    DeleteJournalEntrySuccess, FindJournalEntryByIdSuccess,
     JournalEntryPatchBody, JournalStatsSuccess, PatchJournalEntrySuccess,
 } from '../types/api.js';
 import { StatusCodes } from 'http-status-codes';
@@ -267,9 +268,33 @@ const patchJournalEntry = async (req: AuthenticatedRequest, res: Response, next:
     }
 };
 
-const deleteJournalEntry = (req: Request, res: Response, next: NextFunction) => {
-    res.status(200)
-       .json({ message: 'delete hit' });
+const deleteJournalEntry = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    const { userId } = req.user; // Validated by authentication middleware
+    const entryId = req.params.id; // Validated by validateObjectId middleware
+
+    try {
+        const deletedJournalEntry = await JournalEntry.findByIdAndDelete({
+            _id: entryId,
+            createdBy: userId,
+        });
+
+        if (!deletedJournalEntry) {
+            next(new NotFoundError('No journal entry found.'));
+            return;
+        }
+
+        const response: ApiResponse<DeleteJournalEntrySuccess> = {
+            status: 'success',
+            data: {
+                message: 'Deleted successfully.',
+            },
+        };
+
+        res.status(StatusCodes.OK)
+           .json(response);
+    } catch (e) {
+        next(e);
+    }
 };
 
 export default {

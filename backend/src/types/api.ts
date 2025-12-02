@@ -83,3 +83,5 @@ export type JournalEntryPatchBody = z.infer<typeof patchJournalEntryBodySchema>
 export interface PatchJournalEntrySuccess extends JournalEntryBase {
     journalEntry: JournalEntryPatchBody;
 }
+
+export type DeleteJournalEntrySuccess = JournalEntryBase
