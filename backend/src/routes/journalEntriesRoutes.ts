@@ -22,7 +22,7 @@ router
     .get(getJournalEntries as RequestHandler)
     .post(xss(), zodValidate(createJournalEntryBodySchema), createJournalEntry as RequestHandler);
 
-router.get('/statistics', getJournalEntriesStatistics);
+router.get('/statistics', getJournalEntriesStatistics as RequestHandler);
 
 router
     .route('/:id')

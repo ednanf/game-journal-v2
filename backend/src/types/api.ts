@@ -71,3 +71,8 @@ export interface CreateJournalEntrySuccess extends JournalEntryBase {
 export interface FindJournalEntryByIdSuccess extends JournalEntryBase {
     content: IJournalEntry;
 }
+
+export interface JournalStatsSuccess extends JournalEntryBase {
+    lifetime: Record<string, number>;
+    byYear: Record<string, Record<string, number>>;
+}

@@ -4,7 +4,7 @@ import JournalEntry, { IJournalEntry } from '../models/JournalEntry.js';
 import { AuthenticatedRequest } from '../types/express.js';
 import {
     ApiResponse,
-    CreateJournalEntrySuccess, FindJournalEntryByIdSuccess,
+    CreateJournalEntrySuccess, FindJournalEntryByIdSuccess, JournalStatsSuccess,
 } from '../types/api.js';
 import { StatusCodes } from 'http-status-codes';
 import { NotFoundError } from '../errors/index.js';
@@ -120,9 +120,66 @@ const getJournalEntryById = async (req: AuthenticatedRequest, res: Response, nex
     }
 };
 
-const getJournalEntriesStatistics = (req: Request, res: Response, next: NextFunction) => {
-    res.status(200)
-       .json({ message: 'get statistics hit' });
+const getJournalEntriesStatistics = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    // Needs to cast userId to ObjectId for MongoDB queries
+    const userId = new mongoose.Types.ObjectId(req.user.userId);
+
+    try {
+        // Lifetime stats - count by all possible statuses
+        const lifetimeStats = await JournalEntry.aggregate([
+            { $match: { createdBy: userId } },
+            { $group: { _id: '$status', count: { $sum: 1 } } },
+        ]);
+
+        // Year-by-year stats - count by year + status
+        const yearlyStats = await JournalEntry.aggregate([
+            { $match: { createdBy: userId } },
+            {
+                $project: {
+                    year: { $year: '$createdAt' },
+                    status: 1,
+                },
+            },
+            {
+                $group: {
+                    _id: { year: '$year', status: '$status' },
+                    count: { $sum: 1 },
+                },
+            },
+        ]);
+
+        // Format lifetime stats
+        const lifetime: Record<string, number> = {};
+
+        lifetimeStats.forEach((stat) => {
+            lifetime[stat._id] = stat.count;
+        });
+
+        // Format yearly stats
+        const byYear: Record<string, Record<string, number>> = {};
+
+        yearlyStats.forEach((stat) => {
+            const { year, status } = stat._id;
+
+            if (!byYear[year]) byYear[year] = {};
+
+            byYear[year][status] = stat.count;
+        });
+
+        const response: ApiResponse<JournalStatsSuccess> = {
+            status: 'success',
+            data: {
+                message: 'Statistics retrieved successfully.',
+                lifetime,
+                byYear,
+            },
+        };
+
+        res.status(StatusCodes.OK)
+           .json(response);
+    } catch (e) {
+        next(e);
+    }
 };
 
 const createJournalEntry = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
