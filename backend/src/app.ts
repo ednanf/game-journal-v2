@@ -1,5 +1,11 @@
 import express from 'express';
 import morgan from 'morgan';
+import helmet from 'helmet';
+import cors from 'cors';
+import { rateLimit } from 'express-rate-limit';
+
+import rateLimitOptions from './configs/rateLimitOptions.js';
+import corsOptions from './configs/corsOptions.js';
 
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -12,7 +18,10 @@ import notFound from './middlewares/notFound.js';
 const app = express();
 
 // Middleware
-app.use(express.json()); // JSON parser
+app.use(rateLimit(rateLimitOptions));
+app.use(cors(corsOptions));
+app.use(helmet());
+app.use(express.json());
 app.use(morgan('tiny'));
 
 // Routes
