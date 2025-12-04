@@ -222,6 +222,7 @@ const patchJournalEntry = async (req: AuthenticatedRequest, res: Response, next:
         'status',
         'rating',
         'notes',
+        'playedAt',
     ];
 
     try {
