@@ -1,10 +1,20 @@
-/* Reset Styles */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=VT323&display=swap');
 
+/* Reset Styles */
 * {
     margin: 0;
     padding: 0;
     border: 0;
     box-sizing: border-box;
+}
+
+body {
+    background-color: var(--color-bg);
+}
+
+h1, h2, h3, h4, h5, h6, p, span, a, button {
+    color: var(--color-text-primary);
+    font-family: 'Roboto', sans-serif;
 }
 
 :root {
@@ -17,5 +27,74 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    /* General Colors */
+    /* COLORS */
+
+    /* BACKGROUND & SURFACE (Cozy/Soft) */
+    --color-bg-light: #FAFAF0; /* Pale Cream from Pixel Perfect base */
+    --color-surface-light: #FFFFFF; /* Clean White for cards/containers */
+    --color-divider-light: #E0E3EA; /* Light gray, same as yours */
+
+    /* TEXT (High Contrast) */
+    --color-text-primary-light: #2F4F4F; /* Dark Slate Gray from Pixel Perfect */
+    --color-text-secondary-light: #6c7a96; /* Keeping your muted gray for secondary text */
+
+    /* ACCENTS (Vibrant & Gamey) */
+    --color-accent-cyan-light: #00CED1; /* Bright Teal/Cyan from Pixel Perfect */
+    --color-accent-green-light: #7CFC00; /* Electric Lime Green (a little pop!) */
+    --color-accent-purple-light: #B19CD9; /* Soft Lavender from Cozy Console */
+    --color-accent-magenta-light: #FF1493; /* Punchy Magenta/Hot Pink from Pixel Perfect */
+    --color-accent-yellow-light: #FFD93D; /* Keeping your classic yellow accent */
+
+    /* ICONS & STATES */
+    --color-icon-active-light: #00CED1; /* Uses the main accent color (Cyan) */
+    --color-icon-inactive-light: #b0b8c1; /* Keeping your original inactive icon color */
+
+    /* SEMANTIC MAPPING */
+    --color-bg: var(--color-bg-light);
+    --color-surface: var(--color-surface-light);
+    --color-divider: var(--color-divider-light);
+    --color-text-primary: var(--color-text-primary-light);
+    --color-text-secondary: var(--color-text-secondary-light);
+    --color-accent-cyan: var(--color-accent-cyan-light);
+    --color-accent-green: var(--color-accent-green-light);
+    --color-accent-purple: var(--color-accent-purple-light);
+    --color-accent-magenta: var(--color-accent-magenta-light);
+    --color-accent-yellow: var(--color-accent-yellow-light);
+    --color-icon-active: var(--color-icon-active-light);
+    --color-icon-inactive: var(--color-icon-inactive-light);
+}
+
+[data-theme='dark'] {
+    /* BACKGROUND & SURFACE (Deep & Cozy) */
+    --color-bg-dark: #191970; /* Deep Charcoal/Midnight Blue from Pixel Perfect */
+    --color-surface-dark: #2F4F4F; /* Dark Teal/Forest Green for cards/containers */
+    --color-divider-dark: #465799; /* A slightly lighter blue/gray divider */
+
+    /* TEXT (Soft Contrast) */
+    --color-text-primary-dark: #E0E0E0; /* Light Gray/Off-White from Pixel Perfect */
+    --color-text-secondary-dark: #A9B1C2; /* A slightly darker gray for secondary text */
+
+    /* ACCENTS (Glow-up) */
+    --color-accent-cyan-dark: #40E0D0; /* Electric Blue/Cyan from Pixel Perfect */
+    --color-accent-green-dark: #ADFF2F; /* Yellow-Green Neon */
+    --color-accent-purple-dark: #9370DB; /* Deep Violet from Cozy Console */
+    --color-accent-magenta-dark: #FF69B4; /* Neon Pink/Fuchsia from Pixel Perfect */
+    --color-accent-yellow-dark: #FFD93D; /* Yellow still works great here */
+
+    /* ICONS & STATES */
+    --color-icon-inactive-dark: #7D8899; /* Muted light gray for inactive icons */
+    --color-icon-active-dark: #40E0D0; /* Uses the main accent color (Electric Blue/Cyan) */
+
+    --color-bg: var(--color-bg-dark);
+    --color-surface: var(--color-surface-dark);
+    --color-divider: var(--color-divider-dark);
+    --color-text-primary: var(--color-text-primary-dark);
+    --color-text-secondary: var(--color-text-secondary-dark);
+    --color-accent-cyan: var(--color-accent-cyan-dark);
+    --color-accent-green: var(--color-accent-green-dark);
+    --color-accent-purple: var(--color-accent-purple-dark);
+    --color-accent-magenta: var(--color-accent-magenta-dark);
+    --color-accent-yellow: var(--color-accent-yellow-dark);
+    --color-icon-active: var(--color-icon-active-dark);
+    --color-icon-inactive: var(--color-icon-inactive-dark);
 }
