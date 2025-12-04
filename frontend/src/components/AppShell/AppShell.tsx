@@ -1,16 +1,19 @@
 import { Outlet } from 'react-router-dom';
 
+import Header from './Header/Header.tsx';
+import NavBar from './NavBar/NavBar.tsx';
+
 const AppShell = () => {
     return (
         <>
             <header>
-                <h1>Header</h1>
+                <Header/>
             </header>
             <main>
                 <Outlet/>
             </main>
             <nav>
-                <p>Navigation</p>
+                <NavBar/>
             </nav>
         </>
     );
