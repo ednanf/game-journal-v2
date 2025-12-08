@@ -47,14 +47,15 @@ const RegistrationPage = () => {
                                 }}/>
 
                     <VStack align={'center'} style={{ marginTop: '1rem' }}>
-                        <StdButton type={'submit'}>Sign Up</StdButton>
+                        <StdButton type={'submit'} width={'200px'}>Sign
+                            Up</StdButton>
                     </VStack>
 
                 </VStack>
 
             </form>
 
-            <VStack align={'center'} style={{ marginTop: '1rem' }}>
+            <VStack align={'center'} style={{ marginTop: '3rem' }}>
 
                 <p>
                     <Link to={'/login'} className="lplinks">
