@@ -3,11 +3,12 @@ import { HStack } from 'react-swiftstacks';
 
 import styles from './StdButton.module.css';
 
-interface PillButtonProps {
+interface StdButtonProps {
     icon?: React.ReactNode;
     type: 'button' | 'submit' | 'reset';
     handleClick?: () => void;
     color?: 'default' | 'red' | 'green';
+    width?: string | number;
     disabled?: boolean;
     children?: React.ReactNode;
 }
@@ -17,14 +18,16 @@ const StdButton = ({
                        type,
                        handleClick,
                        color = 'default',
+                       width,
                        disabled,
                        children,
-                   }: PillButtonProps) => {
+                   }: StdButtonProps) => {
     return (
         <button
             type={type}
             onClick={handleClick}
             className={`${styles.button} ${styles[`${color}`]}`}
+            style={{ width }}
             disabled={disabled}
         >
             <HStack align={'center'} justify={'center'} gap={'sm'}>
