@@ -5,3 +5,8 @@
 .lplinks:hover {
     color: var(--color-accent-magenta)
 }
+
+.formVStack {
+    max-width: 400px;
+    margin: auto;
+}
