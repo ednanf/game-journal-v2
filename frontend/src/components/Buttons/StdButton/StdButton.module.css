@@ -1,0 +1,62 @@
+.button {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    background: var(--color-accent-purple);
+    color: white;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+
+    /* starting position */
+    position: relative;
+    top: 0;
+
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+
+    transition: top 0.1s ease,
+    box-shadow 0.1s ease,
+    transform 0.1s ease;
+}
+
+/* hover – optional, gives it a little lift */
+.squishButton:hover {
+    top: -2px;
+    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.button:active {
+    top: 3px; /* physically moves it down */
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2); /* shadow collapses with it */
+    transform: translateY(0); /* keeps movement crisp */
+}
+
+
+.button:disabled {
+    background-color: var(--color-text-secondary); /* Lighter blue when disabled */
+    cursor: not-allowed;
+}
+
+.button:hover:not(:disabled) {
+    background-color: var(--color-accent-yellow); /* Slightly darker blue on hover */
+}
+
+.icon {
+    vertical-align: middle;
+    margin-top: 1px;
+}
+
+.button.default {
+    background-color: var(--color-text-primary);
+    color: #FFFFFF;
+}
+
+.button.red {
+    background-color: var(--color-accent-magenta);
+    color: #FFFFFF;
+}
+
+.button.green {
+    background-color: var(--color-accent-green);
+    color: #FFFFFF;
+}
