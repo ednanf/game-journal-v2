@@ -1,6 +1,16 @@
-const Header = () => {
+import React from 'react';
+import { HStack } from 'react-swiftstacks';
+
+interface HeaderProps {
+    children: React.ReactNode;
+}
+
+const Header = ({ children }: HeaderProps) => {
+
     return (
-        <h1>Header</h1>
+        <HStack>
+            <h1>{children}</h1>
+        </HStack>
     );
 };
 export default Header;
