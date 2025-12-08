@@ -19,8 +19,7 @@
     transform 0.1s ease;
 }
 
-/* hover – optional, gives it a little lift */
-.squishButton:hover {
+.button:hover {
     top: -2px;
     box-shadow: 0 8px 0 rgba(0, 0, 0, 0.2);
 }
@@ -30,7 +29,6 @@
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2); /* shadow collapses with it */
     transform: translateY(0); /* keeps movement crisp */
 }
-
 
 .button:disabled {
     background-color: var(--color-text-secondary); /* Lighter blue when disabled */
