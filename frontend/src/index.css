@@ -17,6 +17,10 @@ h1, h2, h3, h4, h5, h6, p, span, a, button {
     font-family: 'Roboto', sans-serif;
 }
 
+Link {
+    cursor: pointer;
+}
+
 :root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;

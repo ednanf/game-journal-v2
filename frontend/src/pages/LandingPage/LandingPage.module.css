@@ -1,0 +1,30 @@
+.footer {
+    margin-top: 3rem;
+    justify-content: center;
+    align-content: center;
+}
+
+.appLogo {
+    height: 100px;
+}
+
+.githubLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+    margin-top: 3rem;
+}
+
+.githubLink:hover {
+    color: var(--color-accent-magenta);
+}
+
+.icon {
+    position: relative;
+    top: -1px;
+}

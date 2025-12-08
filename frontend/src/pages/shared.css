@@ -1,0 +1,7 @@
+.lplinks {
+    transition: color 0.2s ease-in-out;
+}
+
+.lplinks:hover {
+    color: var(--color-accent-magenta)
+}
