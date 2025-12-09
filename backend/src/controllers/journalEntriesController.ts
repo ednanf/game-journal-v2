@@ -203,7 +203,7 @@ const createJournalEntry = async (req: AuthenticatedRequest, res: Response, next
             },
         };
 
-        res.status(StatusCodes.OK)
+        res.status(StatusCodes.CREATED)
            .json(response);
     } catch (e) {
         next(e);

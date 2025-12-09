@@ -40,7 +40,7 @@ const registerUser = async (
             },
         };
 
-        res.status(StatusCodes.OK).json(response);
+        res.status(StatusCodes.CREATED).json(response);
     } catch (e) {
         next(e);
     }
