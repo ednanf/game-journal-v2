@@ -4,6 +4,8 @@ import {ToastContainer} from 'react-toastify';
 import Header from './Header/Header.tsx';
 import NavBar from './NavBar/NavBar.tsx';
 
+// TODO: change toast theme conditionally with local storage's current theme
+
 const AppShell = () => {
     const location = useLocation();
 
@@ -37,12 +39,12 @@ const AppShell = () => {
 
             <ToastContainer
                 position="top-center"
-                autoClose={3000}
+                autoClose={2000}
                 hideProgressBar={false}
                 closeOnClick
                 pauseOnHover
                 newestOnTop
-                theme="colored"
+                theme="light"
             />
         </>
     );

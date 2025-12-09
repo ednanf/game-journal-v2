@@ -21,6 +21,55 @@ Link {
     cursor: pointer;
 }
 
+
+/* TOASTIFY CUSTOMIZATION */
+
+/* Toast body */
+.Toastify__toast {
+    background: var(--color-surface) !important; /* your neutral surface */
+    color: var(--color-text-primary) !important;
+}
+
+/* Success progress bar */
+.Toastify__progress-bar--success {
+    background: var(--color-accent-green) !important; /* soft green */
+}
+
+/* Error progress bar */
+.Toastify__progress-bar--error {
+    background: var(--color-accent-magenta) !important; /* warm red */
+}
+
+/* Warning progress bar */
+.Toastify__progress-bar--warning {
+    background: var(--color-accent-yellow) !important; /* yellow */
+}
+
+/* Info progress bar */
+.Toastify__progress-bar--info {
+    background: var(--color-accent-cyan) !important; /* blue */
+}
+
+/* Success icon */
+.Toastify__toast--success .Toastify__toast-icon svg {
+    fill: var(--color-accent-green) !important;
+}
+
+/* Error icon */
+.Toastify__toast--error .Toastify__toast-icon svg {
+    fill: var(--color-accent-magenta) !important;
+}
+
+/* Warning icon */
+.Toastify__toast--warning .Toastify__toast-icon svg {
+    fill: var(--color-accent-yellow) !important;
+}
+
+/* Info icon */
+.Toastify__toast--info .Toastify__toast-icon svg {
+    fill: var(--color-accent-cyan) !important;
+}
+
 :root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
