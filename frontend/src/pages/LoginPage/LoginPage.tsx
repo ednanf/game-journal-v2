@@ -12,20 +12,20 @@ import { postUnwrapped } from '../../utils/axiosInstance.ts';
 import { toast } from 'react-toastify';
 
 type FormData = {
-    email: string,
-    password: string,
-}
+    email: string;
+    password: string;
+};
 
 type RegistrationResponse = {
-    message: string,
-    id: string,
-    email: string,
-    token: string,
-}
+    message: string;
+    id: string;
+    email: string;
+    token: string;
+};
 
 type ApiError = {
-    message: string,
-}
+    message: string;
+};
 
 const LoginPage = () => {
     const [formData, setFormData] = useState<FormData>({
@@ -44,10 +44,7 @@ const LoginPage = () => {
 
     // Check if form is filled -> returns true if so
     const isFormReady = () => {
-        return (
-            formData.email.trim() !== '' &&
-            formData.password.trim() !== ''
-        );
+        return formData.email.trim() !== '' && formData.password.trim() !== '';
     };
 
     const validateForm = (data: FormData) => {
@@ -72,7 +69,6 @@ const LoginPage = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -87,10 +83,7 @@ const LoginPage = () => {
         // Basic validation - Zod will validate on the backend
         // This is just to provide immediate feedback to the user
         const validationErrors = validateForm(formData);
-        if (
-            validationErrors.email ||
-            validationErrors.password
-        ) {
+        if (validationErrors.email || validationErrors.password) {
             setErrors(validationErrors);
             return;
         }
@@ -125,50 +118,52 @@ const LoginPage = () => {
             navigate('/journal');
         } catch (e) {
             const apiError = e as ApiError;
-            toast.error(
-                apiError.message || 'Login failed. Please try again.',
-            );
+            toast.error(apiError.message || 'Login failed. Please try again.');
         } finally {
             setIsLoading(false);
         }
-
-
     };
 
     return (
         <VStack>
-
             <VStack align={'center'} style={{ marginTop: '1rem' }}>
-                <img src={logo} style={{ height: '100px' }}
-                     alt={'Game Journal logo'}></img>
+                <img
+                    src={logo}
+                    style={{ height: '100px' }}
+                    alt={'Game Journal logo'}
+                ></img>
                 <h2>Sign in to your account</h2>
             </VStack>
 
             <form onSubmit={handleSubmit}>
-
-                <VStack gap={'lg'} style={{ maxWidth: '400px' }} padding={'md'}
-                        className="formVStack">
-
-                    <InputField type={'email'}
-                                label={'Email'}
-                                id={'email'}
-                                name={'email'}
-                                value={formData.email}
-                                placeholder={'jon@doe.com'}
-                                onChange={handleChange}
-                                required={true}
-                                error={errors.email}
+                <VStack
+                    gap={'lg'}
+                    style={{ maxWidth: '400px' }}
+                    padding={'md'}
+                    className="formVStack"
+                >
+                    <InputField
+                        type={'email'}
+                        label={'Email'}
+                        id={'email'}
+                        name={'email'}
+                        value={formData.email}
+                        placeholder={'jon@doe.com'}
+                        onChange={handleChange}
+                        required={true}
+                        error={errors.email}
                     />
 
-                    <InputField type={'password'}
-                                label={'Password'}
-                                id={'password'}
-                                name={'password'}
-                                value={formData.password}
-                                placeholder={'Your password goes here...'}
-                                onChange={handleChange}
-                                required={true}
-                                error={errors.password}
+                    <InputField
+                        type={'password'}
+                        label={'Password'}
+                        id={'password'}
+                        name={'password'}
+                        value={formData.password}
+                        placeholder={'Your password goes here...'}
+                        onChange={handleChange}
+                        required={true}
+                        error={errors.password}
                     />
 
                     <VStack align={'center'} style={{ marginTop: '1rem' }}>
@@ -180,21 +175,16 @@ const LoginPage = () => {
                             Log in
                         </StdButton>
                     </VStack>
-
                 </VStack>
-
             </form>
 
             <VStack align={'center'} style={{ marginTop: '3rem' }}>
-
                 <p>
                     <Link to={'/register'} className="lplinks">
                         Don't have an account? Sign up here
                     </Link>
                 </p>
-
             </VStack>
-
         </VStack>
     );
 };
