@@ -8,7 +8,7 @@ import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 import logo from '../../assets/logo.png';
 
 import '../shared.css';
-import { postUnwrapped } from '../../utils/axiosInstance.ts';
+import {postUnwrapped} from '../../utils/axiosInstance.ts';
 import { toast } from 'react-toastify';
 
 type FormData = {
@@ -127,7 +127,7 @@ const RegistrationPage = () => {
 
         try {
             // Send
-            const response = await postUnwrapped<RegistrationResponse>(
+            const data = await postUnwrapped<RegistrationResponse>(
                 'auth/register',
                 {
                     email: formData.email,
@@ -135,19 +135,19 @@ const RegistrationPage = () => {
                 },
             );
 
-            localStorage.setItem('id', response.id);
-            localStorage.setItem('email', response.email);
-            localStorage.setItem('token', response.token);
+            localStorage.setItem('id', data.id);
+            localStorage.setItem('email', data.email);
+            localStorage.setItem('token', data.token);
 
             // Dispatch a custom event to notify other parts of the app about the local storage change
             // Needed for things like showing the correct nav bar options
             window.dispatchEvent(new Event('local-storage'));
 
-            toast.success(response.message);
+            toast.success(data.message);
 
             navigate('/journal');
-        } catch (error) {
-            const apiError = error as ApiError;
+        } catch (e) {
+            const apiError = e as ApiError;
             toast.error(
                 apiError.message || 'Registration failed. Please try again.',
             );

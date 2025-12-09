@@ -1,4 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom';
+import {ToastContainer} from 'react-toastify';
 
 import Header from './Header/Header.tsx';
 import NavBar from './NavBar/NavBar.tsx';
@@ -33,6 +34,16 @@ const AppShell = () => {
                     <NavBar/>
                 </nav>
             )}
+
+            <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={false}
+                closeOnClick
+                pauseOnHover
+                newestOnTop
+                theme="colored"
+            />
         </>
     );
 };
