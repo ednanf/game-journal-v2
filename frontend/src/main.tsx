@@ -19,24 +19,45 @@ import './index.css';
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <AppShell/>,
+        element: <AppShell />,
         children: [
-            { index: true, element: <LandingPage/> },
-            { path: 'login', element: <LoginPage/> },
-            { path: 'register', element: <RegistrationPage/> },
-            { path: 'journal', element: <JournalPage/> },
-            { path: 'addEntry', element: <AddEntryPage/> },
-            { path: 'statistics', element: <StatisticsPage/> },
-            { path: 'details/:id', element: <EntryDetailsPage/> },
-            { path: 'settings', element: <SettingsPage/> },
-            { path: '*', element: <ErrorPage/> },
+            {
+                index: true,
+                element: <LandingPage />,
+            },
+            {
+                path: 'login',
+                element: <LoginPage />,
+            },
+            { path: 'register', element: <RegistrationPage /> },
+            {
+                path: 'journal',
+                element: <JournalPage />,
+                handle: { title: 'Journal' },
+            },
+            {
+                path: 'addEntry',
+                element: <AddEntryPage />,
+                handle: { title: 'Create a new entry' },
+            },
+            {
+                path: 'statistics',
+                element: <StatisticsPage />,
+                handle: { title: 'Statistics' },
+            },
+            { path: 'details/:id', element: <EntryDetailsPage /> },
+            {
+                path: 'settings',
+                element: <SettingsPage />,
+                handle: { title: 'Settings' },
+            },
+            { path: '*', element: <ErrorPage /> },
         ],
     },
 ]);
 
-createRoot(document.getElementById('root')!)
-    .render(
-        <StrictMode>
-            <RouterProvider router={router}/>
-        </StrictMode>,
-    );
+createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+        <RouterProvider router={router} />
+    </StrictMode>,
+);

@@ -1,39 +1,54 @@
-import { Outlet, useLocation } from 'react-router-dom';
-import {ToastContainer} from 'react-toastify';
+import {
+    Outlet,
+    type UIMatch,
+    useLocation,
+    useMatches,
+} from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import Header from './Header/Header.tsx';
 import NavBar from './NavBar/NavBar.tsx';
+
+import appLogo from '../../assets/logo.png';
+
+type RouteHandle = {
+    title?: string;
+};
 
 // TODO: change toast theme conditionally with local storage's current theme
 
 const AppShell = () => {
     const location = useLocation();
+    const matches = useMatches() as UIMatch<RouteHandle>[]; // will be used to grab the title in main.tsx
+
+    // @ts-expect-error sometimes TS is fucking stupid like Microsoft
+    const title = matches.findLast((m) => m.handle?.title)?.handle?.title; // pass the title as prop to the header
 
     // Paths where the header and navbar should be hidden
     const hiddenLayoutPaths = ['/', '/login', '/register'];
     const showLayout = !hiddenLayoutPaths.includes(location.pathname);
 
-    // Derive a user-friendly location name from the current path
-    const pathSegment = location.pathname.split('/')[1] || 'home';
-    const locationName = pathSegment
-        .replaceAll('-', ' ')
-        .replace(/^\w/, (c) => c.toUpperCase());
-
     return (
         <>
             {showLayout && (
                 <header>
-                    <Header>{locationName}</Header>
+                    <Header title={title}>
+                        <img
+                            src={appLogo}
+                            alt={'Game Journal logo'}
+                            className={'headerLogo'}
+                        ></img>
+                    </Header>
                 </header>
             )}
 
             <main>
-                <Outlet/>
+                <Outlet />
             </main>
 
             {showLayout && (
                 <nav>
-                    <NavBar/>
+                    <NavBar />
                 </nav>
             )}
 

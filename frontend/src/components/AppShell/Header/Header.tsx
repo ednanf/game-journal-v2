@@ -1,16 +1,17 @@
 import React from 'react';
-import { HStack } from 'react-swiftstacks';
+import { VStack } from 'react-swiftstacks';
 
 interface HeaderProps {
+    title: string;
     children: React.ReactNode;
 }
 
-const Header = ({ children }: HeaderProps) => {
-
+const Header = ({ title, children }: HeaderProps) => {
     return (
-        <HStack>
-            <h1>{children}</h1>
-        </HStack>
+        <VStack align={'center'} style={{ height: 'auto' }}>
+            <span>{children}</span>
+            <h2>{title}</h2>
+        </VStack>
     );
 };
 export default Header;
