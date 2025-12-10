@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=VT323&display=swap');
 
-/* Reset Styles */
+/* GENERAL STYLING ========================================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -21,8 +22,12 @@ Link {
     cursor: pointer;
 }
 
+.headerLogo {
+    height: 50px;
+    width: auto;
+}
 
-/* TOASTIFY CUSTOMIZATION */
+/* TOASTIFY CUSTOMIZATION ================================================== */
 
 /* Toast body */
 .Toastify__toast {
@@ -69,6 +74,8 @@ Link {
 .Toastify__toast--info .Toastify__toast-icon svg {
     fill: var(--color-accent-cyan) !important;
 }
+
+/* THEMING ================================================================== */
 
 :root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

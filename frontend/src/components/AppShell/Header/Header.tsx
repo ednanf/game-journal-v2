@@ -6,6 +6,8 @@ interface HeaderProps {
     children: React.ReactNode;
 }
 
+// The title prop is set in main.tsx, where the router is located
+
 const Header = ({ title, children }: HeaderProps) => {
     return (
         <VStack align={'center'} style={{ height: 'auto' }}>
