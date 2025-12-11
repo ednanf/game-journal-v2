@@ -1,0 +1,114 @@
+.sliderContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-family: 'Roboto', Arial, sans-serif;
+    align-self: flex-start;
+    text-align: left;
+    margin-left: 5px;
+    margin-bottom: 15px;
+    color: var(--color-text-primary);
+}
+
+/* MAIN SLIDER INPUT */
+.sliderInput {
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    margin-top: 0.75rem;
+    cursor: pointer;
+}
+
+/* TRACK — this is the ONLY line */
+.sliderInput::-webkit-slider-runnable-track {
+    height: 3px; /* matches your input borders */
+    background: var(--color-text-primary);
+    border-radius: 2px;
+}
+
+/* THUMB */
+.sliderInput::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-text-primary);
+    border: 2px solid var(--color-text-primary);
+    margin-top: -7px; /* centers thumb over the line */
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+/* FOCUS = yellow (same as input/select border focus) */
+.sliderInput:focus::-webkit-slider-thumb {
+    background: var(--color-accent-yellow);
+    border-color: var(--color-accent-yellow);
+}
+
+.sliderInput:focus::-webkit-slider-runnable-track {
+    background: var(--color-accent-yellow);
+}
+
+/* ERROR = magenta override */
+.sliderInputError::-webkit-slider-thumb {
+    background: var(--color-accent-magenta);
+    border-color: var(--color-accent-magenta);
+}
+
+.sliderInputError::-webkit-slider-runnable-track {
+    background: var(--color-accent-magenta);
+}
+
+/* FIREFOX SUPPORT */
+.sliderInput::-moz-range-track {
+    height: 3px;
+    background: var(--color-text-primary);
+    border-radius: 2px;
+}
+
+.sliderInput::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-text-primary);
+    border: 2px solid var(--color-text-primary);
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.sliderInput:focus::-moz-range-thumb {
+    background: var(--color-accent-yellow);
+    border-color: var(--color-accent-yellow);
+}
+
+.sliderInputError::-moz-range-thumb {
+    background: var(--color-accent-magenta);
+    border-color: var(--color-accent-magenta);
+}
+
+.sliderInputError::-moz-range-track {
+    background: var(--color-accent-magenta);
+}
+
+/* VALUE + ERROR TEXT */
+.sliderValue {
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    color: var(--color-text-primary);
+    align-self: flex-end;
+}
+
+.errorMessage {
+    color: var(--color-accent-magenta);
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    align-self: flex-start;
+}

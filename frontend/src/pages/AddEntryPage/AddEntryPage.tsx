@@ -5,6 +5,8 @@ import InputField from '../../components/Forms/InputField/InputField.tsx';
 
 import { gameStatus } from '../../data/status.ts';
 import { gamingPlatforms } from '../../data/platforms.ts';
+import Slider from '../../components/Forms/Slider/Slider.tsx';
+import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 
 const AddEntryPage = () => {
     return (
@@ -38,6 +40,18 @@ const AddEntryPage = () => {
                 values={gameStatus}
                 onChange={() => {}}
             />
+
+            <Slider
+                name={'Rating'}
+                min={0}
+                max={10}
+                value={1}
+                onChange={() => {}}
+            />
+
+            <StdButton type={'submit'} width={'200px'}>
+                Add Entry
+            </StdButton>
         </VStack>
     );
 };
