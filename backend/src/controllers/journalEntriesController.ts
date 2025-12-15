@@ -5,8 +5,11 @@ import { AuthenticatedRequest } from '../types/express.js';
 import {
     ApiResponse,
     CreateJournalEntrySuccess,
-    DeleteJournalEntrySuccess, FindJournalEntryByIdSuccess,
-    JournalEntryPatchBody, JournalStatsSuccess, PatchJournalEntrySuccess,
+    DeleteJournalEntrySuccess,
+    FindJournalEntryByIdSuccess,
+    JournalEntryPatchBody,
+    JournalStatsSuccess,
+    PatchJournalEntrySuccess,
 } from '../types/api.js';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, NotFoundError } from '../errors/index.js';
@@ -19,16 +22,15 @@ const getJournalEntries = async (
     const { userId } = req.user; // Validated by authentication middleware
 
     try {
-
         // Extract query parameters
         const {
-                  limit: queryLimit,
-                  cursor,
-                  title,
-                  status,
-                  rating,
-                  platform,
-              } = req.query;
+            limit: queryLimit,
+            cursor,
+            title,
+            status,
+            rating,
+            platform,
+        } = req.query;
 
         // How many entries should be fetched for pagination
         const limit = parseInt(queryLimit as string, 10) || 20;
@@ -69,9 +71,9 @@ const getJournalEntries = async (
 
         // Fetch one extra doc to detect next page
         const entries = await JournalEntry.find(query)
-                                          .sort({ _id: -1 })
-                                          .limit(limit + 1)
-                                          .lean();
+            .sort({ _id: -1 })
+            .limit(limit + 1)
+            .lean();
 
         const hasNextPage = entries.length > limit;
         if (hasNextPage) entries.pop();
@@ -80,20 +82,23 @@ const getJournalEntries = async (
             ? entries[entries.length - 1]._id.toString()
             : null;
 
-        res.status(200)
-           .json({
-               status: 'success',
-               data: {
-                   entries,
-                   nextCursor,
-               },
-           });
+        res.status(200).json({
+            status: 'success',
+            data: {
+                entries,
+                nextCursor,
+            },
+        });
     } catch (err) {
         next(err);
     }
 };
 
-const getJournalEntryById = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+const getJournalEntryById = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+) => {
     const { userId } = req.user; // Validated by authentication middleware
     const entryId = req.params.id; // Validated by validateObjectId middleware
 
@@ -115,14 +120,17 @@ const getJournalEntryById = async (req: AuthenticatedRequest, res: Response, nex
             },
         };
 
-        res.status(StatusCodes.OK)
-           .json(response);
+        res.status(StatusCodes.OK).json(response);
     } catch (e) {
         next(e);
     }
 };
 
-const getJournalEntriesStatistics = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+const getJournalEntriesStatistics = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+) => {
     // Needs to cast userId to ObjectId for MongoDB queries
     const userId = new mongoose.Types.ObjectId(req.user.userId);
 
@@ -177,14 +185,17 @@ const getJournalEntriesStatistics = async (req: AuthenticatedRequest, res: Respo
             },
         };
 
-        res.status(StatusCodes.OK)
-           .json(response);
+        res.status(StatusCodes.OK).json(response);
     } catch (e) {
         next(e);
     }
 };
 
-const createJournalEntry = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+const createJournalEntry = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+) => {
     const { userId } = req.user; // Validated by authentication middleware
 
     try {
@@ -203,14 +214,17 @@ const createJournalEntry = async (req: AuthenticatedRequest, res: Response, next
             },
         };
 
-        res.status(StatusCodes.CREATED)
-           .json(response);
+        res.status(StatusCodes.CREATED).json(response);
     } catch (e) {
         next(e);
     }
 };
 
-const patchJournalEntry = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+const patchJournalEntry = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+) => {
     const { userId } = req.user; // Validated by authentication middleware
     const entryId = req.params.id; // Validated by validateObjectId middleware
     const updatePayload: JournalEntryPatchBody = req.body; // Validated by Zod
@@ -222,7 +236,7 @@ const patchJournalEntry = async (req: AuthenticatedRequest, res: Response, next:
         'status',
         'rating',
         'notes',
-        'playedAt',
+        'entryDate',
     ];
 
     try {
@@ -244,10 +258,14 @@ const patchJournalEntry = async (req: AuthenticatedRequest, res: Response, next:
         }
 
         // Update entry in the DB
-        const patchedJournalEntry = await JournalEntry.findOneAndUpdate({
-            _id: entryId,
-            createdBy: userId,
-        }, safeUpdatePayload, { new: true, runValidators: true });
+        const patchedJournalEntry = await JournalEntry.findOneAndUpdate(
+            {
+                _id: entryId,
+                createdBy: userId,
+            },
+            safeUpdatePayload,
+            { new: true, runValidators: true },
+        );
 
         if (!patchedJournalEntry) {
             next(new NotFoundError('Journal entry was not found.'));
@@ -262,14 +280,17 @@ const patchJournalEntry = async (req: AuthenticatedRequest, res: Response, next:
             },
         };
 
-        res.status(StatusCodes.OK)
-           .json(response);
+        res.status(StatusCodes.OK).json(response);
     } catch (e) {
         next(e);
     }
 };
 
-const deleteJournalEntry = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+const deleteJournalEntry = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+) => {
     const { userId } = req.user; // Validated by authentication middleware
     const entryId = req.params.id; // Validated by validateObjectId middleware
 
@@ -291,8 +312,7 @@ const deleteJournalEntry = async (req: AuthenticatedRequest, res: Response, next
             },
         };
 
-        res.status(StatusCodes.OK)
-           .json(response);
+        res.status(StatusCodes.OK).json(response);
     } catch (e) {
         next(e);
     }

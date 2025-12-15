@@ -6,7 +6,7 @@ export interface IJournalEntry extends Document {
     title: string;
     platform: string;
     status: 'started' | 'completed' | 'dropped' | 'revisited' | 'paused';
-    playedAt: Date;
+    entryDate: Date;
     rating?: number;
     notes?: string;
     createdAt: Date;
@@ -36,7 +36,7 @@ const journalEntrySchema = new Schema<IJournalEntry>(
             enum: ['started', 'completed', 'revisited', 'paused', 'dropped'],
             default: 'started',
         },
-        playedAt: {
+        entryDate: {
             type: Date,
             required: [true, 'Please select a date for this entry.'],
         },
@@ -61,7 +61,7 @@ journalEntrySchema.index({ status: 1 }); // This will be used for filtering by s
 journalEntrySchema.index({ createdBy: 1, createdAt: 1, status: 1 }); // This will be used for the statistics tab
 
 const JournalEntry =
-          mongoose.models.JournalEntry ||
-          model<IJournalEntry>('JournalEntry', journalEntrySchema);
+    mongoose.models.JournalEntry ||
+    model<IJournalEntry>('JournalEntry', journalEntrySchema);
 
 export default JournalEntry;

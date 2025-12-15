@@ -33,15 +33,14 @@ const createJournalEntryBodySchema = z
             .max(1000, { message: 'Notes cannot exceed 1000 characters.' })
             .optional(),
 
-        playedAt: z
-            .iso.datetime({ message: 'Date must be a valid ISO datetime string.' }),
+        entryDate: z.iso.datetime({
+            message: 'Date must be a valid ISO datetime string.',
+        }),
     })
     .strict();
 
-const patchJournalEntryBodySchema = createJournalEntryBodySchema.partial()
-                                                                .strict();
+const patchJournalEntryBodySchema = createJournalEntryBodySchema
+    .partial()
+    .strict();
 
-export {
-    createJournalEntryBodySchema,
-    patchJournalEntryBodySchema,
-};
+export { createJournalEntryBodySchema, patchJournalEntryBodySchema };
