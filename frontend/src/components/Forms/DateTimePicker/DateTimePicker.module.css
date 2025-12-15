@@ -1,0 +1,61 @@
+/* src/components/Forms/DateTimePicker/DateTimePicker.module.css */
+
+.textInput {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem; /* Give it some breathing room */
+}
+
+.inputLabel {
+    /* Assuming these colors/fonts are defined globally or are known by your setup */
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 16px;
+    align-self: flex-start;
+    text-align: left;
+    margin-left: 5px;
+    color: var(--color-text-primary);
+    margin-bottom: 0.25rem;
+}
+
+/* * IMPORTANT: We target the specific input element rendered by react-datepicker
+* using the custom class name we apply in the TSX file.
+*/
+.inputField {
+    box-sizing: border-box; /* Crucial for consistent sizing */
+    width: 100%;
+    height: 2.5rem;
+    padding: 0.5rem;
+    font-size: 14px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid var(--color-text-primary);
+    transition: border-bottom-color 0.2s ease-in-out; /* Smooth transition */
+}
+
+/* Focus state */
+.inputField:focus {
+    outline: none;
+    border-bottom-color: var(--color-accent-yellow);
+    box-shadow: none;
+}
+
+/* Error state matching your .inputFieldError */
+.inputFieldError {
+    border-bottom-color: var(
+        --color-accent-magenta
+    ) !important; /* Use !important if needed to override focus */
+}
+
+.errorText {
+    color: var(--color-accent-magenta);
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    align-self: flex-start;
+}
+
+/* * Additional styles for react-datepicker popup customization:
+* You'll likely need to add more global or specific overrides
+* for the calendar and time picker visuals, but this ensures
+* the input itself matches your fields.
+*/
