@@ -30,14 +30,11 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     ].join(' ');
 
     return (
-        // 1. Container (Applying .textInput)
         <div className={styles.textInput}>
-            {/* 2. Label (Applying .inputLabel) */}
             <label htmlFor={id} className={styles.inputLabel}>
                 {label}
             </label>
 
-            {/* 3. DatePicker */}
             <DatePicker
                 id={id}
                 name={name}
@@ -53,7 +50,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
                 isClearable
             />
 
-            {/* 4. Error Text (Applying .errorText) */}
+            {/* Error Text (Applying .errorText) */}
             {isInvalid && (
                 <span className={styles.errorText}>{errorMessage}</span>
             )}
