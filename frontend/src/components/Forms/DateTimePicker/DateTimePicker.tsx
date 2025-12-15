@@ -1,12 +1,7 @@
-// src/components/Forms/DateTimePicker/DateTimePicker.tsx
-
 import React from 'react';
 import DatePicker from 'react-datepicker';
-// Import the styles module
-import styles from './DateTimePicker.module.css';
 
-// Remember to import the global react-datepicker CSS once in your project:
-// import 'react-datepicker/dist/react-datepicker.css';
+import styles from './DateTimePicker.module.css';
 
 interface DateTimePickerProps {
     label: string;
@@ -15,7 +10,6 @@ interface DateTimePickerProps {
     value: Date | null;
     onChange: (date: Date | null) => void;
     showTime?: boolean;
-    // Added for consistent error display
     isInvalid?: boolean;
     errorMessage?: string;
 }
@@ -30,7 +24,6 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     isInvalid = false,
     errorMessage = 'Invalid date format.',
 }) => {
-    // Combine base class with error class if needed
     const inputClasses = [
         styles.inputField,
         isInvalid ? styles.inputFieldError : '',
@@ -50,7 +43,6 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
                 name={name}
                 selected={value}
                 onChange={onChange}
-                // CRUCIAL: Applying our styled input class
                 className={inputClasses}
                 // Configuration
                 showTimeSelect={showTime}

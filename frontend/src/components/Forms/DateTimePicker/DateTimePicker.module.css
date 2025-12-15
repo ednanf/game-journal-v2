@@ -1,14 +1,10 @@
-/* src/components/Forms/DateTimePicker/DateTimePicker.module.css */
-
 .textInput {
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin-bottom: 1.5rem; /* Give it some breathing room */
 }
 
 .inputLabel {
-    /* Assuming these colors/fonts are defined globally or are known by your setup */
     font-family: 'Roboto', Arial, sans-serif;
     font-size: 16px;
     align-self: flex-start;
@@ -18,8 +14,8 @@
     margin-bottom: 0.25rem;
 }
 
-/* * IMPORTANT: We target the specific input element rendered by react-datepicker
-* using the custom class name we apply in the TSX file.
+/* * IMPORTANT: Target the specific input element rendered by react-datepicker
+* using the custom class name applied in the TSX file.
 */
 .inputField {
     box-sizing: border-box; /* Crucial for consistent sizing */
@@ -54,8 +50,69 @@
     align-self: flex-start;
 }
 
-/* * Additional styles for react-datepicker popup customization:
-* You'll likely need to add more global or specific overrides
-* for the calendar and time picker visuals, but this ensures
-* the input itself matches your fields.
-*/
+/* Pop-up customization */
+
+/* Use :global to target the date-picker's internal classes */
+:global(.react-datepicker) {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: var(--color-bg); /* Assuming a dark theme for gaming */
+    border: 2px solid var(--color-text-primary);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    color: var(--color-text-primary);
+}
+
+:global(.react-datepicker__header) {
+    background-color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-text-primary);
+}
+
+:global(.react-datepicker__current-month),
+:global(.react-datepicker__day-name) {
+    color: var(--color-bg);
+}
+
+/* Styling the days */
+:global(.react-datepicker__day) {
+    color: var(--color-text-primary);
+}
+
+:global(.react-datepicker__day:hover) {
+    background-color: var(--color-accent-yellow);
+    color: var(--color-accent-magenta);
+}
+
+:global(.react-datepicker__day--selected),
+:global(.react-datepicker__day--keyboard-selected) {
+    background-color: var(--color-accent-yellow) !important;
+    color: #000 !important;
+}
+
+/* TIME PICKER STYLING */
+:global(.react-datepicker__time-container) {
+    border-left: 1px solid var(--color-text-primary) !important;
+    width: 85px;
+}
+
+:global(.react-datepicker__time) {
+    background: var(--color-bg) !important;
+    color: var(--color-text-primary) !important;
+}
+
+:global(.react-datepicker__time-list-item--selected) {
+    background-color: var(--color-accent-yellow) !important;
+    color: #000 !important;
+}
+
+:global(.react-datepicker__time-list-item:hover) {
+    background-color: var(--color-accent-yellow) !important;
+    color: #000 !important;
+}
+
+:global(.react-datepicker-time__header) {
+    color: var(--color-bg);
+}
+
+:global(.react-datepicker__close-icon)::after {
+    background: var(--color-text-primary);
+}
