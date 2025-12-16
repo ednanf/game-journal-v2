@@ -20,7 +20,7 @@ const serverStart = async () => {
     try {
         await dbConnect(DB_URI);
         server.listen(PORT, () => {
-            console.log(`**[system]** server is listening on port ${PORT}`);
+            console.log(`**[system]** server is listening on port ${PORT}...`);
         });
     } catch (e) {
         console.error(
