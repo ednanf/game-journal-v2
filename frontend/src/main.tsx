@@ -18,6 +18,7 @@ import StatisticsPage from './pages/StatisticsPage/StatisticsPage.tsx';
 import './index.css';
 import SearchPage from './pages/SearchPage/SearchPage.tsx';
 
+// "handle" is used in AppShell.tsx to pass props to the Header.tsx component
 const router = createBrowserRouter([
     {
         path: '/',
