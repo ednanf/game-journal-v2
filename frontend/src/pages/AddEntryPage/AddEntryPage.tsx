@@ -11,6 +11,8 @@ import StdButton from '../../components/Buttons/StdButton/StdButton';
 
 import { gameStatus } from '../../data/status';
 import { gamingPlatforms } from '../../data/platforms';
+import { postUnwrapped } from '../../utils/axiosInstance.ts';
+import { API_BASE_URL } from '../../config/apiURL.ts';
 
 type FormData = {
     title: string;
@@ -19,6 +21,10 @@ type FormData = {
     rating: number;
     entryDate: Date | null;
 };
+
+interface CreationResponse {
+    message: string;
+}
 
 type FormErrors = Partial<Record<keyof Omit<FormData, 'rating'>, string>>;
 
@@ -76,8 +82,13 @@ const AddEntryPage: React.FC = () => {
         formData.status &&
         formData.entryDate;
 
+    const payload = {
+        ...formData,
+        rating: Number(formData.rating),
+    };
+
     // --- SUBMIT ---
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const validationErrors = validate(formData);
@@ -90,12 +101,20 @@ const AddEntryPage: React.FC = () => {
 
         setIsLoading(true);
 
-        // Simulate submit
-        setTimeout(() => {
-            toast.success('Entry added');
+        try {
+            const response = await postUnwrapped<CreationResponse>(
+                `${API_BASE_URL}/entries`,
+                payload,
+            );
+
+            toast.success(response.message);
+
+            navigate('/journal');
+        } catch (e) {
+            toast.error((e as { message: string }).message);
+        } finally {
             setIsLoading(false);
-            navigate('/');
-        }, 800);
+        }
     };
 
     return (
