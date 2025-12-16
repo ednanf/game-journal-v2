@@ -48,6 +48,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
                 dateFormat={showTime ? 'Pp' : 'P'}
                 // Allows the user to clear the input
                 isClearable
+                popperPlacement={'top'}
             />
 
             {/* Error Text (Applying .errorText) */}
