@@ -104,9 +104,9 @@ Link {
     --color-divider-light: #e0e3ea; /* Light gray */
 
     /* NAVBAR */
-    --color-navbar-background-light: rgba(255, 255, 255, 0.4);
-    --color-navbar-border-light: rgba(255, 255, 255, 0.4);
-    --navbar-backdrop-filter-light: blur(100px);
+    --color-navbar-background-light: rgba(250, 250, 240, 0.8);
+    --color-navbar-border-light: rgba(255, 255, 255, 0.5);
+    --navbar-backdrop-filter-light: blur(10px);
 
     /* TEXT (High Contrast) */
     --color-text-primary-light: #2f4f4f; /* Dark Slate Gray from Pixel Perfect */
