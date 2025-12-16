@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack } from 'react-swiftstacks';
+import { HStack } from 'react-swiftstacks';
 
 interface HeaderProps {
     title: string;
@@ -10,10 +10,10 @@ interface HeaderProps {
 
 const Header = ({ title, children }: HeaderProps) => {
     return (
-        <VStack align={'center'} style={{ height: 'auto' }}>
+        <HStack justify={'center'} style={{ height: 'auto' }}>
             <span>{children}</span>
             <h2>{title}</h2>
-        </VStack>
+        </HStack>
     );
 };
 export default Header;
