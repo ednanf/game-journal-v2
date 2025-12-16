@@ -16,6 +16,7 @@ import SettingsPage from './pages/SettingsPage/SettingsPage.tsx';
 import StatisticsPage from './pages/StatisticsPage/StatisticsPage.tsx';
 
 import './index.css';
+import SearchPage from './pages/SearchPage/SearchPage.tsx';
 
 const router = createBrowserRouter([
     {
@@ -51,6 +52,11 @@ const router = createBrowserRouter([
                 path: 'settings',
                 element: <SettingsPage />,
                 handle: { title: 'Settings' },
+            },
+            {
+                path: 'search',
+                element: <SearchPage />,
+                handle: { title: 'Search' },
             },
             { path: '*', element: <ErrorPage /> },
         ],
