@@ -1,0 +1,19 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    height: 100dvh;
+}
+
+.main {
+    padding-bottom: calc(
+        5rem + env(safe-area-inset-bottom)
+    ); /* 1.5rem for spacing below header, 3rem for header height */
+    flex-grow: 1;
+}
+
+.nav {
+    margin: 1rem 2rem 2rem;
+    align-self: center;
+}

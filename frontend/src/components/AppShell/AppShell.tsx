@@ -11,6 +11,8 @@ import NavBar from './NavBar/NavBar.tsx';
 
 import appLogo from '../../assets/logo.png';
 
+import styles from './AppShell.module.css';
+
 type RouteHandle = {
     title?: string;
 };
@@ -29,7 +31,7 @@ const AppShell = () => {
     const showLayout = !hiddenLayoutPaths.includes(location.pathname);
 
     return (
-        <>
+        <div className={styles.layout}>
             {showLayout && (
                 <header>
                     <Header title={title}>
@@ -42,12 +44,12 @@ const AppShell = () => {
                 </header>
             )}
 
-            <main>
+            <main className={styles.main}>
                 <Outlet />
             </main>
 
             {showLayout && (
-                <nav>
+                <nav className={styles.nav}>
                     <NavBar />
                 </nav>
             )}
@@ -61,7 +63,7 @@ const AppShell = () => {
                 newestOnTop
                 theme="light"
             />
-        </>
+        </div>
     );
 };
 export default AppShell;
