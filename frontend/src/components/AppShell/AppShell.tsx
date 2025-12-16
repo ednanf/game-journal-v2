@@ -18,6 +18,7 @@ type RouteHandle = {
 };
 
 // TODO: change toast theme conditionally with local storage's current theme
+// TODO: change fonts to 16px to avoid zooming on iOS
 
 const AppShell = () => {
     const location = useLocation();
