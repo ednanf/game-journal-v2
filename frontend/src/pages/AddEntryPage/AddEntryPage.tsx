@@ -117,6 +117,8 @@ const AddEntryPage: React.FC = () => {
         }
     };
 
+    // TODO: Gray the slider out when unavailable
+
     return (
         <VStack>
             <form onSubmit={handleSubmit}>
