@@ -106,8 +106,9 @@ Link {
     --color-divider-light: #e0e3ea;
 
     /* NavBar */
-    --color-navbar-background-light: rgba(250, 250, 240, 0.8);
-    --color-navbar-border-light: rgba(255, 255, 255, 0.3);
+    --color-navbar-background-light: rgba(250, 250, 240, 0.6);
+    --color-navbar-border-light: rgba(0, 0, 0, 0.04);
+    --color-navbar-box-shadow-light: 0 3px 3px rgba(0, 0, 0, 0.1);
     --navbar-backdrop-filter-light: blur(10px);
 
     /* Text */
@@ -135,6 +136,7 @@ Link {
     --color-divider: var(--color-divider-light);
     --color-navbar-background: var(--color-navbar-background-light);
     --color-navbar-border: var(--color-navbar-border-light);
+    --color-navbar-box-shadow: var(--color-navbar-box-shadow-light);
     --navbar-backdrop-filter: var(--navbar-backdrop-filter-light);
     --color-text-primary: var(--color-text-primary-light);
     --color-text-secondary: var(--color-text-secondary-light);
