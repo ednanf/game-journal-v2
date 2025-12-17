@@ -40,28 +40,28 @@ Link {
 
 /* Toast body */
 .Toastify__toast {
-    background: var(--color-surface) !important; /* your neutral surface */
+    background: var(--color-surface) !important;
     color: var(--color-text-primary) !important;
 }
 
 /* Success progress bar */
 .Toastify__progress-bar--success {
-    background: var(--color-accent-green) !important; /* soft green */
+    background: var(--color-accent-green) !important;
 }
 
 /* Error progress bar */
 .Toastify__progress-bar--error {
-    background: var(--color-accent-magenta) !important; /* warm red */
+    background: var(--color-accent-magenta) !important;
 }
 
 /* Warning progress bar */
 .Toastify__progress-bar--warning {
-    background: var(--color-accent-yellow) !important; /* yellow */
+    background: var(--color-accent-yellow) !important;
 }
 
 /* Info progress bar */
 .Toastify__progress-bar--info {
-    background: var(--color-accent-cyan) !important; /* blue */
+    background: var(--color-accent-cyan) !important;
 }
 
 /* Success icon */
@@ -87,6 +87,8 @@ Link {
 /* THEMING ================================================================== */
 
 :root {
+    /* General rules */
+
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
@@ -96,38 +98,38 @@ Link {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    /* COLORS */
+    /* Colors */
 
-    /* BACKGROUND & SURFACE (Cozy/Soft) */
-    --color-bg-light: #fafaf0; /* Pale Cream from Pixel Perfect base */
-    --color-surface-light: #ffffff; /* Clean White for cards/containers */
-    --color-divider-light: #e0e3ea; /* Light gray */
+    /* Background and surface */
+    --color-bg-light: #fafaf0;
+    --color-surface-light: #ffffff;
+    --color-divider-light: #e0e3ea;
 
-    /* NAVBAR */
+    /* NavBar */
     --color-navbar-background-light: rgba(250, 250, 240, 0.8);
     --color-navbar-border-light: rgba(255, 255, 255, 0.3);
     --navbar-backdrop-filter-light: blur(10px);
 
-    /* TEXT (High Contrast) */
-    --color-text-primary-light: #2f4f4f; /* Dark Slate Gray from Pixel Perfect */
-    --color-text-secondary-light: #6c7a96; /* Keeping muted gray for secondary text */
+    /* Text */
+    --color-text-primary-light: #2f4f4f;
+    --color-text-secondary-light: #6c7a96;
 
-    /* ACCENTS (Vibrant & Gamey) */
-    --color-accent-cyan-light: #00ced1; /* Bright Teal/Cyan */
-    --color-accent-green-light: #7cfc00; /* Electric Lime Green  */
-    --color-accent-purple-light: #b19cd9; /* Soft Lavender */
-    --color-accent-magenta-light: #ff1493; /* Punchy Magenta/Hot Pink */
-    --color-accent-yellow-light: #ffd93d; /* Yellow accent */
+    /* Accents */
+    --color-accent-cyan-light: #00ced1;
+    --color-accent-green-light: #7cfc00;
+    --color-accent-purple-light: #b19cd9;
+    --color-accent-magenta-light: #ff1493;
+    --color-accent-yellow-light: #ffd93d;
 
-    /* ICONS & STATES */
+    /* Icons and states */
     --color-icon-active-light: #00ced1;
     --color-icon-inactive-light: #b0b8c1;
 
-    /* STANDARD BUTTON */
+    /* Standard button */
     --button-disabled-light: #b0b8c1;
     --button-disabled-box-shadow-light: 0 8px 0 rgba(168, 168, 168, 0.2);
 
-    /* SEMANTIC MAPPING */
+    /* Semantic mapping */
     --color-bg: var(--color-bg-light);
     --color-surface: var(--color-surface-light);
     --color-divider: var(--color-divider-light);
@@ -148,30 +150,31 @@ Link {
 }
 
 [data-theme='dark'] {
-    /* BACKGROUND & SURFACE (Deep & Cozy) */
-    --color-bg-dark: #191970; /* Deep Charcoal/Midnight Blue */
-    --color-surface-dark: #2f4f4f; /* Dark Teal/Forest Green for cards/containers */
-    --color-divider-dark: #465799; /* A slightly lighter blue/gray divider */
+    /* Background surface */
+    --color-bg-dark: #191970;
+    --color-surface-dark: #2f4f4f;
+    --color-divider-dark: #465799;
 
-    /* TEXT (Soft Contrast) */
-    --color-text-primary-dark: #e0e0e0; /* Light Gray/Off-White */
-    --color-text-secondary-dark: #a9b1c2; /* A slightly darker gray for secondary text */
+    /* Text */
+    --color-text-primary-dark: #e0e0e0;
+    --color-text-secondary-dark: #a9b1c2;
 
-    /* ACCENTS (Glow-up) */
-    --color-accent-cyan-dark: #40e0d0; /* Electric Blue/Cyan */
-    --color-accent-green-dark: #adff2f; /* Yellow-Green Neon */
-    --color-accent-purple-dark: #9370db; /* Deep Violet */
-    --color-accent-magenta-dark: #ff69b4; /* Neon Pink/Fuchsia */
-    --color-accent-yellow-dark: #ffd93d; /* Yellow accent */
+    /* Accent */
+    --color-accent-cyan-dark: #40e0d0;
+    --color-accent-green-dark: #adff2f;
+    --color-accent-purple-dark: #9370db;
+    --color-accent-magenta-dark: #ff69b4;
+    --color-accent-yellow-dark: #ffd93d;
 
-    /* ICONS & STATES */
-    --color-icon-inactive-dark: #7d8899; /* Muted light gray for inactive icons */
-    --color-icon-active-dark: #40e0d0; /* Uses the main accent color (Electric Blue/Cyan) */
+    /* Icons and states*/
+    --color-icon-inactive-dark: #7d8899;
+    --color-icon-active-dark: #40e0d0;
 
-    /* STANDARD BUTTON */
+    /* Standard button */
     --button-disabled-dark: #b0b8c1;
     --button-disabled-box-shadow-dark: 0 8px 0 rgba(168, 168, 168, 0.2);
 
+    /* Semantic mapping */
     --color-bg: var(--color-bg-dark);
     --color-surface: var(--color-surface-dark);
     --color-divider: var(--color-divider-dark);
