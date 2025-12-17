@@ -15,25 +15,23 @@
 }
 
 .inputField {
-    box-sizing: border-box; /* Crucial for consistent sizing */
+    box-sizing: border-box;
     width: 100%;
     height: 2.5rem;
     padding: 0.5rem;
-    font-size: 14px;
+    font-size: 16px;
     background: transparent;
     border: none;
     border-bottom: 3px solid var(--color-text-primary);
-    transition: border-bottom-color 0.2s ease-in-out; /* Smooth transition */
+    transition: border-bottom-color 0.2s ease-in-out;
 }
 
-/* Focus state */
 .inputField:focus {
     outline: none;
     border-bottom-color: var(--color-accent-yellow);
     box-shadow: none;
 }
 
-/* Error state matching your .inputFieldError */
 .inputFieldError {
     border-bottom-color: var(
         --color-accent-magenta
