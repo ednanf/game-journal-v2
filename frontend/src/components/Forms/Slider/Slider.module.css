@@ -22,6 +22,21 @@
     margin-top: 0.75rem;
     cursor: pointer;
 }
+/* DISABLED INPUT */
+.sliderInput:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.sliderInput:disabled::-webkit-slider-thumb {
+    background: #999;
+    cursor: not-allowed;
+}
+
+.sliderInput:disabled::-moz-range-thumb {
+    background: #999;
+    cursor: not-allowed;
+}
 
 /* TRACK — this is the ONLY line */
 .sliderInput::-webkit-slider-runnable-track {
