@@ -123,6 +123,10 @@ Link {
     --color-icon-active-light: #00ced1;
     --color-icon-inactive-light: #b0b8c1;
 
+    /* STANDARD BUTTON */
+    --button-disabled-light: #b0b8c1;
+    --button-disabled-box-shadow-light: 0 8px 0 rgba(168, 168, 168, 0.2);
+
     /* SEMANTIC MAPPING */
     --color-bg: var(--color-bg-light);
     --color-surface: var(--color-surface-light);
@@ -139,6 +143,8 @@ Link {
     --color-accent-yellow: var(--color-accent-yellow-light);
     --color-icon-active: var(--color-icon-active-light);
     --color-icon-inactive: var(--color-icon-inactive-light);
+    --button-disabled: var(--button-disabled-light);
+    --button-disabled-box-shadow: var(--button-disabled-box-shadow-light);
 }
 
 [data-theme='dark'] {
@@ -162,6 +168,10 @@ Link {
     --color-icon-inactive-dark: #7d8899; /* Muted light gray for inactive icons */
     --color-icon-active-dark: #40e0d0; /* Uses the main accent color (Electric Blue/Cyan) */
 
+    /* STANDARD BUTTON */
+    --button-disabled-dark: #b0b8c1;
+    --button-disabled-box-shadow-dark: 0 8px 0 rgba(168, 168, 168, 0.2);
+
     --color-bg: var(--color-bg-dark);
     --color-surface: var(--color-surface-dark);
     --color-divider: var(--color-divider-dark);
@@ -174,4 +184,6 @@ Link {
     --color-accent-yellow: var(--color-accent-yellow-dark);
     --color-icon-active: var(--color-icon-active-dark);
     --color-icon-inactive: var(--color-icon-inactive-dark);
+    --button-disabled: var(--button-disabled-dark);
+    --button-disabled-box-shadow: var(--button-disabled-box-shadow-dark);
 }

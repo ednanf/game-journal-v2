@@ -2,11 +2,11 @@
     display: inline-block;
     padding: 0.75rem 1.25rem;
     border-radius: 10px;
-    background: var(--color-accent-purple);
     color: white;
     font-weight: 800;
     border: none;
     cursor: pointer;
+    user-select: none;
 
     /* starting position */
     position: relative;
@@ -14,14 +14,17 @@
 
     box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
 
-    transition: top 0.1s ease,
-    box-shadow 0.1s ease,
-    transform 0.1s ease;
+    transition:
+        top 0.1s ease,
+        box-shadow 0.1s ease,
+        transform 0.1s ease;
 }
 
-.button:hover {
+/* Animations are active only when the button is not disabled */
+.button:not(:disabled):hover {
     top: -2px;
     box-shadow: 0 8px 0 rgba(0, 0, 0, 0.2);
+    background-color: var(--color-accent-yellow);
 }
 
 .button:active {
@@ -31,12 +34,8 @@
 }
 
 .button:disabled {
-    background-color: var(--color-text-secondary); /* Lighter blue when disabled */
+    background-color: red;
     cursor: not-allowed;
-}
-
-.button:hover:not(:disabled) {
-    background-color: var(--color-accent-yellow); /* Slightly darker blue on hover */
 }
 
 .icon {
@@ -46,15 +45,26 @@
 
 .button.default {
     background-color: var(--color-text-primary);
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 .button.red {
     background-color: var(--color-accent-magenta);
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 .button.green {
     background-color: var(--color-accent-green);
-    color: #FFFFFF;
+    color: #ffffff;
+}
+
+.button.default:disabled,
+.button.red:disabled,
+.button.green:disabled {
+    box-shadow: var(--button-disabled-box-shadow);
+    background-color: var(--button-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+    transition: none;
+    color: #ffffff;
 }
