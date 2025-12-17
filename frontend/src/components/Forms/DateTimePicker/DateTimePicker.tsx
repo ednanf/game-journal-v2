@@ -14,6 +14,14 @@ interface DateTimePickerProps {
     errorMessage?: string;
 }
 
+// Necessary to ensure the keyboard won't pop up in mobile
+const PickerInput = React.forwardRef<
+    HTMLInputElement,
+    React.InputHTMLAttributes<HTMLInputElement>
+>((props, ref) => <input ref={ref} {...props} readOnly inputMode="none" />);
+
+PickerInput.displayName = 'PickerInput';
+
 const DateTimePicker: React.FC<DateTimePickerProps> = ({
     label,
     id,
@@ -41,17 +49,15 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
                 selected={value}
                 onChange={onChange}
                 className={inputClasses}
-                // Configuration
+                customInput={<PickerInput />}
                 showTimeSelect={showTime}
                 timeFormat="HH:mm"
                 timeIntervals={15}
                 dateFormat={showTime ? 'Pp' : 'P'}
-                // Allows the user to clear the input
                 isClearable
-                popperPlacement={'top'}
+                popperPlacement="top"
             />
 
-            {/* Error Text (Applying .errorText) */}
             {isInvalid && (
                 <span className={styles.errorText}>{errorMessage}</span>
             )}

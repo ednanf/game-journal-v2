@@ -24,6 +24,7 @@
     border: none;
     border-bottom: 3px solid var(--color-text-primary);
     transition: border-bottom-color 0.2s ease-in-out;
+    caret-color: transparent;
 }
 
 .inputField:focus {
