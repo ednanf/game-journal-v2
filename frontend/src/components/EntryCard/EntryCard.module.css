@@ -1,10 +1,94 @@
+/* Card pieces*/
 .cardContainer {
-    position: relative;
     background-color: var(--color-surface);
     width: 90%;
     max-width: 400px;
-    border-radius: 5px;
+    border-radius: 15px;
     padding: 0.5rem 1rem 1rem 1rem;
     margin-bottom: 10px;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--color-navbar-box-shadow);
+    display: flex;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* take remaining space */
+    min-width: 0; /* allow children to shrink */
+    margin-top: 10px;
+}
+
+.title {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.titleFade {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3rem;
+    background: linear-gradient(to right, transparent, var(--color-surface));
+}
+
+.platform {
+    font-size: 16px;
+    color: var(--color-text-primary);
+}
+
+.rating {
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.date {
+    color: var(--color-text-secondary);
+    font-size: 12px;
+}
+
+/* Status styles*/
+.started {
+    color: var(--color-accent-green);
+    font-size: 12px;
+    border: 1px solid var(--color-accent-green);
+    border-radius: 35px;
+    padding: 0 0.7rem;
+}
+
+.completed {
+    color: var(--color-accent-purple);
+    font-size: 12px;
+    border: 1px solid var(--color-accent-purple);
+    border-radius: 35px;
+    padding: 0 0.7rem;
+}
+
+.revisited {
+    color: var(--color-accent-cyan);
+    font-size: 12px;
+    border: 1px solid var(--color-accent-cyan);
+    border-radius: 35px;
+    padding: 0 0.7rem;
+}
+
+.paused {
+    color: var(--color-accent-yellow);
+    font-size: 12px;
+    border: 1px solid var(--color-accent-yellow);
+    border-radius: 35px;
+    padding: 0 0.7rem;
+}
+
+.dropped {
+    color: var(--color-accent-magenta);
+    font-size: 12px;
+    border: 1px solid var(--color-accent-magenta);
+    border-radius: 35px;
+    padding: 0 0.7rem;
 }

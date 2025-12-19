@@ -2,7 +2,7 @@ import EntryCard from '../../components/EntryCard/EntryCard.tsx';
 import { VStack } from 'react-swiftstacks';
 
 const rawEntry = {
-    title: 'Game Title',
+    title: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
     platform: 'Nintendo Switch 2',
     status: 'completed',
     rating: 9,
