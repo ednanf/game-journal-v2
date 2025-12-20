@@ -2,6 +2,7 @@ import EntryCard from '../../components/EntryCard/EntryCard.tsx';
 import { VStack } from 'react-swiftstacks';
 
 const rawEntry = {
+    _id: '6942abf3e2093908238c9104',
     title: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
     platform: 'Nintendo Switch 2',
     status: 'completed',
@@ -18,62 +19,7 @@ const entry = {
 const JournalPage = () => {
     return (
         <VStack align={'center'}>
-            <EntryCard
-                title={entry.title}
-                platform={entry.platform}
-                status={entry.status}
-                rating={entry.rating}
-                date={entry.entryDate}
-            />
-            <EntryCard
-                title={entry.title}
-                platform={entry.platform}
-                status={entry.status}
-                rating={entry.rating}
-                date={entry.entryDate}
-            />
-            <EntryCard
-                title={entry.title}
-                platform={entry.platform}
-                status={entry.status}
-                rating={entry.rating}
-                date={entry.entryDate}
-            />
-            <EntryCard
-                title={entry.title}
-                platform={entry.platform}
-                status={entry.status}
-                rating={entry.rating}
-                date={entry.entryDate}
-            />
-            <EntryCard
-                title={entry.title}
-                platform={entry.platform}
-                status={entry.status}
-                rating={entry.rating}
-                date={entry.entryDate}
-            />
-            <EntryCard
-                title={entry.title}
-                platform={entry.platform}
-                status={entry.status}
-                rating={entry.rating}
-                date={entry.entryDate}
-            />
-            <EntryCard
-                title={entry.title}
-                platform={entry.platform}
-                status={entry.status}
-                rating={entry.rating}
-                date={entry.entryDate}
-            />
-            <EntryCard
-                title={entry.title}
-                platform={entry.platform}
-                status={entry.status}
-                rating={entry.rating}
-                date={entry.entryDate}
-            />
+            <EntryCard entry={entry} to={`/entries/${entry._id}`} />
         </VStack>
     );
 };
