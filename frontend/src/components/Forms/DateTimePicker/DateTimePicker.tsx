@@ -1,10 +1,11 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
+import { VStack } from 'react-swiftstacks';
 
 import styles from './DateTimePicker.module.css';
 
 interface DateTimePickerProps {
-    label: string;
+    label?: string;
     id: string;
     name: string;
     value: Date | null;
@@ -14,7 +15,7 @@ interface DateTimePickerProps {
     errorMessage?: string;
 }
 
-// Necessary to ensure the keyboard won't pop up in mobile
+// Prevent mobile keyboard
 const PickerInput = React.forwardRef<
     HTMLInputElement,
     React.InputHTMLAttributes<HTMLInputElement>
@@ -39,24 +40,28 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
 
     return (
         <div className={styles.textInput}>
-            <label htmlFor={id} className={styles.inputLabel}>
-                {label}
-            </label>
+            <VStack gap={1}>
+                {label && (
+                    <label htmlFor={id} className={styles.inputLabel}>
+                        {label}
+                    </label>
+                )}
 
-            <DatePicker
-                id={id}
-                name={name}
-                selected={value}
-                onChange={onChange}
-                className={inputClasses}
-                customInput={<PickerInput />}
-                showTimeSelect={showTime}
-                timeFormat="HH:mm"
-                timeIntervals={15}
-                dateFormat={showTime ? 'Pp' : 'P'}
-                isClearable
-                popperPlacement="top"
-            />
+                <DatePicker
+                    id={id}
+                    name={name}
+                    selected={value}
+                    onChange={onChange}
+                    className={inputClasses}
+                    customInput={<PickerInput />}
+                    showTimeSelect={showTime}
+                    timeFormat="HH:mm"
+                    timeIntervals={15}
+                    dateFormat={showTime ? 'Pp' : 'P'}
+                    isClearable
+                    popperPlacement="top"
+                />
+            </VStack>
 
             {isInvalid && (
                 <span className={styles.errorText}>{errorMessage}</span>

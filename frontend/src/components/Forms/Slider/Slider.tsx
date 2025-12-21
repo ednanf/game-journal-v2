@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Slider.module.css';
+import { VStack } from 'react-swiftstacks';
 
 type SliderProps = {
     label?: string;
@@ -17,31 +18,40 @@ function Slider({
     name,
     min = 0,
     max = 10,
-    value = 5,
+    value,
     disabled,
     error,
     onChange,
 }: SliderProps) {
     return (
         <div className={styles.sliderContainer}>
-            <label htmlFor={name} className={styles.label}>
-                {label ?? name}
-            </label>
+            <VStack gap={1}>
+                {label && (
+                    <label htmlFor={name} className={styles.label}>
+                        {label}
+                    </label>
+                )}
 
-            <input
-                type="range"
-                id={name}
-                name={name}
-                min={min}
-                max={max}
-                value={value}
-                disabled={disabled}
-                onChange={onChange}
-                className={`${styles.sliderInput} ${error ? styles.sliderInputError : ''}`}
-            />
+                <div className={styles.sliderRow}>
+                    <input
+                        type="range"
+                        id={name}
+                        name={name}
+                        min={min}
+                        max={max}
+                        value={value}
+                        disabled={disabled}
+                        onChange={onChange}
+                        className={`${styles.slider} ${
+                            error ? styles.sliderError : ''
+                        }`}
+                    />
 
-            <span className={styles.sliderValue}>{value}</span>
-            {error && <span className={styles.errorMessage}>{error}</span>}
+                    <span className={styles.value}>{value}</span>
+                </div>
+            </VStack>
+
+            {error && <span className={styles.errorText}>{error}</span>}
         </div>
     );
 }

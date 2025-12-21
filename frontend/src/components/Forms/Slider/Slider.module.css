@@ -4,126 +4,109 @@
     flex-direction: column;
 }
 
+/* Label: neutral, informational */
 .label {
-    font-family: 'Roboto', Arial, sans-serif;
-    align-self: flex-start;
-    text-align: left;
-    margin-left: 5px;
-    margin-bottom: 15px;
+    font-size: 16px;
     color: var(--color-text-primary);
+    margin-left: 5px;
 }
 
-/* MAIN SLIDER INPUT */
-.sliderInput {
-    width: 100%;
+/* Horizontal mechanical layout */
+.sliderRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ===== SLIDER RESET ===== */
+.slider {
+    flex: 1;
     appearance: none;
-    -webkit-appearance: none;
     background: transparent;
-    margin-top: 0.75rem;
     cursor: pointer;
 }
-/* DISABLED INPUT */
-.sliderInput:disabled {
+
+/* Disabled */
+.slider:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-.sliderInput:disabled::-webkit-slider-thumb {
-    background: #999;
-    cursor: not-allowed;
+/* ===== TRACK ===== */
+.slider::-webkit-slider-runnable-track {
+    height: 2px;
+    background: var(--color-text-secondary);
 }
 
-.sliderInput:disabled::-moz-range-thumb {
-    background: #999;
-    cursor: not-allowed;
+.slider::-moz-range-track {
+    height: 2px;
+    background: var(--color-text-secondary);
 }
 
-/* TRACK — this is the ONLY line */
-.sliderInput::-webkit-slider-runnable-track {
-    height: 3px; /* matches your input borders */
-    background: var(--color-text-primary);
-    border-radius: 2px;
+/* Active / focus rail — soft blue energy */
+.slider:focus-visible::-webkit-slider-runnable-track,
+.slider:active::-webkit-slider-runnable-track {
+    background: var(--color-accent-blue);
+    box-shadow: 0 0 6px rgba(111, 207, 255, 0.6);
 }
 
-/* THUMB */
-.sliderInput::-webkit-slider-thumb {
-    -webkit-appearance: none;
+.slider:focus-visible::-moz-range-track,
+.slider:active::-moz-range-track {
+    background: var(--color-accent-blue);
+    box-shadow: 0 0 6px rgba(111, 207, 255, 0.6);
+}
+
+/* ===== THUMB ===== */
+/* Small, solid, mechanical */
+.slider::-webkit-slider-thumb {
     appearance: none;
-
-    width: 16px;
-    height: 16px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: var(--color-text-primary);
-    border: 2px solid var(--color-text-primary);
-    margin-top: -7px; /* centers thumb over the line */
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease;
+    margin-top: -4px;
+    transition: transform 0.15s ease;
 }
 
-/* FOCUS = yellow (same as input/select border focus) */
-.sliderInput:focus::-webkit-slider-thumb {
-    background: var(--color-accent-yellow);
-    border-color: var(--color-accent-yellow);
-}
-
-.sliderInput:focus::-webkit-slider-runnable-track {
-    background: var(--color-accent-yellow);
-}
-
-/* ERROR = magenta override */
-.sliderInputError::-webkit-slider-thumb {
-    background: var(--color-accent-magenta);
-    border-color: var(--color-accent-magenta);
-}
-
-.sliderInputError::-webkit-slider-runnable-track {
-    background: var(--color-accent-magenta);
-}
-
-/* FIREFOX SUPPORT */
-.sliderInput::-moz-range-track {
-    height: 3px;
-    background: var(--color-text-primary);
-    border-radius: 2px;
-}
-
-.sliderInput::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
+.slider::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: var(--color-text-primary);
-    border: 2px solid var(--color-text-primary);
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease;
+    transition: transform 0.15s ease;
 }
 
-.sliderInput:focus::-moz-range-thumb {
-    background: var(--color-accent-yellow);
-    border-color: var(--color-accent-yellow);
+/* Interaction: subtle scale, no glow */
+.slider:active::-webkit-slider-thumb,
+.slider:focus-visible::-webkit-slider-thumb {
+    transform: scale(1.3);
 }
 
-.sliderInputError::-moz-range-thumb {
+.slider:active::-moz-range-thumb,
+.slider:focus-visible::-moz-range-thumb {
+    transform: scale(1.3);
+}
+
+/* Error state: functional, not emotional */
+.sliderError::-webkit-slider-thumb {
     background: var(--color-accent-magenta);
-    border-color: var(--color-accent-magenta);
 }
 
-.sliderInputError::-moz-range-track {
+.sliderError::-moz-range-thumb {
     background: var(--color-accent-magenta);
 }
 
-/* VALUE + ERROR TEXT */
-.sliderValue {
-    margin-top: 0.25rem;
+/* Value readout: utilitarian */
+.value {
+    min-width: 2ch;
+    text-align: right;
     font-size: 0.85rem;
-    color: var(--color-text-primary);
-    align-self: flex-end;
+    color: var(--color-text-secondary);
 }
 
-.errorMessage {
-    color: var(--color-accent-magenta);
-    font-size: 0.75rem;
+/* Error text */
+.errorText {
     margin-top: 0.25rem;
-    align-self: flex-start;
+    font-size: 0.75rem;
+    color: var(--color-accent-magenta);
 }
