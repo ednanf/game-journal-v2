@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Selector.module.css';
+import { VStack } from 'react-swiftstacks';
 
 type SelectOption = {
     label: string;
@@ -10,7 +11,6 @@ type SelectorProps = {
     label?: string;
     name: string;
     id: string;
-    size: number;
     value: string;
     values: SelectOption[];
     placeholder?: string;
@@ -23,7 +23,6 @@ const Selector = ({
     label,
     name,
     id,
-    size,
     value,
     values,
     placeholder,
@@ -32,32 +31,41 @@ const Selector = ({
     error,
 }: SelectorProps) => {
     return (
-        <div className={styles.wrapper}>
-            <label htmlFor={id} className={styles.label}>
-                {label}
-            </label>
-
-            <select
-                name={name}
-                id={id}
-                size={size}
-                value={value}
-                onChange={onChange}
-                disabled={disabled}
-                className={`${styles.selectField} ${error ? styles.selectFieldError : ''}`}
-            >
-                {placeholder && (
-                    <option value="" disabled hidden>
-                        {placeholder}
-                    </option>
+        <div className={styles.selectWrapper}>
+            <VStack gap={1}>
+                {label && (
+                    <label htmlFor={id} className={styles.label}>
+                        {label}
+                    </label>
                 )}
 
-                {values.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
-                ))}
-            </select>
+                <div className={styles.selectContainer}>
+                    <select
+                        id={id}
+                        name={name}
+                        value={value}
+                        onChange={onChange}
+                        disabled={disabled}
+                        className={`${styles.selectField} ${
+                            error ? styles.selectFieldError : ''
+                        }`}
+                    >
+                        {placeholder && (
+                            <option value="" disabled hidden>
+                                {placeholder}
+                            </option>
+                        )}
+
+                        {values.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+
+                    <span className={styles.arrow} />
+                </div>
+            </VStack>
 
             {error && <span className={styles.errorText}>{error}</span>}
         </div>
