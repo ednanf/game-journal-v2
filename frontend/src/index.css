@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=VT323&display=swap');
+/* Fonts: Inter, Nunito, Text Me One*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Text+Me+One&display=swap');
 
 /* GENERAL STYLING ========================================================== */
 
@@ -23,7 +24,7 @@ p,
 span,
 a,
 button {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 h1,
@@ -96,9 +97,8 @@ Link {
 
 :root {
     /* General rules */
-
-    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
+    font-family: Inter, sans-serif;
+    line-height: 1;
     font-weight: 400;
 
     font-synthesis: none;
@@ -106,97 +106,41 @@ Link {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    /* Colors */
+    /* General Colors */
 
     /* Background and surface */
-    --color-bg-light: #fafaf0;
-    --color-surface-light: #ffffff;
-    --color-divider-light: #e0e3ea;
-
-    /* NavBar */
-    --color-navbar-background-light: rgba(250, 250, 240, 0.6);
-    --color-navbar-border-light: rgba(0, 0, 0, 0.04);
-    --color-navbar-box-shadow-light: 0 3px 3px rgba(0, 0, 0, 0.1);
-    --navbar-backdrop-filter-light: blur(10px);
+    --color-bg-light: #e0e0e0;
 
     /* Text */
-    --color-text-primary-light: #2f4f4f;
-    --color-text-secondary-light: #6c7a96;
+    --color-text-primary-light: #5b5b5b;
+    --color-text-secondary-light: #444444;
 
-    /* Accents */
-    --color-accent-cyan-light: #00ced1;
-    --color-accent-green-light: #7cfc00;
-    --color-accent-purple-light: #b19cd9;
-    --color-accent-magenta-light: #ff1493;
-    --color-accent-yellow-light: #ffd93d;
+    /* Highlights */
+    --color-accent-blue-light: #6fcfff;
+    --color-accent-magenta-light: #ff6b81;
+    --color-accent-green-light: #6fcf97;
 
-    /* Icons and states */
-    --color-icon-active-light: #00ced1;
-    --color-icon-inactive-light: #b0b8c1;
+    /* Component specific */
 
-    /* Standard button */
-    --button-disabled-light: #b0b8c1;
-    --button-disabled-box-shadow-light: 0 8px 0 rgba(168, 168, 168, 0.2);
+    /* Input field */
+    --input-field-background-light: e1e2e3;
+    --input-field-box-shadow-light: inset 2px 5px 10px rgba(0, 0, 0, 0.3);
+    --input-field-background-focus-light: #ffffff;
+    --input-field-box-shadow-focus-light:
+        13px 13px 100px #969696, -13px -13px 100px #ffffff;
 
     /* Semantic mapping */
     --color-bg: var(--color-bg-light);
-    --color-surface: var(--color-surface-light);
-    --color-divider: var(--color-divider-light);
-    --color-navbar-background: var(--color-navbar-background-light);
-    --color-navbar-border: var(--color-navbar-border-light);
-    --color-navbar-box-shadow: var(--color-navbar-box-shadow-light);
-    --navbar-backdrop-filter: var(--navbar-backdrop-filter-light);
     --color-text-primary: var(--color-text-primary-light);
     --color-text-secondary: var(--color-text-secondary-light);
-    --color-accent-cyan: var(--color-accent-cyan-light);
-    --color-accent-green: var(--color-accent-green-light);
-    --color-accent-purple: var(--color-accent-purple-light);
+    --color-accent-blue: var(--color-accent-blue-light);
     --color-accent-magenta: var(--color-accent-magenta-light);
-    --color-accent-yellow: var(--color-accent-yellow-light);
-    --color-icon-active: var(--color-icon-active-light);
-    --color-icon-inactive: var(--color-icon-inactive-light);
-    --button-disabled: var(--button-disabled-light);
-    --button-disabled-box-shadow: var(--button-disabled-box-shadow-light);
+    --color-accent-green: var(--color-accent-green-light);
+    --input-field-background: var(--input-field-background-light);
+    --input-field-box-shadow: var(--input-field-box-shadow-light);
+    --input-field-background-focus: var(--input-field-background-focus-light);
+    --input-field-box-shadow-focus: var(--input-field-box-shadow-focus-light);
 }
 
 [data-theme='dark'] {
-    /* Background surface */
-    --color-bg-dark: #191970;
-    --color-surface-dark: #2f4f4f;
-    --color-divider-dark: #465799;
-
-    /* Text */
-    --color-text-primary-dark: #e0e0e0;
-    --color-text-secondary-dark: #a9b1c2;
-
-    /* Accent */
-    --color-accent-cyan-dark: #40e0d0;
-    --color-accent-green-dark: #adff2f;
-    --color-accent-purple-dark: #9370db;
-    --color-accent-magenta-dark: #ff69b4;
-    --color-accent-yellow-dark: #ffd93d;
-
-    /* Icons and states*/
-    --color-icon-inactive-dark: #7d8899;
-    --color-icon-active-dark: #40e0d0;
-
-    /* Standard button */
-    --button-disabled-dark: #b0b8c1;
-    --button-disabled-box-shadow-dark: 0 8px 0 rgba(168, 168, 168, 0.2);
-
-    /* Semantic mapping */
-    --color-bg: var(--color-bg-dark);
-    --color-surface: var(--color-surface-dark);
-    --color-divider: var(--color-divider-dark);
-    --color-text-primary: var(--color-text-primary-dark);
-    --color-text-secondary: var(--color-text-secondary-dark);
-    --color-accent-cyan: var(--color-accent-cyan-dark);
-    --color-accent-green: var(--color-accent-green-dark);
-    --color-accent-purple: var(--color-accent-purple-dark);
-    --color-accent-magenta: var(--color-accent-magenta-dark);
-    --color-accent-yellow: var(--color-accent-yellow-dark);
-    --color-icon-active: var(--color-icon-active-dark);
-    --color-icon-inactive: var(--color-icon-inactive-dark);
-    --button-disabled: var(--button-disabled-dark);
-    --button-disabled-box-shadow: var(--button-disabled-box-shadow-dark);
 }
