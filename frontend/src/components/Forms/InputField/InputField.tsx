@@ -16,21 +16,21 @@ type InputFieldProps = {
 };
 
 const InputField = ({
-                        label,
-                        type,
-                        id,
-                        name,
-                        value,
-                        placeholder,
-                        onChange,
-                        required,
-                        error,
-                        disabled,
-                    }: InputFieldProps) => {
+    label,
+    type,
+    id,
+    name,
+    value,
+    placeholder,
+    onChange,
+    required,
+    error,
+    disabled,
+}: InputFieldProps) => {
     return (
         <div className={styles.textInput}>
             <VStack gap={1}>
-                <label htmlFor={id} className={styles.inputLabel}>
+                <label htmlFor={id} className={styles.label}>
                     {label}
                 </label>
                 <input

@@ -42,7 +42,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
         <div className={styles.textInput}>
             <VStack gap={1}>
                 {label && (
-                    <label htmlFor={id} className={styles.inputLabel}>
+                    <label htmlFor={id} className={styles.label}>
                         {label}
                     </label>
                 )}
