@@ -20,7 +20,7 @@ interface EntryCardProps {
 }
 
 const EntryCard = ({ entry, to }: EntryCardProps) => {
-    const statusLabelColor = (status: string) => {
+    const statusLabelStyle = (status: string) => {
         switch (status) {
             case 'completed':
                 return styles.completed;
@@ -37,7 +37,6 @@ const EntryCard = ({ entry, to }: EntryCardProps) => {
         }
     };
 
-    // noinspection JSDeprecatedSymbols
     return (
         <Link to={to} className={styles.link}>
             <HStack gap={'md'} className={styles.cardContainer}>
@@ -50,15 +49,14 @@ const EntryCard = ({ entry, to }: EntryCardProps) => {
                     </h3>
                     <p className={styles.platform}>{entry.platform}</p>
                     <HStack gap={'md'}>
-                        <p className={`${statusLabelColor(entry.status)}`}>
+                        <p
+                            className={`${statusLabelStyle(entry.status)} ${styles.statusBadge}`}
+                        >
                             {entry.status}
                         </p>
                         {entry.status === 'completed' && (
                             <p className={styles.rating}>
-                                <FaStar
-                                    color="var(--color-accent-yellow)"
-                                    size={14}
-                                />
+                                <FaStar size={14} />
                                 {entry.rating} / 10
                             </p>
                         )}
@@ -78,4 +76,5 @@ const EntryCard = ({ entry, to }: EntryCardProps) => {
         </Link>
     );
 };
+
 export default EntryCard;

@@ -36,13 +36,7 @@ const AppShell = () => {
         <div className={styles.layout}>
             {showLayout && (
                 <header>
-                    <Header title={title}>
-                        <img
-                            src={appLogo}
-                            alt={'Game Journal logo'}
-                            className={'headerLogo'}
-                        ></img>
-                    </Header>
+                    <Header title={title}></Header>
                 </header>
             )}
 

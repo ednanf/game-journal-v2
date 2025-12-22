@@ -18,7 +18,16 @@ const entry = {
 
 const JournalPage = () => {
     return (
-        <VStack align={'center'}>
+        <VStack align={'center'} style={{ marginTop: '2rem' }}>
+            <EntryCard entry={entry} to={`/entries/${entry._id}`} />
+            <EntryCard entry={entry} to={`/entries/${entry._id}`} />
+            <EntryCard entry={entry} to={`/entries/${entry._id}`} />
+            <EntryCard entry={entry} to={`/entries/${entry._id}`} />
+            <EntryCard entry={entry} to={`/entries/${entry._id}`} />
+            <EntryCard entry={entry} to={`/entries/${entry._id}`} />
+            <EntryCard entry={entry} to={`/entries/${entry._id}`} />
+            <EntryCard entry={entry} to={`/entries/${entry._id}`} />
+            <EntryCard entry={entry} to={`/entries/${entry._id}`} />
             <EntryCard entry={entry} to={`/entries/${entry._id}`} />
         </VStack>
     );
