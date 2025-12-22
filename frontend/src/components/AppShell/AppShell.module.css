@@ -8,7 +8,7 @@
 
 .main {
     padding-bottom: calc(
-        5rem + env(safe-area-inset-bottom)
+        6rem + env(safe-area-inset-bottom)
     ); /* 1.5rem for spacing below header, 3rem for header height */
     flex-grow: 1;
 }

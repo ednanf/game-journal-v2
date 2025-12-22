@@ -1,43 +1,70 @@
+/* === Neumorphic Circular Navigation Button === */
+
 a.link {
+    --size: 56px;
+
+    width: var(--size);
+    height: var(--size);
+
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+
+    gap: 0.2rem;
+
     text-decoration: none;
-    color: inherit;
-    gap: 0.25em;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+
+    background-color: #e0e5ec;
+    border-radius: 50%;
+    color: var(--color-text-secondary);
+
+    box-shadow:
+        -7px -7px 20px 0 #fff9,
+        -4px -4px 5px 0 #fff9,
+        7px 7px 20px 0 #0002,
+        4px 4px 5px 0 #0001;
+
+    transition:
+        box-shadow 0.25s ease,
+        transform 0.15s ease,
+        color 0.2s ease;
 }
 
+/* Icon inside nav button */
 .icon {
     font-size: 1.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-text-secondary);
-    transition: color 0.2s ease-in-out; /* Added for a smooth transition */
-    margin-top: 5px;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
+    color: inherit;
+    pointer-events: none;
 }
 
+/* Label text under icon */
 .text {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-family: 'Silkscreen', sans-serif;
-    font-weight: normal;
-    color: var(--color-text-secondary);
-    transition: color 0.2s ease-in-out; /* Added for a smooth transition */
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
+    color: inherit;
+    pointer-events: none;
 }
 
-.link.active .icon,
-.link.active .text {
-    color: var(--color-accent-magenta);
+/* Active (route-selected) state */
+.link.active {
+    box-shadow:
+        inset -7px -7px 20px 0 #fff9,
+        inset -4px -4px 5px 0 #fff9,
+        inset 7px 7px 20px 0 #0003,
+        inset 4px 4px 5px 0 #0001;
+
+    color: var(--color-accent-blue);
+}
+
+/* Optional subtle hover (non-active only) */
+a.link:hover:not(.active) {
+    transform: translateY(-1px);
 }

@@ -1,16 +1,21 @@
 .navBar {
     display: flex;
     justify-content: space-around;
-    gap: 0.1rem;
-    padding: 0.3rem 0.1rem;
     align-items: center;
-    border: 1px solid var(--color-navbar-border);
-    border-radius: 1rem;
-    background-color: var(--color-navbar-background);
-    box-shadow: var(--color-navbar-box-shadow);
-    backdrop-filter: var(--navbar-backdrop-filter);
-    --webkit-backdrop-filter: var(--navbar-backdrop-filter);
-    flex-grow: 1;
+
+    gap: 0.5rem;
+    padding: 0.6rem 0.8rem;
+
+    background-color: #e0e5ec;
+    border-radius: 1.2rem;
+
+    box-shadow:
+        -8px -8px 20px rgba(255, 255, 255, 0.9),
+        -4px -4px 6px rgba(255, 255, 255, 0.8),
+        8px 8px 20px rgba(0, 0, 0, 0.15),
+        4px 4px 6px rgba(0, 0, 0, 0.1);
+
+    border: none;
 }
 
 .navBarHStack {

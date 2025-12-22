@@ -13,25 +13,27 @@ const NavBar = () => {
     return (
         <HStack justify={'between'} className={styles.navBarHStack}>
             <div className={styles.navBar}>
-                <NavBarButton to={'journal'} icon={<BsJournalBookmarkFill />}>
-                    Journal
-                </NavBarButton>
+                <NavBarButton
+                    to={'journal'}
+                    icon={<BsJournalBookmarkFill />}
+                ></NavBarButton>
 
-                <NavBarButton to={'search'} icon={<FaMagnifyingGlass />}>
-                    Search
-                </NavBarButton>
+                <NavBarButton
+                    to={'search'}
+                    icon={<FaMagnifyingGlass />}
+                ></NavBarButton>
 
-                <NavBarButton to={'addEntry'} icon={<GoPlus />}>
-                    Add Entry
-                </NavBarButton>
+                <NavBarButton to={'addEntry'} icon={<GoPlus />}></NavBarButton>
 
-                <NavBarButton to={'statistics'} icon={<BsBarChartFill />}>
-                    Statistics
-                </NavBarButton>
+                <NavBarButton
+                    to={'statistics'}
+                    icon={<BsBarChartFill />}
+                ></NavBarButton>
 
-                <NavBarButton to={'settings'} icon={<HiOutlineCog />}>
-                    Settings
-                </NavBarButton>
+                <NavBarButton
+                    to={'settings'}
+                    icon={<HiOutlineCog />}
+                ></NavBarButton>
             </div>
         </HStack>
     );
