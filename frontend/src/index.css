@@ -129,6 +129,9 @@ Link {
     --input-field-box-shadow-focus-light:
         13px 13px 100px #969696, -13px -13px 100px #ffffff;
 
+    /* Standard Button */
+    --stdbutton-color-disabled-light: #c5c5c5;
+
     /* Semantic mapping */
     --color-bg: var(--color-bg-light);
     --color-text-primary: var(--color-text-primary-light);
@@ -140,6 +143,7 @@ Link {
     --input-field-box-shadow: var(--input-field-box-shadow-light);
     --input-field-background-focus: var(--input-field-background-focus-light);
     --input-field-box-shadow-focus: var(--input-field-box-shadow-focus-light);
+    --stdbutton-color-disabled: var(--stdbutton-color-disabled-light);
 }
 
 [data-theme='dark'] {
