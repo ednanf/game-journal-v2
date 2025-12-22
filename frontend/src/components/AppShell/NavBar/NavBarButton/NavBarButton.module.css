@@ -66,5 +66,5 @@ a.link {
 
 /* Optional subtle hover (non-active only) */
 a.link:hover:not(.active) {
-    transform: translateY(-1px);
+    color: var(--color-accent-blue);
 }
