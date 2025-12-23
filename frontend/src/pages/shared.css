@@ -3,7 +3,7 @@
 }
 
 .lplinks:hover {
-    color: var(--color-accent-magenta)
+    color: var(--color-accent-blue);
 }
 
 .formVStack {

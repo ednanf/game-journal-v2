@@ -12,7 +12,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    color: var(--color-text-primary);
+    color: var(--color-text-secondary);
     text-decoration: none;
     font-weight: 500;
     font-size: 0.95rem;
