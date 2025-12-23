@@ -40,7 +40,6 @@
 .selectField:focus {
     outline: none;
     background-color: var(--input-field-background-focus);
-    transform: scale(1.05);
     box-shadow: var(--input-field-box-shadow-focus);
 }
 

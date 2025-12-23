@@ -30,7 +30,6 @@
 .inputField:focus {
     outline: none; /* kill browser outline */
     background-color: var(--input-field-background-focus);
-    transform: scale(1.05);
     box-shadow: var(--input-field-box-shadow-focus);
 }
 
