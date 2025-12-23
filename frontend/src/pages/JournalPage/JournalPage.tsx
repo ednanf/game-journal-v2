@@ -5,7 +5,7 @@ const rawEntry = {
     _id: '6942abf3e2093908238c9104',
     title: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
     platform: 'Nintendo Switch 2',
-    status: 'completed',
+    status: 'dropped',
     rating: 9,
     entryDate: '2025-12-15T18:16:06.019+00:00',
 };

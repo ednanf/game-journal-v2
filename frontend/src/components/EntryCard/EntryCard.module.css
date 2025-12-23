@@ -122,20 +122,30 @@
 }
 
 .started {
-    color: #4caf50;
+    color: var(--color-accent-green);
+    text-shadow: var(--entry-card-started-shadow);
 }
+
 .completed {
-    color: #a67bff;
+    color: var(--color-accent-purple);
+    text-shadow: var(--entry-card-completed-shadow);
 }
+
 .revisited {
-    color: #00bcd4;
+    color: var(--color-accent-blue);
+    text-shadow: var(--entry-card-revisited-shadow);
 }
+
 .paused {
-    color: #ffc107;
+    color: var(--color-accent-yellow);
+    text-shadow: var(--entry-card-paused-shadow);
 }
+
 .dropped {
-    color: #e91e63;
+    color: var(--color-accent-magenta);
+    text-shadow: var(--entry-card-dropped-shadow);
 }
+
 .defaultStatus {
     color: #999;
 }

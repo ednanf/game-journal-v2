@@ -117,8 +117,10 @@ Link {
 
     /* Highlights */
     --color-accent-blue-light: #6fcfff;
-    --color-accent-magenta-light: #ff6b81;
-    --color-accent-green-light: #6fcf97;
+    --color-accent-magenta-light: #e91e63;
+    --color-accent-green-light: #4caf50;
+    --color-accent-purple-light: #a67bff;
+    --color-accent-yellow-light: #ffc107;
 
     /* Component specific */
 
@@ -129,8 +131,15 @@ Link {
     --input-field-box-shadow-focus-light:
         13px 13px 100px #969696, -13px -13px 100px #ffffff;
 
-    /* Standard Button */
+    /* Standard button */
     --stdbutton-color-disabled-light: #c5c5c5;
+
+    /* Entry card */
+    --entry-card-completed-shadow-light: 0 0 30px rgba(166, 123, 255, 0.5);
+    --entry-card-started-shadow-light: 0 0 30px rgba(76, 175, 80, 0.5);
+    --entry-card-revisited-shadow-light: 0 0 30px rgba(0, 188, 212, 0.5);
+    --entry-card-paused-shadow-light: 0 0 30px rgba(255, 193, 7, 0.5);
+    --entry-card-dropped-shadow-light: 0 0 30px rgba(233, 30, 99, 0.5);
 
     /* Semantic mapping */
     --color-bg: var(--color-bg-light);
@@ -139,11 +148,18 @@ Link {
     --color-accent-blue: var(--color-accent-blue-light);
     --color-accent-magenta: var(--color-accent-magenta-light);
     --color-accent-green: var(--color-accent-green-light);
+    --color-accent-purple: var(--color-accent-purple-light);
+    --color-accent-yellow: var(--color-accent-yellow-light);
     --input-field-background: var(--input-field-background-light);
     --input-field-box-shadow: var(--input-field-box-shadow-light);
     --input-field-background-focus: var(--input-field-background-focus-light);
     --input-field-box-shadow-focus: var(--input-field-box-shadow-focus-light);
     --stdbutton-color-disabled: var(--stdbutton-color-disabled-light);
+    --entry-card-started-shadow: var(--entry-card-started-shadow-light);
+    --entry-card-completed-shadow: var(--entry-card-completed-shadow-light);
+    --entry-card-revisited-shadow: var(--entry-card-revisited-shadow-light);
+    --entry-card-paused-shadow: var(--entry-card-paused-shadow-light);
+    --entry-card-dropped-shadow: var(--entry-card-dropped-shadow-light);
 }
 
 [data-theme='dark'] {
