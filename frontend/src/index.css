@@ -14,6 +14,8 @@ body {
     background-color: var(--color-bg);
 }
 
+/* Text */
+
 h1,
 h2,
 h3,
@@ -32,13 +34,27 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+p {
     color: var(--color-text-primary);
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+    color: var(--color-text-secondary);
 }
 
 Link {
     cursor: pointer;
 }
+
+::placeholder {
+    color: var(--color-text-muted);
+}
+
+/* Logo */
 
 .headerLogo {
     height: 50px;
@@ -49,7 +65,7 @@ Link {
 
 /* Toast body */
 .Toastify__toast {
-    background: var(--color-surface) !important;
+    background: var(--color-bg) !important;
     color: var(--color-text-primary) !important;
 }
 
@@ -70,7 +86,7 @@ Link {
 
 /* Info progress bar */
 .Toastify__progress-bar--info {
-    background: var(--color-accent-cyan) !important;
+    background: var(--color-accent-blue) !important;
 }
 
 /* Success icon */
@@ -90,7 +106,7 @@ Link {
 
 /* Info icon */
 .Toastify__toast--info .Toastify__toast-icon svg {
-    fill: var(--color-accent-cyan) !important;
+    fill: var(--color-accent-blue) !important;
 }
 
 /* THEMING ================================================================== */
@@ -112,11 +128,12 @@ Link {
     --color-bg-light: #e0e5ec;
 
     /* Text */
-    --color-text-primary-light: #5b5b5b;
-    --color-text-secondary-light: #444444;
+    --color-text-primary-light: #444444;
+    --color-text-secondary-light: #5b5b5b;
+    --color-text-muted-light: #888888;
 
     /* Highlights */
-    --color-accent-blue-light: #6fcfff;
+    --color-accent-blue-light: #00bcd4;
     --color-accent-magenta-light: #e91e63;
     --color-accent-green-light: #4caf50;
     --color-accent-purple-light: #a67bff;
@@ -135,16 +152,18 @@ Link {
     --stdbutton-color-disabled-light: #c5c5c5;
 
     /* Entry card */
-    --entry-card-completed-shadow-light: 0 0 30px rgba(166, 123, 255, 0.5);
-    --entry-card-started-shadow-light: 0 0 30px rgba(76, 175, 80, 0.5);
-    --entry-card-revisited-shadow-light: 0 0 30px rgba(0, 188, 212, 0.5);
-    --entry-card-paused-shadow-light: 0 0 30px rgba(255, 193, 7, 0.5);
-    --entry-card-dropped-shadow-light: 0 0 30px rgba(233, 30, 99, 0.5);
+    --entry-card-purple-shadow-light: 0 0 30px rgba(166, 123, 255, 0.5);
+    --entry-card-green-shadow-light: 0 0 30px rgba(76, 175, 80, 0.5);
+    --entry-card-blue-shadow-light: 0 0 30px rgba(0, 188, 212, 0.5);
+    --entry-card-yellow-shadow-light: 0 0 30px rgba(255, 193, 7, 0.5);
+    --entry-card-magenta-shadow-light: 0 0 30px rgba(233, 30, 99, 0.5);
+    --entry-card-chevron-light: var(--color-text-muted);
 
     /* Semantic mapping */
     --color-bg: var(--color-bg-light);
     --color-text-primary: var(--color-text-primary-light);
     --color-text-secondary: var(--color-text-secondary-light);
+    --color-text-muted: var(--color-text-muted-light);
     --color-accent-blue: var(--color-accent-blue-light);
     --color-accent-magenta: var(--color-accent-magenta-light);
     --color-accent-green: var(--color-accent-green-light);
@@ -155,11 +174,12 @@ Link {
     --input-field-background-focus: var(--input-field-background-focus-light);
     --input-field-box-shadow-focus: var(--input-field-box-shadow-focus-light);
     --stdbutton-color-disabled: var(--stdbutton-color-disabled-light);
-    --entry-card-started-shadow: var(--entry-card-started-shadow-light);
-    --entry-card-completed-shadow: var(--entry-card-completed-shadow-light);
-    --entry-card-revisited-shadow: var(--entry-card-revisited-shadow-light);
-    --entry-card-paused-shadow: var(--entry-card-paused-shadow-light);
-    --entry-card-dropped-shadow: var(--entry-card-dropped-shadow-light);
+    --entry-card-green-shadow: var(--entry-card-green-shadow-light);
+    --entry-card-purple-shadow: var(--entry-card-purple-shadow-light);
+    --entry-card-blue-shadow: var(--entry-card-blue-shadow-light);
+    --entry-card-yellow-shadow: var(--entry-card-yellow-shadow-light);
+    --entry-card-magenta-shadow: var(--entry-card-magenta-shadow-light);
+    --entry-card-chevron: var(--entry-card-chevron-light);
 }
 
 [data-theme='dark'] {

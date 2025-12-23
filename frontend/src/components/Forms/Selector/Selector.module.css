@@ -29,6 +29,11 @@
     appearance: none;
     cursor: pointer;
     transition: 300ms ease-in-out;
+    color: var(--color-text-muted);
+}
+
+/* Ensure the text will have the correct color when a value is selected */
+.selectField:has(option:checked:not([value=''])) {
     color: var(--color-text-primary);
 }
 
@@ -51,8 +56,8 @@
     right: 15px;
     width: 8px;
     height: 8px;
-    border-right: 2px solid var(--color-text-primary);
-    border-bottom: 2px solid var(--color-text-primary);
+    border-right: 2px solid var(--color-text-muted);
+    border-bottom: 2px solid var(--color-text-muted);
     transform: translateY(-60%) rotate(45deg);
     pointer-events: none;
 }

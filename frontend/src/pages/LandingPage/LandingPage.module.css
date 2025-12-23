@@ -21,7 +21,8 @@
 }
 
 .githubLink:hover {
-    color: var(--color-accent-magenta);
+    color: var(--color-accent-blue);
+    text-shadow: 0 0 30px var(--entry-card-blue-shadow);
 }
 
 .icon {
