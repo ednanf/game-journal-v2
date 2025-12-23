@@ -17,7 +17,11 @@ body {
 /* Text */
 
 h1,
-h2,
+h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+}
+
 h3,
 h4,
 h5,
@@ -34,9 +38,8 @@ h2,
 h3,
 h4,
 h5,
-h6,
-p {
-    color: var(--color-text-primary);
+h6 {
+    color: var(--color-text-secondary);
 }
 
 a:link,

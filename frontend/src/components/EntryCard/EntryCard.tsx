@@ -48,7 +48,7 @@ const EntryCard = ({ entry, to }: EntryCardProps) => {
                         )}
                     </h3>
                     <p className={styles.platform}>{entry.platform}</p>
-                    <HStack gap={'md'}>
+                    <HStack gap={'md'} align={'center'}>
                         <p
                             className={`${statusLabelStyle(entry.status)} ${styles.statusBadge}`}
                         >
