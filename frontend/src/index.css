@@ -162,6 +162,9 @@ Link {
     --entry-card-magenta-shadow-light: 0 0 30px rgba(233, 30, 99, 0.5);
     --entry-card-chevron-light: var(--color-text-muted);
 
+    /* Loading Bar */
+    --loading-bar-line-light: var(--color-text-muted);
+
     /* Semantic mapping */
     --color-bg: var(--color-bg-light);
     --color-text-primary: var(--color-text-primary-light);
@@ -183,6 +186,7 @@ Link {
     --entry-card-yellow-shadow: var(--entry-card-yellow-shadow-light);
     --entry-card-magenta-shadow: var(--entry-card-magenta-shadow-light);
     --entry-card-chevron: var(--entry-card-chevron-light);
+    --loading-bar-line: var(--loading-bar-line-light);
 }
 
 [data-theme='dark'] {
