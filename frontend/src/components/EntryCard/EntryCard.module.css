@@ -32,6 +32,7 @@
 .link {
     display: block;
     width: 100%;
+    max-width: 400px;
     text-decoration: none;
     color: inherit;
 }
@@ -100,7 +101,9 @@
 }
 
 .cardContainer:hover .cardChevron {
-    opacity: 0.65;
+    /*opacity: 0.65;*/
+    color: var(--color-accent-blue);
+    text-shadow: var(--entry-card-blue-shadow);
 }
 
 /* Status badges - inset neumorphic pills */

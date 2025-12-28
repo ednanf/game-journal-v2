@@ -12,14 +12,17 @@ interface JournalEntry {
     status: string;
     rating: number;
     entryDate: Date;
-}
-
-interface EntryCardProps {
-    entry: JournalEntry;
     to: string;
 }
 
-const EntryCard = ({ entry, to }: EntryCardProps) => {
+const EntryCard = ({
+    title,
+    platform,
+    status,
+    rating,
+    entryDate,
+    to,
+}: JournalEntry) => {
     const statusLabelStyle = (status: string) => {
         switch (status) {
             case 'completed':
@@ -42,28 +45,28 @@ const EntryCard = ({ entry, to }: EntryCardProps) => {
             <HStack gap={'md'} className={styles.cardContainer}>
                 <VStack className={styles.content}>
                     <h3 className={styles.title}>
-                        {entry.title}
-                        {entry.title.length > 31 && (
+                        {title}
+                        {title.length > 31 && (
                             <span className={styles.titleFade} />
                         )}
                     </h3>
-                    <p className={styles.platform}>{entry.platform}</p>
+                    <p className={styles.platform}>{platform}</p>
                     <HStack gap={'md'} align={'center'}>
                         <p
-                            className={`${statusLabelStyle(entry.status)} ${styles.statusBadge}`}
+                            className={`${statusLabelStyle(status)} ${styles.statusBadge}`}
                         >
-                            {entry.status}
+                            {status}
                         </p>
-                        {entry.status === 'completed' && (
+                        {status === 'completed' && (
                             <p className={styles.rating}>
                                 <FaStar size={14} />
-                                {entry.rating} / 10
+                                {rating} / 10
                             </p>
                         )}
                     </HStack>
                     <HStack justify={'end'} className={styles.date}>
                         <p>
-                            {entry.entryDate.toLocaleDateString('en-US', {
+                            {entryDate.toLocaleDateString('en-US', {
                                 month: '2-digit',
                                 day: '2-digit',
                                 year: 'numeric',
