@@ -9,8 +9,9 @@ type SelectOption = {
 
 type SelectorProps = {
     label?: string;
-    name: string;
     id: string;
+    name: string;
+    size: number;
     value: string;
     values: SelectOption[];
     placeholder?: string;
@@ -23,6 +24,7 @@ const Selector = ({
     label,
     name,
     id,
+    size,
     value,
     values,
     placeholder,
@@ -46,6 +48,7 @@ const Selector = ({
                         value={value}
                         onChange={onChange}
                         disabled={disabled}
+                        size={size}
                         className={`${styles.selectField} ${
                             error ? styles.selectFieldError : ''
                         }`}
