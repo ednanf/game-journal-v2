@@ -73,19 +73,24 @@ const JournalPage = () => {
     }, [isLoading, hasMore, cursor]);
 
     const loaderRef = useCallback(
-        (node: HTMLDivElement) => {
-            if (isLoading) return; // Prevent setting up observer if already loading
-            if (observer.current) observer.current.disconnect(); // Disconnect previous observer if one already exists
+        (node: HTMLDivElement | null) => {
+            // This prevents duplicate fetches caused by rapid intersection events.
+            if (isLoading) return;
 
-            // Create a new IntersectionObserver instance to ensure it doesn't change on every render
-            // Triggers fetchMoreEvents only when the loader is intersecting
+            // Disconnect the previous observer before creating a new one.
+            // This avoids multiple observers stacking up and firing multiple times.
+            if (observer.current) observer.current.disconnect();
+
+            // Create a new IntersectionObserver instance to detect when the loader enters the viewport.
             observer.current = new IntersectionObserver((entries) => {
                 if (entries[0].isIntersecting) {
-                    void fetchMoreEntries;
+                    // 'void' is intentional to silence the unhandled promise lint warning.
+                    void fetchMoreEntries();
                 }
-
-                if (node) observer.current?.observe(node);
             });
+
+            // Start observing the loader node *after* the observer is created.
+            if (node) observer.current.observe(node);
         },
         [isLoading, fetchMoreEntries],
     );
@@ -139,8 +144,40 @@ const JournalPage = () => {
 
     return (
         <VStack align={'center'} style={{ marginTop: '2rem' }}>
-            <p>Nothing to see here...</p>
-            <LoadingBar />
+            {journalEntries.length === 0 && initialLoading ? (
+                <VStack
+                    justify={'center'}
+                    align={'center'}
+                    style={{ minHeight: '80vh' }}
+                >
+                    <LoadingBar />
+                </VStack>
+            ) : (
+                <>
+                    {journalEntries.map((entry) => (
+                        <EntryCard
+                            key={entry._id}
+                            title={entry.title}
+                            platform={entry.platform}
+                            status={entry.status}
+                            rating={entry.rating}
+                            entryDate={new Date(entry.entryDate)}
+                            to={`/entries/${entry._id}`}
+                        />
+                    ))}
+                    {hasMore && (
+                        <div ref={loaderRef}>
+                            <VStack
+                                justify={'center'}
+                                align={'center'}
+                                style={{ marginBottom: '2rem' }}
+                            >
+                                <LoadingBar />
+                            </VStack>
+                        </div>
+                    )}
+                </>
+            )}
         </VStack>
     );
 };
