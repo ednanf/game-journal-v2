@@ -29,9 +29,6 @@ interface CreationResponse {
 type FormErrors = Partial<Record<keyof Omit<FormData, 'rating'>, string>>;
 
 const AddEntryPage: React.FC = () => {
-    const navigate = useNavigate();
-
-    // --- STATE ---
     const [formData, setFormData] = useState<FormData>({
         title: '',
         platform: '',
@@ -43,7 +40,8 @@ const AddEntryPage: React.FC = () => {
     const [errors, setErrors] = useState<FormErrors>({});
     const [isLoading, setIsLoading] = useState(false);
 
-    // --- HANDLERS ---
+    const navigate = useNavigate();
+
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     ) => {
@@ -62,7 +60,6 @@ const AddEntryPage: React.FC = () => {
         }));
     };
 
-    // --- VALIDATION ---
     const validate = (data: FormData): FormErrors => {
         const newErrors: FormErrors = {};
 
@@ -87,7 +84,6 @@ const AddEntryPage: React.FC = () => {
         rating: Number(formData.rating),
     };
 
-    // --- SUBMIT ---
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -116,8 +112,6 @@ const AddEntryPage: React.FC = () => {
             setIsLoading(false);
         }
     };
-
-    // TODO: Gray the slider out when unavailable
 
     return (
         <VStack>
