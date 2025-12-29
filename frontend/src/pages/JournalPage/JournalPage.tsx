@@ -145,13 +145,9 @@ const JournalPage = () => {
     return (
         <VStack align={'center'} style={{ marginTop: '2rem' }}>
             {journalEntries.length === 0 && initialLoading ? (
-                <VStack
-                    justify={'center'}
-                    align={'center'}
-                    style={{ minHeight: '80vh' }}
-                >
+                <div className="fullscreenLoader">
                     <LoadingBar />
-                </VStack>
+                </div>
             ) : (
                 <>
                     {journalEntries.map((entry) => (

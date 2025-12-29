@@ -132,13 +132,23 @@ const AddEntryPage: React.FC = () => {
                     />
 
                     <VStack align="center" style={{ marginTop: '1rem' }}>
-                        <StdButton
-                            type="submit"
-                            width="200px"
-                            disabled={!isFormReady || isLoading}
-                        >
-                            Add Entry
-                        </StdButton>
+                        {!isLoading ? (
+                            <StdButton
+                                type="submit"
+                                width="200px"
+                                disabled={!isFormReady || isLoading}
+                            >
+                                Add Entry
+                            </StdButton>
+                        ) : (
+                            <StdButton
+                                type="submit"
+                                width="200px"
+                                disabled={!isFormReady || isLoading}
+                            >
+                                Saving...
+                            </StdButton>
+                        )}
                     </VStack>
                 </VStack>
             </form>

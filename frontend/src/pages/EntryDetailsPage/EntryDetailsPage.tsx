@@ -20,6 +20,7 @@ import { gamingPlatforms } from '../../data/platforms.ts';
 
 import type { EntryFormData } from '../../types/entry.ts';
 import { API_BASE_URL } from '../../config/apiURL.ts';
+import LoadingBar from '../../components/LoadingBar/LoadingBar.tsx';
 
 interface PatchResponse {
     message: string;
@@ -47,7 +48,8 @@ const EntryDetailsPage = () => {
         validate,
     } = useEntryForm();
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [initialLoading, setInitialLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Journal entry ID
     const { id } = useParams<{ id: string }>();
@@ -65,7 +67,7 @@ const EntryDetailsPage = () => {
         if (!id) return;
 
         const fetchEntry = async () => {
-            setIsLoading(true);
+            setInitialLoading(true);
 
             try {
                 const response =
@@ -85,7 +87,7 @@ const EntryDetailsPage = () => {
             } catch (e) {
                 toast.error((e as { message: string }).message);
             } finally {
-                setIsLoading(false);
+                setInitialLoading(false);
             }
         };
         void fetchEntry();
@@ -107,7 +109,7 @@ const EntryDetailsPage = () => {
             return;
         }
 
-        setIsLoading(true);
+        setIsSubmitting(true);
 
         try {
             const response = await patchUnwrapped<PatchResponse>(
@@ -121,86 +123,102 @@ const EntryDetailsPage = () => {
         } catch (e) {
             toast.error((e as { message: string }).message);
         } finally {
-            setIsLoading(false);
+            setIsSubmitting(false);
         }
     };
 
     return (
         <VStack>
-            <form onSubmit={handleSubmit}>
-                <VStack
-                    gap="lg"
-                    style={{ maxWidth: '400px' }}
-                    padding="md"
-                    className="formVStack"
-                >
-                    <InputField
-                        label="Title"
-                        id="title"
-                        name="title"
-                        type="text"
-                        value={formData.title}
-                        placeholder="Enter a title..."
-                        onChange={handleChange}
-                        error={errors.title}
-                    />
+            {initialLoading || !formData ? (
+                <div className="fullscreenLoader">
+                    <LoadingBar />
+                </div>
+            ) : (
+                <form onSubmit={handleSubmit}>
+                    <VStack
+                        gap="lg"
+                        style={{ maxWidth: '400px' }}
+                        padding="md"
+                        className="formVStack"
+                    >
+                        <InputField
+                            label="Title"
+                            id="title"
+                            name="title"
+                            type="text"
+                            value={formData.title}
+                            placeholder="Enter a title..."
+                            onChange={handleChange}
+                            error={errors.title}
+                        />
 
-                    <Selector
-                        label="Platform"
-                        id="platform"
-                        name="platform"
-                        size={1}
-                        value={formData.platform}
-                        values={gamingPlatforms}
-                        placeholder="Select a platform..."
-                        onChange={handleChange}
-                        error={errors.platform}
-                    />
+                        <Selector
+                            label="Platform"
+                            id="platform"
+                            name="platform"
+                            size={1}
+                            value={formData.platform}
+                            values={gamingPlatforms}
+                            placeholder="Select a platform..."
+                            onChange={handleChange}
+                            error={errors.platform}
+                        />
 
-                    <Selector
-                        label="Status"
-                        id="status"
-                        name="status"
-                        size={1}
-                        value={formData.status}
-                        values={gameStatus}
-                        placeholder="Select status..."
-                        onChange={handleChange}
-                        error={errors.status}
-                    />
+                        <Selector
+                            label="Status"
+                            id="status"
+                            name="status"
+                            size={1}
+                            value={formData.status}
+                            values={gameStatus}
+                            placeholder="Select status..."
+                            onChange={handleChange}
+                            error={errors.status}
+                        />
 
-                    <DateTimePicker
-                        label="Date"
-                        id="entryDate"
-                        name="entryDate"
-                        value={formData.entryDate}
-                        onChange={handleDateChange}
-                        showTime
-                        isInvalid={!!errors.entryDate}
-                        errorMessage={errors.entryDate}
-                    />
+                        <DateTimePicker
+                            label="Date"
+                            id="entryDate"
+                            name="entryDate"
+                            value={formData.entryDate}
+                            onChange={handleDateChange}
+                            showTime
+                            isInvalid={!!errors.entryDate}
+                            errorMessage={errors.entryDate}
+                        />
 
-                    <Slider
-                        label="Rating"
-                        name="rating"
-                        min={0}
-                        max={10}
-                        value={formData.rating}
-                        onChange={handleChange}
-                        disabled={formData.status !== 'completed'}
-                    />
+                        <Slider
+                            label="Rating"
+                            name="rating"
+                            min={0}
+                            max={10}
+                            value={formData.rating}
+                            onChange={handleChange}
+                            disabled={formData.status !== 'completed'}
+                        />
 
-                    <VStack align="center" style={{ marginTop: '1rem' }}>
-                        <StdButton
-                            type="submit"
-                            width="200px"
-                            disabled={!isFormReady || isLoading}
-                        >
-                            Save
-                        </StdButton>
+                        <VStack align="center" style={{ marginTop: '1rem' }}>
+                            {!isSubmitting ? (
+                                <StdButton
+                                    type="submit"
+                                    width="200px"
+                                    disabled={!isFormReady || isSubmitting}
+                                >
+                                    Save
+                                </StdButton>
+                            ) : (
+                                <StdButton
+                                    type="submit"
+                                    width="200px"
+                                    disabled={!isFormReady || isSubmitting}
+                                >
+                                    Saving...
+                                </StdButton>
+                            )}
+                        </VStack>
                     </VStack>
-                </VStack>
-            </form>
+                </form>
+            )}
         </VStack>
     );
 };
