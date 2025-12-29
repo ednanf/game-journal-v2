@@ -36,7 +36,6 @@ const JournalPage = () => {
     const [hasMore, setHasMore] = useState<boolean>(false);
     const [initialLoading, setInitialLoading] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_error, setError] = useState<string | null>(null);
 
     const observer = useRef<IntersectionObserver | null>(null);
