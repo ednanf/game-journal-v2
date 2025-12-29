@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { VStack } from 'react-swiftstacks';
+import { VStack, HStack } from 'react-swiftstacks';
 
 import { useEntryForm } from '../../hooks/useEntryForm.ts';
 import {
@@ -127,6 +127,14 @@ const EntryDetailsPage = () => {
         }
     };
 
+    const handleCancelClick = () => {
+        if (window.history.length > 1) {
+            navigate(-1);
+        } else {
+            navigate('/journal');
+        }
+    };
+
     return (
         <VStack>
             {initialLoading || !formData ? (
@@ -197,25 +205,36 @@ const EntryDetailsPage = () => {
                             disabled={formData.status !== 'completed'}
                         />
 
-                        <VStack align="center" style={{ marginTop: '1rem' }}>
+                        <HStack
+                            justify={'center'}
+                            gap={'md'}
+                            style={{ marginTop: '1rem' }}
+                        >
+                            <StdButton
+                                type={'button'}
+                                onClick={handleCancelClick}
+                                width={'150px'}
+                            >
+                                Cancel
+                            </StdButton>
                             {!isSubmitting ? (
                                 <StdButton
                                     type="submit"
-                                    width="200px"
                                     disabled={!isFormReady || isSubmitting}
+                                    width={'150px'}
                                 >
                                     Save
                                 </StdButton>
                             ) : (
                                 <StdButton
                                     type="submit"
-                                    width="200px"
                                     disabled={!isFormReady || isSubmitting}
+                                    width={'150px'}
                                 >
                                     Saving...
                                 </StdButton>
                             )}
-                        </VStack>
+                        </HStack>
                     </VStack>
                 </form>
             )}
