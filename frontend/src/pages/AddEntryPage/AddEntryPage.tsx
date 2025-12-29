@@ -34,6 +34,7 @@ const AddEntryPage: React.FC = () => {
         formData.status &&
         formData.entryDate;
 
+    // Convert rating to number (slider outputs a string)
     const payload = {
         ...formData,
         rating: Number(formData.rating),
