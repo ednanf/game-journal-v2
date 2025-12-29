@@ -3,68 +3,30 @@ import { VStack } from 'react-swiftstacks';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
+import { useEntryForm } from '../../hooks/useEntryForm.ts';
+import { postUnwrapped } from '../../utils/axiosInstance.ts';
+
 import InputField from '../../components/Forms/InputField/InputField';
 import Selector from '../../components/Forms/Selector/Selector';
 import Slider from '../../components/Forms/Slider/Slider';
 import DateTimePicker from '../../components/Forms/DateTimePicker/DateTimePicker';
 import StdButton from '../../components/Buttons/StdButton/StdButton';
 
-import type { EntryFormData } from '../../types/entry.ts';
+import { API_BASE_URL } from '../../config/apiURL.ts';
 import { gameStatus } from '../../data/status';
 import { gamingPlatforms } from '../../data/platforms';
-import { postUnwrapped } from '../../utils/axiosInstance.ts';
-import { API_BASE_URL } from '../../config/apiURL.ts';
 
 interface CreationResponse {
     message: string;
 }
 
-type FormErrors = Partial<Record<keyof Omit<EntryFormData, 'rating'>, string>>;
-
 const AddEntryPage: React.FC = () => {
-    const [formData, setFormData] = useState<EntryFormData>({
-        title: '',
-        platform: '',
-        status: 'started',
-        rating: 5,
-        entryDate: new Date(),
-    });
+    const { formData, errors, handleChange, handleDateChange, validate } =
+        useEntryForm();
 
-    const [errors, setErrors] = useState<FormErrors>({});
     const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
-
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    ) => {
-        const { name, value } = e.target;
-
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
-    const handleDateChange = (date: Date | null) => {
-        setFormData((prev) => ({
-            ...prev,
-            entryDate: date,
-        }));
-    };
-
-    const validate = (data: EntryFormData): FormErrors => {
-        const newErrors: FormErrors = {};
-
-        if (!data.title.trim()) newErrors.title = 'Please enter a title';
-        if (!data.platform) newErrors.platform = 'Please select a platform';
-        if (!data.status) newErrors.status = 'Please select a status';
-        if (!data.entryDate) newErrors.entryDate = 'Date and time are required';
-        else if (isNaN(data.entryDate.getTime()))
-            newErrors.entryDate = 'Invalid date';
-
-        return newErrors;
-    };
 
     const isFormReady =
         formData.title.trim() &&
@@ -80,11 +42,8 @@ const AddEntryPage: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const validationErrors = validate(formData);
-        setErrors(validationErrors);
-
-        if (Object.keys(validationErrors).length > 0) {
-            toast.error('Fix the errors first');
+        if (!validate()) {
+            toast.error('Fix the errors first!');
             return;
         }
 
