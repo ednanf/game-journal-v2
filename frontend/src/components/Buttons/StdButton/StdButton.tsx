@@ -3,37 +3,28 @@ import { HStack } from 'react-swiftstacks';
 
 import styles from './StdButton.module.css';
 
-interface StdButtonProps {
+interface StdButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     icon?: React.ReactNode;
-    type: 'button' | 'submit' | 'reset';
-    handleClick?: () => void;
     color?: 'default' | 'red' | 'green';
     width?: string | number;
-    disabled?: boolean;
-    children?: React.ReactNode;
 }
 
 const StdButton = ({
-                       icon,
-                       type,
-                       handleClick,
-                       color = 'default',
-                       width,
-                       disabled,
-                       children,
-                   }: StdButtonProps) => {
+    icon,
+    color = 'default',
+    width,
+    children,
+    ...buttonProps
+}: StdButtonProps) => {
     return (
         <button
-            type={type}
-            onClick={handleClick}
-            className={`${styles.button} ${styles[`${color}`]}`}
+            className={`${styles.button} ${styles[color]}`}
             style={{ width }}
-            disabled={disabled}
+            {...buttonProps}
         >
             <HStack align={'center'} justify={'center'} gap={'sm'}>
                 {children}
-                {/* Render icon if provided */}
-                {icon && <span className={styles.icon}>{icon}</span>}{' '}
+                {icon && <span className={styles.icon}>{icon}</span>}
             </HStack>
         </button>
     );

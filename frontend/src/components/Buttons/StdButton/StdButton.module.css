@@ -20,6 +20,11 @@
     transition: box-shadow 0.3s ease-in-out;
 }
 
+button:hover {
+    color: var(--color-accent-blue);
+    text-shadow: var(--entry-card-blue-shadow);
+}
+
 .button:active {
     box-shadow:
         0 0 0 0 #fff9,
