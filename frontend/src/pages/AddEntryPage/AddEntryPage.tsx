@@ -9,30 +9,23 @@ import Slider from '../../components/Forms/Slider/Slider';
 import DateTimePicker from '../../components/Forms/DateTimePicker/DateTimePicker';
 import StdButton from '../../components/Buttons/StdButton/StdButton';
 
+import type { EntryFormData } from '../../types/entry.ts';
 import { gameStatus } from '../../data/status';
 import { gamingPlatforms } from '../../data/platforms';
 import { postUnwrapped } from '../../utils/axiosInstance.ts';
 import { API_BASE_URL } from '../../config/apiURL.ts';
 
-type FormData = {
-    title: string;
-    platform: string;
-    status: string;
-    rating: number;
-    entryDate: Date | null;
-};
-
 interface CreationResponse {
     message: string;
 }
 
-type FormErrors = Partial<Record<keyof Omit<FormData, 'rating'>, string>>;
+type FormErrors = Partial<Record<keyof Omit<EntryFormData, 'rating'>, string>>;
 
 const AddEntryPage: React.FC = () => {
-    const [formData, setFormData] = useState<FormData>({
+    const [formData, setFormData] = useState<EntryFormData>({
         title: '',
         platform: '',
-        status: '',
+        status: 'started',
         rating: 5,
         entryDate: new Date(),
     });
@@ -60,7 +53,7 @@ const AddEntryPage: React.FC = () => {
         }));
     };
 
-    const validate = (data: FormData): FormErrors => {
+    const validate = (data: EntryFormData): FormErrors => {
         const newErrors: FormErrors = {};
 
         if (!data.title.trim()) newErrors.title = 'Please enter a title';
