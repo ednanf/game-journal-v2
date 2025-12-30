@@ -1,0 +1,38 @@
+.cardContainer {
+    position: relative;
+    background-color: #e0e5ec;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 18px;
+    padding: 0.75rem 1rem 1rem;
+    margin: 0 auto 12px;
+
+    box-shadow:
+        6px 6px 12px rgba(163, 177, 198, 0.55),
+        -6px -6px 14px rgba(255, 255, 255, 0.85);
+
+    user-select: none;
+}
+
+.cardHeader {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.cardHeader h3 {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-text-primary);
+}
+
+.cardContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Kill old dividers */
+.divider {
+    display: none;
+}

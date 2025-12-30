@@ -1,0 +1,39 @@
+.cardContainer {
+    position: relative;
+    background-color: #e0e5ec;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 20px;
+    padding: 1rem 1.25rem 1.25rem;
+    margin: 0 auto 12px;
+
+    box-shadow:
+        8px 8px 15px rgba(163, 177, 198, 0.6),
+        -8px -8px 20px rgba(255, 255, 255, 0.8);
+
+    user-select: none;
+}
+
+.cardHeader {
+    text-align: center;
+    margin-bottom: 0.75rem;
+}
+
+.cardHeader h3 {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--color-text-primary);
+}
+
+.cardContentGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 0.75rem;
+    width: 100%;
+}
+
+/* Remove old dividers entirely */
+.divider {
+    display: none;
+}

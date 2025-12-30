@@ -1,0 +1,61 @@
+.cardContainer {
+    background-color: #e0e5ec;
+    border-radius: 14px;
+    padding: 0.6rem 0.75rem;
+    min-width: 90px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow:
+        inset 3px 3px 6px rgba(0, 0, 0, 0.15),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+
+    user-select: none;
+}
+
+.cardTitle {
+    font-family: 'Quicksand', Arial, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    opacity: 0.75;
+}
+
+.cardValue {
+    font-family: 'Quicksand', Arial, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 0.15rem;
+}
+
+/* Status colors */
+.started {
+    color: var(--color-accent-green);
+    text-shadow: var(--entry-card-green-shadow);
+}
+
+.completed {
+    color: var(--color-accent-purple);
+    text-shadow: var(--entry-card-purple-shadow);
+}
+
+.revisited {
+    color: var(--color-accent-blue);
+    text-shadow: var(--entry-card-blue-shadow);
+}
+
+.paused {
+    color: var(--color-accent-yellow);
+    text-shadow: var(--entry-card-yellow-shadow);
+}
+
+.dropped {
+    color: var(--color-accent-magenta);
+    text-shadow: var(--entry-card-magenta-shadow);
+}
+
+.defaultStatus {
+    color: #999;
+}
