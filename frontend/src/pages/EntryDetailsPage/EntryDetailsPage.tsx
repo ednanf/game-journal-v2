@@ -67,7 +67,7 @@ const EntryDetailsPage = () => {
         if (!id) return;
 
         const fetchEntry = async () => {
-            setInitialLoading(true);
+            if (!initialLoading) setInitialLoading(true);
 
             try {
                 const response =
