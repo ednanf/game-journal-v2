@@ -30,6 +30,8 @@ type PaginatedResponse = {
     nextCursor: string | null;
 };
 
+// FIXME: Ensure the displayed order respects entryDate - might have to tweak the backend
+
 const JournalPage = () => {
     const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
     const [cursor, setCursor] = useState<string | null>(null);
@@ -74,11 +76,10 @@ const JournalPage = () => {
 
     const loaderRef = useCallback(
         (node: HTMLDivElement | null) => {
-            // This prevents duplicate fetches caused by rapid intersection events.
-            if (isLoading) return;
+            // No observer work if we are already loading or there's nothing left to load
+            if (isLoading || !hasMore) return;
 
-            // Disconnect the previous observer before creating a new one.
-            // This avoids multiple observers stacking up and firing multiple times.
+            // Clean up any existing observer before creating a new one
             if (observer.current) observer.current.disconnect();
 
             // Create a new IntersectionObserver instance to detect when the loader enters the viewport.
@@ -89,10 +90,9 @@ const JournalPage = () => {
                 }
             });
 
-            // Start observing the loader node *after* the observer is created.
             if (node) observer.current.observe(node);
         },
-        [isLoading, fetchMoreEntries],
+        [isLoading, hasMore, fetchMoreEntries],
     );
 
     // Initial fetch
