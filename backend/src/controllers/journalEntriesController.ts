@@ -64,14 +64,17 @@ const getJournalEntries = async (
             }
         }
 
-        // Cursor pagination
+        // Cursor pagination based on entryDate (chronological order)
         if (cursor && typeof cursor === 'string') {
-            query._id = { $lt: new mongoose.Types.ObjectId(cursor) };
+            const cursorDate = new Date(cursor);
+            if (!Number.isNaN(cursorDate.getTime())) {
+                query.entryDate = { $lt: cursorDate };
+            }
         }
 
         // Fetch one extra doc to detect next page
         const entries = await JournalEntry.find(query)
-            .sort({ _id: -1 })
+            .sort({ entryDate: -1, _id: -1 }) // stable, chronological sorting
             .limit(limit + 1)
             .lean();
 
@@ -79,7 +82,7 @@ const getJournalEntries = async (
         if (hasNextPage) entries.pop();
 
         const nextCursor = hasNextPage
-            ? entries[entries.length - 1]._id.toString()
+            ? entries[entries.length - 1].entryDate.toISOString()
             : null;
 
         res.status(200).json({
