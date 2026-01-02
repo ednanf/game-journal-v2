@@ -1,3 +1,4 @@
+/* Base button */
 .button {
     padding: 10px 20px;
     font-size: 16px;
@@ -8,29 +9,28 @@
     color: #555;
     cursor: pointer;
     outline: none;
+
+    /* DEFAULT (blue) */
+    --glow-color: var(--color-accent-blue);
+    --glow-shadow: var(--color-glow-blue);
+
     box-shadow:
         -7px -7px 20px 0 #fff9,
         -4px -4px 5px 0 #fff9,
         7px 7px 20px 0 #0002,
-        4px 4px 5px 0 #0001,
-        inset 0 0 0 0 #fff9,
-        inset 0 0 0 0 #0001,
-        inset 0 0 0 0 #fff9,
-        inset 0 0 0 0 #0001;
-    transition: box-shadow 0.3s ease-in-out;
+        4px 4px 5px 0 #0001;
+    transition:
+        box-shadow 0.3s ease-in-out,
+        color 0.2s ease;
 }
 
-button:hover {
-    color: var(--color-accent-blue);
-    text-shadow: var(--entry-card-blue-shadow);
+.button:hover {
+    color: var(--glow-color);
+    text-shadow: var(--glow-shadow);
 }
 
 .button:active {
     box-shadow:
-        0 0 0 0 #fff9,
-        0 0 0 0 #fff9,
-        0 0 0 0 #0001,
-        0 0 0 0 #0001,
         inset -7px -7px 20px 0 #fff9,
         inset -4px -4px 5px 0 #fff9,
         inset 7px 7px 20px 0 #0003,
@@ -44,6 +44,23 @@ button:hover {
     transition: none;
 }
 
+/* Color options */
+.default {
+    --glow-color: var(--color-accent-blue);
+    --glow-shadow: var(--color-glow-blue);
+}
+
+.red {
+    --glow-color: var(--color-accent-magenta);
+    --glow-shadow: var(--color-glow-magenta);
+}
+
+.green {
+    --glow-color: var(--color-accent-green);
+    --glow-shadow: var(--color-glow-green);
+}
+
+/* Icon is optional */
 .icon {
     vertical-align: middle;
     margin-top: 1px;

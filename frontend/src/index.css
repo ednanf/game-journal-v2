@@ -142,6 +142,13 @@ Link {
     --color-accent-purple-light: #a67bff;
     --color-accent-yellow-light: #ffc107;
 
+    /* Glow effect */
+    --color-glow-blue-light: 0 0 30px rgba(0, 188, 212, 0.5);
+    --color-glow-magenta-light: 0 0 30px rgba(233, 30, 99, 0.5);
+    --color-glow-green-light: 0 0 30px rgba(76, 175, 80, 0.5);
+    --color-glow-purple-light: 0 0 30px rgba(166, 123, 255, 0.5);
+    --color-glow-yellow-light: 0 0 30px rgba(255, 193, 7, 0.5);
+
     /* Component specific */
 
     /* Input field */
@@ -177,6 +184,11 @@ Link {
     --color-accent-green: var(--color-accent-green-light);
     --color-accent-purple: var(--color-accent-purple-light);
     --color-accent-yellow: var(--color-accent-yellow-light);
+    --color-glow-blue: var(--color-glow-blue-light);
+    --color-glow-magenta: var(--color-glow-magenta-light);
+    --color-glow-green: var(--color-glow-green-light);
+    --color-glow-purple: var(--color-glow-purple-light);
+    --color-glow-yellow: var(--color-glow-yellow-light);
     --input-field-background: var(--input-field-background-light);
     --input-field-box-shadow: var(--input-field-box-shadow-light);
     --input-field-background-focus: var(--input-field-background-focus-light);
@@ -184,11 +196,6 @@ Link {
     --stdbutton-color-disabled: var(--stdbutton-color-disabled-light);
     --stdbutton-color-hover: var(--stdbutton-color-hover-light);
     --stdbutton-hover-shadow: var(--stdbutton-hover-shadow-light);
-    --entry-card-green-shadow: var(--entry-card-green-shadow-light);
-    --entry-card-purple-shadow: var(--entry-card-purple-shadow-light);
-    --entry-card-blue-shadow: var(--entry-card-blue-shadow-light);
-    --entry-card-yellow-shadow: var(--entry-card-yellow-shadow-light);
-    --entry-card-magenta-shadow: var(--entry-card-magenta-shadow-light);
     --entry-card-chevron: var(--entry-card-chevron-light);
     --loading-bar-line: var(--loading-bar-line-light);
 }

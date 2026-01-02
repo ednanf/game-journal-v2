@@ -235,6 +235,7 @@ const EntryDetailsPage = () => {
                                 </StdButton>
                             )}
                         </HStack>
+                        <StdButton color={'red'}>DELETE</StdButton>
                     </VStack>
                 </form>
             )}

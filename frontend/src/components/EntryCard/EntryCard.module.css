@@ -106,7 +106,7 @@
 .cardContainer:hover .cardChevron {
     /*opacity: 0.65;*/
     color: var(--color-accent-blue);
-    text-shadow: var(--entry-card-blue-shadow);
+    text-shadow: var(--color-glow-blue);
 }
 
 /* Status badges - inset neumorphic pills */
@@ -129,27 +129,27 @@
 
 .started {
     color: var(--color-accent-green);
-    text-shadow: var(--entry-card-green-shadow);
+    text-shadow: var(--color-glow-green);
 }
 
 .completed {
     color: var(--color-accent-purple);
-    text-shadow: var(--entry-card-purple-shadow);
+    text-shadow: var(--color-glow-purple);
 }
 
 .revisited {
     color: var(--color-accent-blue);
-    text-shadow: var(--entry-card-blue-shadow);
+    text-shadow: var(--color-glow-blue);
 }
 
 .paused {
     color: var(--color-accent-yellow);
-    text-shadow: var(--entry-card-yellow-shadow);
+    text-shadow: var(--color-glow-yellow);
 }
 
 .dropped {
     color: var(--color-accent-magenta);
-    text-shadow: var(--entry-card-magenta-shadow);
+    text-shadow: var(--color-glow-magenta);
 }
 
 .defaultStatus {
