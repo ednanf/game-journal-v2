@@ -71,7 +71,7 @@ const EntryDetailsPage = () => {
         if (!id) return;
 
         const fetchEntry = async () => {
-            if (!initialLoading) setInitialLoading(true);
+            setInitialLoading(true);
 
             try {
                 const response =
@@ -94,6 +94,7 @@ const EntryDetailsPage = () => {
                 setInitialLoading(false);
             }
         };
+
         void fetchEntry();
     }, [id, setFormData]);
 
@@ -264,6 +265,7 @@ const EntryDetailsPage = () => {
                                 </StdButton>
                             )}
                         </HStack>
+
                         <HStack justify={'center'}>
                             <StdButton
                                 type={'button'}
