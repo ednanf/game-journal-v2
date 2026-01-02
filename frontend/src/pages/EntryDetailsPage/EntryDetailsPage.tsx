@@ -91,7 +91,7 @@ const EntryDetailsPage = () => {
             }
         };
         void fetchEntry();
-    }, [id, setFormData]);
+    }, [id, setFormData, initialLoading]);
 
     // Convert rating to number (slider outputs a string)
     const payload = {
