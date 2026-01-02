@@ -48,7 +48,11 @@ const router = createBrowserRouter([
                 element: <StatisticsPage />,
                 handle: { title: 'Statistics' },
             },
-            { path: 'entries/:id', element: <EntryDetailsPage /> },
+            {
+                path: 'entries/:id',
+                element: <EntryDetailsPage />,
+                handle: { title: 'Entry details' },
+            },
             {
                 path: 'settings',
                 element: <SettingsPage />,

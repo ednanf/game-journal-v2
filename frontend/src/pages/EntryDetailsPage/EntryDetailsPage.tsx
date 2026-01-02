@@ -5,6 +5,7 @@ import { VStack, HStack } from 'react-swiftstacks';
 
 import { useEntryForm } from '../../hooks/useEntryForm.ts';
 import {
+    deleteUnwrapped,
     getUnwrappedWithParams,
     patchUnwrapped,
 } from '../../utils/axiosInstance.ts';
@@ -21,6 +22,7 @@ import { gamingPlatforms } from '../../data/platforms.ts';
 import type { EntryFormData } from '../../types/entry.ts';
 import { API_BASE_URL } from '../../config/apiURL.ts';
 import LoadingBar from '../../components/LoadingBar/LoadingBar.tsx';
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal.tsx';
 
 interface PatchResponse {
     message: string;
@@ -50,6 +52,8 @@ const EntryDetailsPage = () => {
 
     const [initialLoading, setInitialLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     // Journal entry ID
     const { id } = useParams<{ id: string }>();
@@ -91,7 +95,7 @@ const EntryDetailsPage = () => {
             }
         };
         void fetchEntry();
-    }, [id, setFormData, initialLoading]);
+    }, [id, setFormData]);
 
     // Convert rating to number (slider outputs a string)
     const payload = {
@@ -132,6 +136,30 @@ const EntryDetailsPage = () => {
             navigate(-1);
         } else {
             navigate('/journal');
+        }
+    };
+
+    const handleDeleteClick = async () => {
+        if (!id) {
+            toast.error('No entry with give ID found.');
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        try {
+            const response = await deleteUnwrapped<EntryDetailsApiResponse>(
+                `/entries/${id}`,
+            );
+
+            toast.success(response.message);
+
+            navigate('/journal');
+        } catch (e) {
+            toast.error((e as { message: string }).message);
+        } finally {
+            setIsDeleting(false);
+            setShowDeleteConfirm(false);
         }
     };
 
@@ -222,6 +250,7 @@ const EntryDetailsPage = () => {
                                     type="submit"
                                     disabled={!isFormReady || isSubmitting}
                                     width={'150px'}
+                                    color={'green'}
                                 >
                                     Save
                                 </StdButton>
@@ -235,10 +264,30 @@ const EntryDetailsPage = () => {
                                 </StdButton>
                             )}
                         </HStack>
-                        <StdButton color={'red'}>DELETE</StdButton>
+                        <HStack justify={'center'}>
+                            <StdButton
+                                type={'button'}
+                                onClick={() => setShowDeleteConfirm(true)}
+                                color={'red'}
+                                width={'150px'}
+                            >
+                                Delete
+                            </StdButton>
+                        </HStack>
                     </VStack>
                 </form>
             )}
+
+            <ConfirmModal
+                open={showDeleteConfirm}
+                title="Delete entry?"
+                description="This action cannot be undone."
+                confirmLabel="Delete"
+                confirmColor="red"
+                loading={isDeleting}
+                onCancel={() => setShowDeleteConfirm(false)}
+                onConfirm={handleDeleteClick}
+            />
         </VStack>
     );
 };
