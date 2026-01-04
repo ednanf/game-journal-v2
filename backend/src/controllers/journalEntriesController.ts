@@ -30,6 +30,8 @@ const getJournalEntries = async (
             status,
             rating,
             platform,
+            startDate,
+            endDate,
         } = req.query;
 
         // How many entries should be fetched for pagination
@@ -64,12 +66,36 @@ const getJournalEntries = async (
             }
         }
 
+        // Date range filtering based on entryDate (ISO instants)
+        const entryDateFilter: Record<string, Date> = {};
+
+        // startDate is the earliest moment in the timeline
+        if (typeof startDate === 'string') {
+            const parsedStartDate = new Date(startDate);
+            if (!Number.isNaN(parsedStartDate.getTime())) {
+                entryDateFilter.$gte = parsedStartDate;
+            }
+        }
+
+        // endDate is a later moment in the timeline
+        if (typeof endDate === 'string') {
+            const parsedEndDate = new Date(endDate);
+            if (!Number.isNaN(parsedEndDate.getTime())) {
+                entryDateFilter.$lte = parsedEndDate;
+            }
+        }
+
         // Cursor pagination based on entryDate (chronological order)
         if (cursor && typeof cursor === 'string') {
             const cursorDate = new Date(cursor);
             if (!Number.isNaN(cursorDate.getTime())) {
-                query.entryDate = { $lt: cursorDate };
+                entryDateFilter.$lt = cursorDate;
             }
+        }
+
+        // Apply entryDate filters if any exist
+        if (Object.keys(entryDateFilter).length > 0) {
+            query.entryDate = entryDateFilter;
         }
 
         // Fetch one extra doc to detect next page
