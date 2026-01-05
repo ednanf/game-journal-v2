@@ -1,5 +1,3 @@
-// src/types/entry.ts
-
 export type StatusType =
     | 'started'
     | 'completed'
@@ -14,3 +12,7 @@ export type EntryFormData = {
     rating: number;
     entryDate: Date | null;
 };
+
+export type EntryFormErrors = Partial<
+    Record<keyof Omit<EntryFormData, 'rating'>, string>
+>;

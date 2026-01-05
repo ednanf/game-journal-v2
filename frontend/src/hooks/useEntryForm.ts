@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import type { EntryFormData } from '../types/entry';
-
-type FormErrors = Partial<Record<keyof Omit<EntryFormData, 'rating'>, string>>;
+import type { EntryFormData, EntryFormErrors } from '../types/entry';
 
 export const useEntryForm = (initialData?: Partial<EntryFormData>) => {
     // State that covers both new entries and edited ones
@@ -15,7 +13,7 @@ export const useEntryForm = (initialData?: Partial<EntryFormData>) => {
     });
 
     // Errors are optional and follow the EntryFormData shape
-    const [errors, setErrors] = useState<FormErrors>({});
+    const [errors, setErrors] = useState<EntryFormErrors>({});
 
     // Standard change handler
     const handleChange = (
@@ -39,7 +37,7 @@ export const useEntryForm = (initialData?: Partial<EntryFormData>) => {
 
     // Validation encapsulated
     const validate = (): boolean => {
-        const newErrors: FormErrors = {};
+        const newErrors: EntryFormErrors = {};
 
         if (!formData.title.trim()) newErrors.title = 'Please enter a title';
         if (!formData.platform) newErrors.platform = 'Please select a platform';
