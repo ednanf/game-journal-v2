@@ -12,7 +12,7 @@ type SelectorProps = {
     id: string;
     name: string;
     size: number;
-    value: string;
+    value: string; // Selectors treat null values as empty string
     values: SelectOption[];
     placeholder?: string;
     disabled?: boolean;
