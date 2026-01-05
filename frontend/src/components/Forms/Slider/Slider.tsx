@@ -47,7 +47,9 @@ function Slider({
                         }`}
                     />
 
-                    <span className={styles.value}>{value}</span>
+                    <span className={styles.value}>
+                        {value === undefined ? '–' : value}
+                    </span>
                 </div>
             </VStack>
 
