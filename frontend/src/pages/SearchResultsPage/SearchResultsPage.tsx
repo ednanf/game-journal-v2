@@ -11,12 +11,15 @@ import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 
 import type { JournalEntry } from '../../types/entry.ts';
 
+import styles from './SearchResultsPage.module.css';
+
 const SearchResultsPage = () => {
     const [searchParams] = useSearchParams();
 
     const navigate = useNavigate();
 
     const [entries, setEntries] = useState<JournalEntry[]>([]);
+    const [page, setPage] = useState(1);
     const [nextCursor, setNextCursor] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -83,10 +86,13 @@ const SearchResultsPage = () => {
         const params = new URLSearchParams(searchParams);
         params.set('cursor', nextCursor);
 
+        setPage((page) => page + 1);
+
         navigate(`/search?${params.toString()}`);
     };
 
     const handlePrevious = () => {
+        setPage((page) => page - 1);
         navigate(-1);
     };
 
@@ -113,17 +119,23 @@ const SearchResultsPage = () => {
             )}
 
             <HStack padding={'md'} style={{ marginBottom: '1rem' }} gap={'md'}>
-                {hasCursor && (
-                    <StdButton width={'100px'} onClick={handlePrevious}>
-                        Previous
-                    </StdButton>
-                )}
+                <StdButton
+                    width={'100px'}
+                    onClick={handlePrevious}
+                    disabled={isLoading || !hasCursor}
+                >
+                    Previous
+                </StdButton>
 
-                {nextCursor && !isLoading && (
-                    <StdButton width={'100px'} onClick={handleNext}>
-                        Next
-                    </StdButton>
-                )}
+                <p className={styles.pageNumber}> Page {page}</p>
+
+                <StdButton
+                    width={'100px'}
+                    onClick={handleNext}
+                    disabled={!nextCursor}
+                >
+                    Next
+                </StdButton>
             </HStack>
         </VStack>
     );
