@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { EntryFormData, EntryFormErrors } from '../types/entry';
+import type { EntryFormData, EntryFormErrors } from '../types/entryForm.ts';
 
 export const useEntryForm = (initialData?: Partial<EntryFormData>) => {
     // State that covers both new entries and edited ones

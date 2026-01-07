@@ -19,7 +19,7 @@ import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 import { gameStatus } from '../../data/status.ts';
 import { gamingPlatforms } from '../../data/platforms.ts';
 
-import type { EntryFormData } from '../../types/entry.ts';
+import type { EntryFormData } from '../../types/entryForm.ts';
 import { API_BASE_URL } from '../../config/apiURL.ts';
 import LoadingBar from '../../components/LoadingBar/LoadingBar.tsx';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal.tsx';

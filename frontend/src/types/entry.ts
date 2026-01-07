@@ -5,14 +5,20 @@ export type StatusType =
     | 'dropped'
     | 'revisited';
 
-export type EntryFormData = {
+export type JournalEntry = {
+    _id: string;
+    createdBy: string;
     title: string;
+    entryDate: string; // needs to be converted to ISO as shown above
     platform: string;
     status: StatusType;
     rating: number;
-    entryDate: Date | null;
+    createdAt: string;
+    updatedAt: string;
 };
 
-export type EntryFormErrors = Partial<
-    Record<keyof Omit<EntryFormData, 'rating'>, string>
->;
+export type PaginatedResponse = {
+    message: string;
+    entries: JournalEntry[];
+    nextCursor: string | null;
+};

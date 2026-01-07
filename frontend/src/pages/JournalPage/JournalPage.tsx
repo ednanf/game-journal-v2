@@ -1,36 +1,18 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { getUnwrapped } from '../../utils/axiosInstance.ts';
 import { VStack } from 'react-swiftstacks';
 
 import EntryCard from '../../components/EntryCard/EntryCard.tsx';
-import { getUnwrapped } from '../../utils/axiosInstance.ts';
-import { toast } from 'react-toastify';
 import LoadingBar from '../../components/LoadingBar/LoadingBar.tsx';
+
+import type { JournalEntry, PaginatedResponse } from '../../types/entry.ts';
 
 // Backend sends a string that should be converted *before* going into as prop
 // const entry = {
 //     ...rawEntry,
 //     entryDate: new Date(rawEntry.entryDate),
 // };
-
-type JournalEntry = {
-    _id: string;
-    createdBy: string;
-    title: string;
-    entryDate: string; // needs to be converted to ISO as shown above
-    platform: string;
-    status: 'started' | 'completed' | 'dropped' | 'revisited' | 'paused';
-    rating: number;
-    createdAt: string;
-    updatedAt: string;
-};
-
-type PaginatedResponse = {
-    message: string;
-    entries: JournalEntry[];
-    nextCursor: string | null;
-};
-
-// FIXME: Ensure the displayed order respects entryDate - might have to tweak the backend
 
 const JournalPage = () => {
     const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
