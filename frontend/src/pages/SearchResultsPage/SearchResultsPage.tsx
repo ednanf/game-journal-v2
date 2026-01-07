@@ -16,17 +16,19 @@ import styles from './SearchResultsPage.module.css';
 const SearchResultsPage = () => {
     const [searchParams] = useSearchParams();
 
+    const queryString = searchParams.toString();
+    const pageParam = searchParams.get('page');
+    const pageFromUrl = pageParam ? Number(pageParam) : 1;
+
     const navigate = useNavigate();
 
-    const [entries, setEntries] = useState<JournalEntry[]>([]);
-    const [page, setPage] = useState(1);
-    const [nextCursor, setNextCursor] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [entries, setEntries] = useState<JournalEntry[]>([]);
+    const [nextCursor, setNextCursor] = useState<string | null>(null);
+    const [page, setPage] = useState(pageFromUrl);
     const [error, setError] = useState<string | null>(null);
 
     const BACKEND_LIMIT = 5;
-
-    const queryString = searchParams.toString();
 
     // Used to show the "Previous" button. If there's no cursor param, it's in
     // page 1
@@ -84,17 +86,40 @@ const SearchResultsPage = () => {
         if (!nextCursor) return;
 
         const params = new URLSearchParams(searchParams);
-        params.set('cursor', nextCursor);
 
-        setPage((page) => page + 1);
+        params.set('cursor', nextCursor);
+        params.set('page', String(page + 1));
 
         navigate(`/search?${params.toString()}`);
     };
 
     const handlePrevious = () => {
-        setPage((page) => page - 1);
+        if (page <= 1) return;
+
+        const params = new URLSearchParams(searchParams);
+
+        const prevPage = page - 1;
+
+        // Remove page and cursor from url to keep numbering logic correct
+        if (prevPage === 1) {
+            params.delete('page');
+            params.delete('cursor');
+        } else {
+            params.set('page', String(prevPage));
+        }
+
         navigate(-1);
     };
+
+    // Handle page number synchronization
+    useEffect(() => {
+        const pageParam = searchParams.get('page');
+
+        // Set page number to 1 if it's null/invalid/whatever
+        const nextPage = pageParam ? Number(pageParam) : 1;
+
+        setPage(Number.isFinite(nextPage) && nextPage > 0 ? nextPage : 1);
+    }, [searchParams]);
 
     return (
         <VStack align={'center'} style={{ marginTop: '2rem' }}>
