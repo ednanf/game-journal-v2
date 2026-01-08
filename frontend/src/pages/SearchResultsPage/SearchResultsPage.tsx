@@ -148,45 +148,54 @@ const SearchResultsPage = () => {
         setPage(safePage);
     }, [searchParams]);
 
-    return (
-        <VStack align={'center'} style={{ marginTop: '2rem' }}>
-            {entries.length === 0 ? (
-                <div className={'fullscreenLoader'}>
-                    <LoadingBar />
-                </div>
-            ) : (
-                <>
-                    {visibleFilters.length > 0 && (
-                        <ActiveFilters filters={visibleFilters} />
-                    )}
+    if (isLoading) {
+        return (
+            <div className="fullscreenLoader">
+                <LoadingBar />
+            </div>
+        );
+    }
 
-                    {entries.map((entry) => (
-                        <EntryCard
-                            key={entry._id}
-                            title={entry.title}
-                            platform={entry.platform}
-                            status={entry.status}
-                            rating={entry.rating}
-                            entryDate={new Date(entry.entryDate)}
-                            to={`/entries/${entry._id}`}
-                        />
-                    ))}
-                </>
+    if (entries.length === 0) {
+        return (
+            <VStack>
+                <ActiveFilters filters={visibleFilters} />
+                <p>No entries found</p>
+            </VStack>
+        );
+    }
+
+    return (
+        <VStack align="center" style={{ marginTop: '2rem' }}>
+            {visibleFilters.length > 0 && (
+                <ActiveFilters filters={visibleFilters} />
             )}
 
-            <HStack padding={'md'} style={{ marginBottom: '1rem' }} gap={'md'}>
+            {entries.map((entry) => (
+                <EntryCard
+                    key={entry._id}
+                    title={entry.title}
+                    platform={entry.platform}
+                    status={entry.status}
+                    rating={entry.rating}
+                    entryDate={new Date(entry.entryDate)}
+                    to={`/entries/${entry._id}`}
+                />
+            ))}
+
+            <HStack padding="md" gap="md">
                 <StdButton
-                    width={'100px'}
+                    width="100px"
                     onClick={handlePrevious}
                     disabled={isLoading || !hasCursor}
                 >
                     Previous
                 </StdButton>
 
-                <p className={styles.pageNumber}> Page {page}</p>
+                <p className={styles.pageNumber}>Page {page}</p>
 
                 <StdButton
-                    width={'100px'}
+                    width="100px"
                     onClick={handleNext}
                     disabled={!nextCursor}
                 >
