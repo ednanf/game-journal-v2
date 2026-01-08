@@ -34,9 +34,10 @@ const SearchPage = () => {
         endDate: null,
     });
 
-    // Switch between "form mode" and "results mode"
+    // Switch between "form mode" and "results mode" if the URL has parameters or not
     const hasSearchParams = searchParams.size > 0;
 
+    // Cosmetic value that does not go to the database/query
     const DEFAULT_RATING = 5;
 
     const isFormReady =
@@ -90,6 +91,7 @@ const SearchPage = () => {
 
         const params = new URLSearchParams();
 
+        // Add all parameters present in the form to the URL
         if (formData.title.trim()) {
             params.set('title', formData.title.trim());
         }
@@ -114,6 +116,8 @@ const SearchPage = () => {
             params.set('endDate', formData.endDate.toISOString());
         }
 
+        // Navigate to the newly formed URL, triggering SearchResultsPage render
+        // because now the URL has parameters
         navigate(`/search?${params.toString()}`);
     };
 
