@@ -54,10 +54,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
                     onChange={onChange}
                     className={inputClasses}
                     customInput={<PickerInput />}
-                    showTimeSelect={showTime}
-                    timeFormat="HH:mm"
-                    timeIntervals={15}
-                    dateFormat={showTime ? 'Pp' : 'P'}
+                    dateFormat={'P'}
                     isClearable
                     popperPlacement="top"
                 />
