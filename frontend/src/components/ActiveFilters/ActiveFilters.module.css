@@ -1,0 +1,28 @@
+.container {
+    margin: 0 1rem 1rem;
+}
+
+.resultChip {
+    padding: 5px 10px;
+    font-size: 10px;
+    user-select: none;
+    background-color: #e0e5ec;
+    border: none;
+    border-radius: 1000px;
+    color: #555;
+    cursor: pointer;
+    outline: none;
+
+    /* DEFAULT (blue) */
+    --glow-color: var(--color-accent-blue);
+    --glow-shadow: var(--color-glow-blue);
+
+    box-shadow:
+        -7px -7px 20px 0 #fff9,
+        -4px -4px 5px 0 #fff9,
+        7px 7px 20px 0 #0002,
+        4px 4px 5px 0 #0001;
+    transition:
+        box-shadow 0.3s ease-in-out,
+        color 0.2s ease;
+}

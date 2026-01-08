@@ -12,6 +12,10 @@ import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 import type { JournalEntry } from '../../types/entry.ts';
 
 import styles from './SearchResultsPage.module.css';
+import ActiveFilters from '../../components/ActiveFilters/ActiveFilters.tsx';
+
+// TODO: scroll back to the top of the page when moving between pages
+// TODO: search parameters at the top (maybe fixed?)
 
 const SearchResultsPage = () => {
     const [searchParams] = useSearchParams();
@@ -28,7 +32,21 @@ const SearchResultsPage = () => {
     const [page, setPage] = useState(pageFromUrl);
     const [error, setError] = useState<string | null>(null);
 
-    const BACKEND_LIMIT = 5;
+    const BACKEND_LIMIT = 10;
+
+    const activeFilters = {
+        title: searchParams.get('title'),
+        platform: searchParams.get('platform'),
+        status: searchParams.get('status'),
+        rating: searchParams.get('rating'),
+        startDate: searchParams.get('startDate'),
+        endDate: searchParams.get('endDate'),
+    };
+
+    // Filter out nulls
+    const visibleFilters = Object.entries(activeFilters).filter(
+        (entry): entry is [string, string] => entry[1] !== null,
+    );
 
     // Used to show the "Previous" button. If there's no cursor param, it's in
     // page 1
@@ -111,14 +129,23 @@ const SearchResultsPage = () => {
         navigate(-1);
     };
 
-    // Handle page number synchronization
+    // Maintain page number correctly synchronized
     useEffect(() => {
         const pageParam = searchParams.get('page');
 
         // Set page number to 1 if it's null/invalid/whatever
-        const nextPage = pageParam ? Number(pageParam) : 1;
+        const rawPage = pageParam ? Number(pageParam) : 1;
 
-        setPage(Number.isFinite(nextPage) && nextPage > 0 ? nextPage : 1);
+        const hasCursor = searchParams.has('cursor');
+
+        let safePage = 1;
+
+        // Avoid having a page number > 1 without cursor
+        if (Number.isFinite(rawPage) && rawPage > 1 && hasCursor) {
+            safePage = rawPage;
+        }
+
+        setPage(safePage);
     }, [searchParams]);
 
     return (
@@ -129,6 +156,10 @@ const SearchResultsPage = () => {
                 </div>
             ) : (
                 <>
+                    {visibleFilters.length > 0 && (
+                        <ActiveFilters filters={visibleFilters} />
+                    )}
+
                     {entries.map((entry) => (
                         <EntryCard
                             key={entry._id}
