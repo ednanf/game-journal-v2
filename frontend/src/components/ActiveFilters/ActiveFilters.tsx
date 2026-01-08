@@ -34,6 +34,9 @@ const ActiveFilters = ({ filters }: ActiveFiltersProps) => {
             {filters.map(([key, value]) => (
                 <span key={key} className={styles.resultChip}>
                     {formatFilterLabel(key)}: {formatFilterValue(key, value)}
+                    {value.length > 20 && (
+                        <span className={styles.textFade}></span>
+                    )}
                 </span>
             ))}
         </HStack>

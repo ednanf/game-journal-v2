@@ -3,6 +3,10 @@
 }
 
 .resultChip {
+    position: relative;
+    max-width: 170px;
+    white-space: nowrap;
+    overflow: hidden;
     padding: 5px 10px;
     font-size: 10px;
     user-select: none;
@@ -25,4 +29,15 @@
     transition:
         box-shadow 0.3s ease-in-out,
         color 0.2s ease;
+}
+
+.textFade {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3rem;
+    border-radius: 1000px;
+    pointer-events: none;
+    background: linear-gradient(to right, transparent, #e0e5ec);
 }
