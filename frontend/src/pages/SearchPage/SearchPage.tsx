@@ -86,6 +86,27 @@ const SearchPage = () => {
         }));
     };
 
+    const handleClearTitle = () => {
+        setFormData((prev) => ({
+            ...prev,
+            title: '',
+        }));
+    };
+
+    const handleClearPlatform = () => {
+        setFormData((prev) => ({
+            ...prev,
+            platform: null,
+        }));
+    };
+
+    const handleClearStatus = () => {
+        setFormData((prev) => ({
+            ...prev,
+            status: null,
+        }));
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -143,6 +164,7 @@ const SearchPage = () => {
                         value={formData.title}
                         placeholder={'Search by name...'}
                         onChange={handleChange}
+                        onClear={handleClearTitle}
                     />
 
                     <Selector
@@ -154,6 +176,7 @@ const SearchPage = () => {
                         value={formData.platform ?? ''} // ?? '' needed for ui
                         values={gamingPlatforms}
                         onChange={handleChange}
+                        onClear={handleClearPlatform}
                     />
 
                     <Selector
@@ -165,6 +188,7 @@ const SearchPage = () => {
                         value={formData.status ?? ''} // ?? '' needed for ui
                         values={gameStatus}
                         onChange={handleChange}
+                        onClear={handleClearStatus}
                     />
 
                     <DateTimePicker

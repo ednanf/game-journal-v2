@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Selector.module.css';
 import { VStack } from 'react-swiftstacks';
+import ClearFormButton from '../ClearFormButton/ClearFormButton.tsx';
 
 type SelectOption = {
     label: string;
@@ -17,6 +18,7 @@ type SelectorProps = {
     placeholder?: string;
     disabled?: boolean;
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    onClear: (e: React.MouseEvent) => void;
     error?: string;
 };
 
@@ -30,6 +32,7 @@ const Selector = ({
     placeholder,
     disabled,
     onChange,
+    onClear,
     error,
 }: SelectorProps) => {
     return (
@@ -67,6 +70,10 @@ const Selector = ({
                     </select>
 
                     <span className={styles.arrow} />
+
+                    {value && !disabled && (
+                        <ClearFormButton onClick={onClear} />
+                    )}
                 </div>
             </VStack>
 
