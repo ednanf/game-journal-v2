@@ -29,12 +29,14 @@ const ActiveFilters = ({ filters }: ActiveFiltersProps) => {
 
     const formatFilterLabel = (key: string) => FILTER_LABELS[key] ?? key;
 
+    // 30 is a good number for the fade-out effect because any less will cause
+    // dates to have it applied to
     return (
         <HStack justify={'center'} gap={'sm'} className={styles.container} wrap>
             {filters.map(([key, value]) => (
                 <span key={key} className={styles.resultChip}>
                     {formatFilterLabel(key)}: {formatFilterValue(key, value)}
-                    {value.length > 20 && (
+                    {value.length > 30 && (
                         <span className={styles.textFade}></span>
                     )}
                 </span>
