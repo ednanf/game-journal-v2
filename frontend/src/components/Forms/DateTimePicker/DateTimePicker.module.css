@@ -68,8 +68,7 @@
 }
 
 :global(.react-datepicker__close-icon::after) {
-    background: var(--color-accent-blue);
-    box-shadow: 1px 0 10px var(--color-accent-blue);
+    background: var(--color-text-muted);
 }
 
 /* Days */
