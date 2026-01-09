@@ -1,3 +1,8 @@
+.inputWrapper {
+    position: relative;
+    width: 100%;
+}
+
 .textInput {
     width: 100%; /* Needed to ensure the field AND label will use all width*/
     display: flex;
@@ -21,7 +26,6 @@
     color: var(--color-text-primary);
     border: none;
     border-radius: 5px;
-    padding: 0 15px;
     background: var(--input-field-background);
     box-shadow: var(--input-field-box-shadow);
     transition: 300ms ease-in-out;

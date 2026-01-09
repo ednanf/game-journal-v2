@@ -1,0 +1,26 @@
+.clearButton {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%) translateX(4px);
+
+    width: 20px;
+    height: 20px;
+
+    border-radius: 50%;
+    border: none;
+
+    background-color: #3bb3d6;
+    color: white;
+
+    font-size: 12px;
+    line-height: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    box-shadow: 1px 0 10px var(--color-accent-blue);
+}
