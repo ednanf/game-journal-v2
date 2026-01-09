@@ -107,6 +107,13 @@ const SearchPage = () => {
         }));
     };
 
+    const handleClearRating = () => {
+        setFormData((prev) => ({
+            ...prev,
+            rating: null,
+        }));
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -214,8 +221,9 @@ const SearchPage = () => {
                         name={'rating'}
                         min={0}
                         max={10}
-                        value={formData.rating ?? DEFAULT_RATING}
+                        value={formData.rating}
                         onChange={handleChange}
+                        onClear={handleClearRating}
                     />
 
                     <VStack align={'center'} style={{ marginTop: '1rem' }}>
