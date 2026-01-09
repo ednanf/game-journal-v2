@@ -1,4 +1,5 @@
 .sliderContainer {
+    position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -131,6 +132,7 @@
     text-align: right;
     font-size: 0.85rem;
     color: var(--color-text-secondary);
+    margin-right: 5px;
 }
 
 /* Error */

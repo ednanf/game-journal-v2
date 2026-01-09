@@ -1,16 +1,18 @@
 import React from 'react';
 import styles from './Slider.module.css';
 import { VStack } from 'react-swiftstacks';
+import ClearSliderValueButton from '../ClearSliderValueButton/ClearSliderValueButton.tsx';
 
 type SliderProps = {
     label?: string;
     name: string;
     min: number;
     max: number;
-    value: number;
+    value: number | null;
     disabled?: boolean;
     error?: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onClear: (e: React.MouseEvent) => void;
 };
 
 function Slider({
@@ -22,7 +24,10 @@ function Slider({
     disabled,
     error,
     onChange,
+    onClear,
 }: SliderProps) {
+    const DEFAULT_RATING = 5;
+
     return (
         <div className={styles.sliderContainer}>
             <VStack gap={1}>
@@ -39,7 +44,7 @@ function Slider({
                         name={name}
                         min={min}
                         max={max}
-                        value={value}
+                        value={value ?? DEFAULT_RATING}
                         disabled={disabled}
                         onChange={onChange}
                         className={`${styles.slider} ${
@@ -48,8 +53,12 @@ function Slider({
                     />
 
                     <span className={styles.value}>
-                        {value === undefined ? '–' : value}
+                        {value === null ? '–' : value}
                     </span>
+
+                    {value && !disabled && (
+                        <ClearSliderValueButton onClick={onClear} />
+                    )}
                 </div>
             </VStack>
 
