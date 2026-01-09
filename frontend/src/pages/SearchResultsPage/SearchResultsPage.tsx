@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { HStack, VStack } from 'react-swiftstacks';
 
@@ -14,9 +14,6 @@ import type { JournalEntry } from '../../types/entry.ts';
 import styles from './SearchResultsPage.module.css';
 import ActiveFilters from '../../components/ActiveFilters/ActiveFilters.tsx';
 
-// TODO: scroll back to the top of the page when moving between pages
-// TODO: search parameters at the top (maybe fixed?)
-
 const SearchResultsPage = () => {
     const [searchParams] = useSearchParams();
 
@@ -25,6 +22,7 @@ const SearchResultsPage = () => {
     const pageFromUrl = pageParam ? Number(pageParam) : 1;
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [isLoading, setIsLoading] = useState(false);
     const [entries, setEntries] = useState<JournalEntry[]>([]);
@@ -42,6 +40,12 @@ const SearchResultsPage = () => {
         startDate: searchParams.get('startDate'),
         endDate: searchParams.get('endDate'),
     };
+
+    // Scroll back to top when changing pages without activating with other
+    // rerenders
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [location.search]);
 
     // Filter out nulls
     const visibleFilters = Object.entries(activeFilters).filter(
