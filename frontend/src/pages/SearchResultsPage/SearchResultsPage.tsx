@@ -99,6 +99,25 @@ const SearchResultsPage = () => {
         };
     }, [url, error]);
 
+    // Maintain page number correctly synchronized
+    useEffect(() => {
+        const pageParam = searchParams.get('page');
+
+        // Set page number to 1 if it's null/invalid/whatever
+        const rawPage = pageParam ? Number(pageParam) : 1;
+
+        const hasCursor = searchParams.has('cursor');
+
+        let safePage = 1;
+
+        // Avoid having a page number > 1 without cursor
+        if (Number.isFinite(rawPage) && rawPage > 1 && hasCursor) {
+            safePage = rawPage;
+        }
+
+        setPage(safePage);
+    }, [searchParams]);
+
     // Will navigate to a new URL, triggering a refresh/fetch
     const handleNext = () => {
         if (!nextCursor) return;
@@ -129,24 +148,9 @@ const SearchResultsPage = () => {
         navigate(-1);
     };
 
-    // Maintain page number correctly synchronized
-    useEffect(() => {
-        const pageParam = searchParams.get('page');
-
-        // Set page number to 1 if it's null/invalid/whatever
-        const rawPage = pageParam ? Number(pageParam) : 1;
-
-        const hasCursor = searchParams.has('cursor');
-
-        let safePage = 1;
-
-        // Avoid having a page number > 1 without cursor
-        if (Number.isFinite(rawPage) && rawPage > 1 && hasCursor) {
-            safePage = rawPage;
-        }
-
-        setPage(safePage);
-    }, [searchParams]);
+    const handleBack = () => {
+        navigate(-1);
+    };
 
     if (isLoading) {
         return (
@@ -158,15 +162,16 @@ const SearchResultsPage = () => {
 
     if (entries.length === 0) {
         return (
-            <VStack>
+            <VStack align="center" className={styles.body} gap={'xl'}>
                 <ActiveFilters filters={visibleFilters} />
-                <p>No entries found</p>
+                <p className={styles.noResultsFoundText}>No entries found...</p>
+                <StdButton onClick={handleBack}>Go Back</StdButton>
             </VStack>
         );
     }
 
     return (
-        <VStack align="center" style={{ marginTop: '2rem' }}>
+        <VStack align="center" className={styles.body}>
             {visibleFilters.length > 0 && (
                 <ActiveFilters filters={visibleFilters} />
             )}
