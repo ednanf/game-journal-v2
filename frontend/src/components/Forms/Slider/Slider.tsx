@@ -56,7 +56,7 @@ function Slider({
                         {value === null ? '–' : value}
                     </span>
 
-                    {value && !disabled && (
+                    {value !== null && !disabled && (
                         <ClearSliderValueButton onClick={onClear} />
                     )}
                 </div>

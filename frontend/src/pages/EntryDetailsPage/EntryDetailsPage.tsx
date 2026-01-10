@@ -23,6 +23,7 @@ import type { EntryFormData } from '../../types/entryForm.ts';
 import { API_BASE_URL } from '../../config/apiURL.ts';
 import LoadingBar from '../../components/LoadingBar/LoadingBar.tsx';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal.tsx';
+import makeClearHandler from '../../utils/makeClearHandler.ts';
 
 interface PatchResponse {
     message: string;
@@ -103,6 +104,14 @@ const EntryDetailsPage = () => {
         ...formData,
         rating: Number(formData.rating),
     };
+
+    const handleClearTitle = makeClearHandler(setFormData, 'title', '');
+
+    const handleClearPlatform = makeClearHandler(setFormData, 'platform', null);
+
+    const handleClearStatus = makeClearHandler(setFormData, 'status', null);
+
+    const handleClearRating = makeClearHandler(setFormData, 'rating', null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -186,6 +195,7 @@ const EntryDetailsPage = () => {
                             value={formData.title}
                             placeholder="Enter a title..."
                             onChange={handleChange}
+                            onClear={handleClearTitle}
                             error={errors.title}
                         />
 
@@ -194,10 +204,11 @@ const EntryDetailsPage = () => {
                             id="platform"
                             name="platform"
                             size={1}
-                            value={formData.platform}
+                            value={formData.platform ?? ''}
                             values={gamingPlatforms}
                             placeholder="Select a platform..."
                             onChange={handleChange}
+                            onClear={handleClearPlatform}
                             error={errors.platform}
                         />
 
@@ -206,10 +217,11 @@ const EntryDetailsPage = () => {
                             id="status"
                             name="status"
                             size={1}
-                            value={formData.status}
+                            value={formData.status ?? ''}
                             values={gameStatus}
                             placeholder="Select status..."
                             onChange={handleChange}
+                            onClear={handleClearStatus}
                             error={errors.status}
                         />
 
@@ -231,6 +243,7 @@ const EntryDetailsPage = () => {
                             max={10}
                             value={formData.rating}
                             onChange={handleChange}
+                            onClear={handleClearRating}
                             disabled={formData.status !== 'completed'}
                         />
 
