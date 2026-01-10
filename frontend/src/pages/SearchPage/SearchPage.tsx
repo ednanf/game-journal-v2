@@ -17,6 +17,7 @@ import type { DateField, SearchFormData } from '../../types/search.ts';
 
 import '../shared.css';
 import SearchResultsPage from '../SearchResultsPage/SearchResultsPage.tsx';
+import makeClearHandler from '../../utils/makeClearHandler.ts';
 
 // TODO: clear search filters UI
 
@@ -36,9 +37,6 @@ const SearchPage = () => {
 
     // Switch between "form mode" and "results mode" if the URL has parameters or not
     const hasSearchParams = searchParams.size > 0;
-
-    // Cosmetic value that does not go to the database/query
-    const DEFAULT_RATING = 5;
 
     const isFormReady =
         formData.title.trim() ||
@@ -86,33 +84,13 @@ const SearchPage = () => {
         }));
     };
 
-    const handleClearTitle = () => {
-        setFormData((prev) => ({
-            ...prev,
-            title: '',
-        }));
-    };
+    const handleClearTitle = makeClearHandler(setFormData, 'title', '');
 
-    const handleClearPlatform = () => {
-        setFormData((prev) => ({
-            ...prev,
-            platform: null,
-        }));
-    };
+    const handleClearPlatform = makeClearHandler(setFormData, 'platform', null);
 
-    const handleClearStatus = () => {
-        setFormData((prev) => ({
-            ...prev,
-            status: null,
-        }));
-    };
+    const handleClearStatus = makeClearHandler(setFormData, 'status', null);
 
-    const handleClearRating = () => {
-        setFormData((prev) => ({
-            ...prev,
-            rating: null,
-        }));
-    };
+    const handleClearRating = makeClearHandler(setFormData, 'rating', null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

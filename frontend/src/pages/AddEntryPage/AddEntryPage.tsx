@@ -24,8 +24,6 @@ interface CreationResponse {
 // TODO: ensure new entries do not have a rating, unless they are completed
 // no default value - might have to change the backend
 
-// TODO: ADD CLEAR BUTTONS AND HANDLERS TO ALL FIELDS IN THE PROJECT
-
 const AddEntryPage: React.FC = () => {
     const {
         formData,
