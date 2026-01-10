@@ -38,11 +38,15 @@ const AddEntryPage: React.FC = () => {
 
     const navigate = useNavigate();
 
+    const requiresRating = formData.status === 'completed';
+    const hasRating = formData.rating !== null && formData.rating !== undefined;
+
     const isFormReady =
         formData.title.trim() &&
         formData.platform &&
         formData.status &&
-        formData.entryDate;
+        formData.entryDate &&
+        (!requiresRating || hasRating);
 
     // Convert rating to number (slider outputs a string)
     const payload = {

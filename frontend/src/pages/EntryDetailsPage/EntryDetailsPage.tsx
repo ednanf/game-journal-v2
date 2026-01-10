@@ -59,11 +59,15 @@ const EntryDetailsPage = () => {
     // Journal entry ID
     const { id } = useParams<{ id: string }>();
 
+    const requiresRating = formData.status === 'completed';
+    const hasRating = formData.rating !== null && formData.rating !== undefined;
+
     const isFormReady =
         formData.title.trim() &&
         formData.platform &&
         formData.status &&
-        formData.entryDate;
+        formData.entryDate &&
+        (!requiresRating || hasRating);
 
     const navigate = useNavigate();
 
