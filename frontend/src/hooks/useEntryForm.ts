@@ -5,9 +5,9 @@ export const useEntryForm = (initialData?: Partial<EntryFormData>) => {
     // State that covers both new entries and edited ones
     const [formData, setFormData] = useState<EntryFormData>({
         title: '',
-        platform: '',
-        status: 'started',
-        rating: 5,
+        platform: null,
+        status: null,
+        rating: null,
         entryDate: new Date(),
         ...initialData, // this allows EditEntryPage pre-fill
     });

@@ -2,9 +2,9 @@ import type { StatusType } from './entry.ts';
 
 export type EntryFormData = {
     title: string;
-    platform: string;
-    status: StatusType;
-    rating: number;
+    platform: string | null;
+    status: StatusType | null;
+    rating: number | null;
     entryDate: Date | null;
 };
 
