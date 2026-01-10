@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { VStack } from 'react-swiftstacks';
 
 import InputField from '../../components/Forms/InputField/InputField.tsx';
@@ -7,26 +8,27 @@ import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 
 import logo from '../../assets/logo.png';
 
+import { postUnwrapped } from '../../utils/axiosInstance.ts';
+import makeClearHandler from '../../utils/makeClearHandler.ts';
+
 import '../shared.css';
-import {postUnwrapped} from '../../utils/axiosInstance.ts';
-import { toast } from 'react-toastify';
 
 type FormData = {
-    email: string,
-    password: string,
-    confirmPassword: string,
-}
+    email: string;
+    password: string;
+    confirmPassword: string;
+};
 
 type RegistrationResponse = {
-    message: string,
-    id: string,
-    email: string,
-    token: string,
-}
+    message: string;
+    id: string;
+    email: string;
+    token: string;
+};
 
 type ApiError = {
-    message: string,
-}
+    message: string;
+};
 
 const RegistrationPage = () => {
     const [formData, setFormData] = useState<FormData>({
@@ -88,7 +90,7 @@ const RegistrationPage = () => {
         if (name === 'password' || name === 'confirmPassword') {
             const password = name === 'password' ? value : formData.password;
             const confirmPassword =
-                      name === 'confirmPassword' ? value : formData.confirmPassword;
+                name === 'confirmPassword' ? value : formData.confirmPassword;
 
             if (confirmPassword && password !== confirmPassword) {
                 setErrors({
@@ -100,6 +102,16 @@ const RegistrationPage = () => {
             }
         }
     };
+
+    const handleClearEmail = makeClearHandler(setFormData, 'email', '');
+
+    const handleClearPassword = makeClearHandler(setFormData, 'password', '');
+
+    const handleClearPasswordConfirmation = makeClearHandler(
+        setFormData,
+        'confirmPassword',
+        '',
+    );
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -158,49 +170,59 @@ const RegistrationPage = () => {
 
     return (
         <VStack>
-
             <VStack align={'center'} style={{ marginTop: '1rem' }}>
-                <img src={logo} style={{ height: '100px' }}
-                     alt={'Game Journal logo'}></img>
+                <img
+                    src={logo}
+                    style={{ height: '100px' }}
+                    alt={'Game Journal logo'}
+                ></img>
                 <h2>Create your account</h2>
             </VStack>
 
             <form onSubmit={handleSubmit}>
-
-                <VStack gap={'lg'} style={{ maxWidth: '400px' }} padding={'md'}
-                        className="formVStack">
-
-                    <InputField type={'email'}
-                                label={'Email'}
-                                id={'email'}
-                                name={'email'}
-                                value={formData.email}
-                                placeholder={'jon@doe.com'}
-                                onChange={handleChange}
-                                required={true}
-                                error={errors.email}
+                <VStack
+                    gap={'lg'}
+                    style={{ maxWidth: '400px' }}
+                    padding={'md'}
+                    className="formVStack"
+                >
+                    <InputField
+                        type={'email'}
+                        label={'Email'}
+                        id={'email'}
+                        name={'email'}
+                        value={formData.email}
+                        placeholder={'jon@doe.com'}
+                        onChange={handleChange}
+                        onClear={handleClearEmail}
+                        required={true}
+                        error={errors.email}
                     />
 
-                    <InputField type={'password'}
-                                label={'Password'}
-                                id={'password'}
-                                name={'password'}
-                                value={formData.password}
-                                placeholder={'Minimum of 6 characters...'}
-                                onChange={handleChange}
-                                required={true}
-                                error={errors.password}
+                    <InputField
+                        type={'password'}
+                        label={'Password'}
+                        id={'password'}
+                        name={'password'}
+                        value={formData.password}
+                        placeholder={'Minimum of 6 characters...'}
+                        onChange={handleChange}
+                        onClear={handleClearPassword}
+                        required={true}
+                        error={errors.password}
                     />
 
-                    <InputField type={'password'}
-                                label={'Confirm Password'}
-                                id={'confirmPassword'}
-                                name={'confirmPassword'}
-                                value={formData.confirmPassword}
-                                placeholder={'Minimum of 6 characters...'}
-                                onChange={handleChange}
-                                required={true}
-                                error={errors.confirmPassword}
+                    <InputField
+                        type={'password'}
+                        label={'Confirm Password'}
+                        id={'confirmPassword'}
+                        name={'confirmPassword'}
+                        value={formData.confirmPassword}
+                        placeholder={'Minimum of 6 characters...'}
+                        onChange={handleChange}
+                        onClear={handleClearPasswordConfirmation}
+                        required={true}
+                        error={errors.confirmPassword}
                     />
 
                     <VStack align={'center'} style={{ marginTop: '1rem' }}>
@@ -212,21 +234,16 @@ const RegistrationPage = () => {
                             Sign Up
                         </StdButton>
                     </VStack>
-
                 </VStack>
-
             </form>
 
             <VStack align={'center'} style={{ marginTop: '3rem' }}>
-
                 <p>
                     <Link to={'/login'} className="lplinks">
                         Already have an account? Log in here
                     </Link>
                 </p>
-
             </VStack>
-
         </VStack>
     );
 };

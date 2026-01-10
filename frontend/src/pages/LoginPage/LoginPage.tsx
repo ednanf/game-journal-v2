@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { VStack } from 'react-swiftstacks';
 
 import InputField from '../../components/Forms/InputField/InputField.tsx';
@@ -7,9 +8,10 @@ import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 
 import logo from '../../assets/logo.png';
 
-import '../shared.css';
 import { postUnwrapped } from '../../utils/axiosInstance.ts';
-import { toast } from 'react-toastify';
+import makeClearHandler from '../../utils/makeClearHandler.ts';
+
+import '../shared.css';
 
 type FormData = {
     email: string;
@@ -70,6 +72,10 @@ const LoginPage = () => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
+
+    const handleClearEmail = makeClearHandler(setFormData, 'email', '');
+
+    const handleClearPassword = makeClearHandler(setFormData, 'password', '');
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -150,6 +156,7 @@ const LoginPage = () => {
                         value={formData.email}
                         placeholder={'jon@doe.com'}
                         onChange={handleChange}
+                        onClear={handleClearEmail}
                         required={true}
                         error={errors.email}
                     />
@@ -162,6 +169,7 @@ const LoginPage = () => {
                         value={formData.password}
                         placeholder={'Your password goes here...'}
                         onChange={handleChange}
+                        onClear={handleClearPassword}
                         required={true}
                         error={errors.password}
                     />
