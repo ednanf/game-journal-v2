@@ -1,4 +1,4 @@
-import type { StatusType } from './entryForm.ts';
+import type { StatusType } from './entry.ts';
 
 export type DateField = 'startDate' | 'endDate';
 
