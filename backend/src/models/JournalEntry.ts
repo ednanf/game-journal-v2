@@ -44,7 +44,6 @@ const journalEntrySchema = new Schema<IJournalEntry>(
             type: Number,
             min: [0, 'Rating cannot be less than 0.'],
             max: [10, 'Rating cannot be greater than 10.'],
-            default: 5,
         },
         notes: {
             type: String,

@@ -48,10 +48,17 @@ const AddEntryPage: React.FC = () => {
         formData.entryDate &&
         (!requiresRating || hasRating);
 
-    // Convert rating to number (slider outputs a string)
+    // Convert rating to number (slider outputs a string). Also ensure rating
+    // is only sent when status is "completed."
     const payload = {
-        ...formData,
-        rating: Number(formData.rating),
+        title: formData.title,
+        platform: formData.platform,
+        status: formData.status,
+        entryDate: formData.entryDate,
+        ...(formData.status === 'completed' &&
+            formData.rating != null && {
+                rating: Number(formData.rating),
+            }),
     };
 
     const handleClearTitle = makeClearHandler(setFormData, 'title', '');

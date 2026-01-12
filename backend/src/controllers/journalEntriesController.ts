@@ -272,6 +272,51 @@ const patchJournalEntry = async (
         // Create a safe payload to loop through
         const safeUpdatePayload: Partial<JournalEntryPatchBody> = {};
 
+        // Grab the entry to be updated, if it exists
+        const existingEntry = await JournalEntry.findOne({
+            _id: entryId,
+            createdBy: userId,
+        });
+
+        if (!existingEntry) {
+            next(new NotFoundError('Journal entry was not found.'));
+            return;
+        }
+
+        // Necessary to avoid having an entry with status updated to something
+        // that's not completed, and still maintain a rating
+        const nextStatus = Object.prototype.hasOwnProperty.call(
+            safeUpdatePayload,
+            'status',
+        )
+            ? safeUpdatePayload.status
+            : existingEntry.status;
+
+        const nextRating = Object.prototype.hasOwnProperty.call(
+            safeUpdatePayload,
+            'rating',
+        )
+            ? safeUpdatePayload.rating
+            : existingEntry.rating;
+
+        if (nextStatus !== 'completed' && nextRating !== undefined) {
+            next(
+                new BadRequestError(
+                    'Rating is only allowed when status is completed.',
+                ),
+            );
+            return;
+        }
+
+        if (nextStatus === 'completed' && nextRating === undefined) {
+            next(
+                new BadRequestError(
+                    'Rating is required when status is completed.',
+                ),
+            );
+            return;
+        }
+
         // Add only allowed properties to safeUpdatePayload
         for (const key of allowedFields) {
             if (Object.prototype.hasOwnProperty.call(updatePayload, key)) {

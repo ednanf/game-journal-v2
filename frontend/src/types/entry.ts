@@ -12,7 +12,7 @@ export type JournalEntry = {
     entryDate: string; // needs to be converted to ISO as shown above
     platform: string;
     status: StatusType;
-    rating: number;
+    rating: number | null;
     createdAt: string;
     updatedAt: string;
 };

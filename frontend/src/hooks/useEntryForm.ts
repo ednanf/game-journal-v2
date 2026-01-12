@@ -21,10 +21,29 @@ export const useEntryForm = (initialData?: Partial<EntryFormData>) => {
     ) => {
         const { name, value } = e.target;
 
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        setFormData((prev): EntryFormData => {
+            if (name === 'status') {
+                const nextStatus = value as EntryFormData['status'];
+
+                if (nextStatus !== 'completed') {
+                    return {
+                        ...prev,
+                        status: nextStatus,
+                        rating: null,
+                    };
+                }
+
+                return {
+                    ...prev,
+                    status: nextStatus,
+                };
+            }
+
+            return {
+                ...prev,
+                [name]: value,
+            } as EntryFormData;
+        });
     };
 
     // Date change requires a separate handler because date picker doesn't emit a normal event
