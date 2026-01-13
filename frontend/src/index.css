@@ -173,6 +173,8 @@ Link {
 
     /* Loading Bar */
     --loading-bar-line-light: var(--color-text-muted);
+    --loading-bar-animation-box-shadow:
+        8px 8px 14px #c5c5c5, -8px -8px 14px #ffffff;
 
     /* Modal window */
     --modal-backdrop-light: rgba(224, 229, 236, 0.65);

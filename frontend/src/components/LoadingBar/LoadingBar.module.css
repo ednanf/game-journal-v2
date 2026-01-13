@@ -1,28 +1,65 @@
-/* HTML: <div class="loader"></div> */
-.loader {
-    width: 50px;
-    aspect-ratio: 1;
-    display: grid;
-    border: 4px solid #0000;
+.item1,
+.item2,
+.item3 {
+    position: absolute;
+    background-color: transparent;
+    left: calc(50% - (var(--size) / 2));
+    top: calc(50% - (var(--size) / 2));
+    height: var(--size);
+    width: var(--size);
     border-radius: 50%;
-    border-right-color: var(--loading-bar-line);
-    animation: l15 1s infinite linear;
 }
-.loader::before,
-.loader::after {
-    content: '';
-    grid-area: 1/1;
-    margin: 2px;
-    border: inherit;
-    border-radius: 50%;
-    animation: l15 2s infinite;
+
+.loader .item1 {
+    --size: 180px;
+    animation: size1_1 1.5s infinite alternate;
+    z-index: 1;
 }
-.loader::after {
-    margin: 8px;
-    animation-duration: 3s;
+
+.loader .item2 {
+    --size: 150px;
+    animation: size1_2 1.5s infinite alternate;
+    z-index: 2;
 }
-@keyframes l15 {
+
+.loader .item3 {
+    --size: 120px;
+    animation: size1_3 1.5s infinite alternate;
+    z-index: 3;
+}
+
+@keyframes size1_1 {
+    0%,
+    10% {
+        transform: scale(0);
+    }
+
     100% {
-        transform: rotate(1turn);
+        transform: scale(1);
+        box-shadow: var(--loading-bar-animation-box-shadow);
+    }
+}
+
+@keyframes size1_2 {
+    0%,
+    40% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: var(--loading-bar-animation-box-shadow);
+    }
+}
+
+@keyframes size1_3 {
+    0%,
+    70% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: var(--loading-bar-animation-box-shadow);
     }
 }
