@@ -7,6 +7,7 @@ import EntryCard from '../../components/EntryCard/EntryCard.tsx';
 import LoadingCircle from '../../components/LoadingCircle/LoadingCircle.tsx';
 
 import type { JournalEntry, PaginatedResponse } from '../../types/entry.ts';
+import LoadingDots from '../../components/LoadingDots/LoadingDots.tsx';
 
 // Backend sends a string that should be converted *before* going into as prop
 // const entry = {
@@ -150,7 +151,7 @@ const JournalPage = () => {
                                 align={'center'}
                                 style={{ marginBottom: '2rem' }}
                             >
-                                <LoadingCircle />
+                                <LoadingDots />
                             </VStack>
                         </div>
                     )}

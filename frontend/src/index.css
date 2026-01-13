@@ -173,8 +173,11 @@ Link {
 
     /* Loading Bar */
     --loading-bar-line-light: var(--color-text-muted);
-    --loading-bar-animation-box-shadow:
+    --loading-circle-animation-box-shadow:
         8px 8px 14px #c5c5c5, -8px -8px 14px #ffffff;
+    --loading-dots-animation-box-shadow:
+        7px 7px 12px rgba(110, 110, 110, 0.95),
+        -4px -4px 8px rgba(255, 255, 255, 0.9);
 
     /* Modal window */
     --modal-backdrop-light: rgba(224, 229, 236, 0.65);
