@@ -1,6 +1,6 @@
-import styles from './LoadingBar.module.css';
+import styles from './LoadingCircle.module.css';
 
-const LoadingBar = () => {
+const LoadingCircle = () => {
     return (
         <div className={styles.loader}>
             <div className={styles.item1}></div>
@@ -10,4 +10,4 @@ const LoadingBar = () => {
     );
 };
 
-export default LoadingBar;
+export default LoadingCircle;

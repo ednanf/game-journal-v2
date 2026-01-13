@@ -4,7 +4,7 @@ import { getUnwrapped } from '../../utils/axiosInstance.ts';
 import { VStack } from 'react-swiftstacks';
 
 import EntryCard from '../../components/EntryCard/EntryCard.tsx';
-import LoadingBar from '../../components/LoadingBar/LoadingBar.tsx';
+import LoadingCircle from '../../components/LoadingCircle/LoadingCircle.tsx';
 
 import type { JournalEntry, PaginatedResponse } from '../../types/entry.ts';
 
@@ -128,7 +128,7 @@ const JournalPage = () => {
         <VStack align={'center'} style={{ marginTop: '2rem' }}>
             {journalEntries.length === 0 && initialLoading ? (
                 <div className="fullscreenLoader">
-                    <LoadingBar />
+                    <LoadingCircle />
                 </div>
             ) : (
                 <>
@@ -150,7 +150,7 @@ const JournalPage = () => {
                                 align={'center'}
                                 style={{ marginBottom: '2rem' }}
                             >
-                                <LoadingBar />
+                                <LoadingCircle />
                             </VStack>
                         </div>
                     )}

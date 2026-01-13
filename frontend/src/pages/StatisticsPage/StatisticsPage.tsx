@@ -7,7 +7,7 @@ import { getUnwrapped } from '../../utils/axiosInstance.ts';
 import LifetimeCard from '../../components/Statistics/LifetimeCard/LifetimeCard.tsx';
 import YearlyCard from '../../components/Statistics/YearlyCard/YearlyCard.tsx';
 import InsetDivider from '../../components/InsetDivider/InsetDivider.tsx';
-import LoadingBar from '../../components/LoadingBar/LoadingBar.tsx';
+import LoadingCircle from '../../components/LoadingCircle/LoadingCircle.tsx';
 
 type Statistics = {
     lifetime: {
@@ -75,7 +75,7 @@ const StatisticsPage = () => {
         <VStack align={'center'} style={{ marginTop: '2rem' }}>
             {isLoading ? (
                 <div className="fullscreenLoader">
-                    <LoadingBar />
+                    <LoadingCircle />
                 </div>
             ) : (
                 <>

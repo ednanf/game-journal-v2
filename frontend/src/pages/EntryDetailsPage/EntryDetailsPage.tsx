@@ -21,7 +21,7 @@ import { gamingPlatforms } from '../../data/platforms.ts';
 
 import type { EntryFormData } from '../../types/entryForm.ts';
 import { API_BASE_URL } from '../../config/apiURL.ts';
-import LoadingBar from '../../components/LoadingBar/LoadingBar.tsx';
+import LoadingCircle from '../../components/LoadingCircle/LoadingCircle.tsx';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal.tsx';
 import makeClearHandler from '../../utils/makeClearHandler.ts';
 
@@ -182,7 +182,7 @@ const EntryDetailsPage = () => {
         <VStack>
             {initialLoading || !formData ? (
                 <div className="fullscreenLoader">
-                    <LoadingBar />
+                    <LoadingCircle />
                 </div>
             ) : (
                 <form onSubmit={handleSubmit}>

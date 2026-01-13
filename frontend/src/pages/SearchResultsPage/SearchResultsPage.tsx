@@ -5,7 +5,7 @@ import { HStack, VStack } from 'react-swiftstacks';
 
 import { getUnwrapped } from '../../utils/axiosInstance.ts';
 
-import LoadingBar from '../../components/LoadingBar/LoadingBar.tsx';
+import LoadingCircle from '../../components/LoadingCircle/LoadingCircle.tsx';
 import EntryCard from '../../components/EntryCard/EntryCard.tsx';
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 
@@ -159,7 +159,7 @@ const SearchResultsPage = () => {
     if (isLoading) {
         return (
             <div className="fullscreenLoader">
-                <LoadingBar />
+                <LoadingCircle />
             </div>
         );
     }
