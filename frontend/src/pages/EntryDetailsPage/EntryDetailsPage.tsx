@@ -37,7 +37,7 @@ type EntryDetailsApiResponse = {
         platform: string;
         status: EntryFormData['status'];
         entryDate: string;
-        rating: number;
+        rating?: number;
     };
 };
 
@@ -90,7 +90,7 @@ const EntryDetailsPage = () => {
                     title: entry.title,
                     platform: entry.platform,
                     status: entry.status,
-                    rating: entry.rating,
+                    rating: entry.rating ?? null,
                     entryDate: new Date(entry.entryDate),
                 });
             } catch (e) {
@@ -104,9 +104,10 @@ const EntryDetailsPage = () => {
     }, [id, setFormData]);
 
     // Convert rating to number (slider outputs a string)
+    // The condition formating in rating is important to prevent sending 0
     const payload = {
         ...formData,
-        rating: Number(formData.rating),
+        ...(formData.rating !== null && { rating: formData.rating }),
     };
 
     const handleClearTitle = makeClearHandler(setFormData, 'title', '');
