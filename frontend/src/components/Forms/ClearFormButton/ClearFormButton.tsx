@@ -13,6 +13,7 @@ const ClearFormButton = ({ onClick }: ClearFormButtonProps) => {
             aria-label={'Clear button'}
             className={styles.clearButton}
             onClick={onClick}
+            tabIndex={-1}
         >
             ×
         </button>

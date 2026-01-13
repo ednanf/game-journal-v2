@@ -13,6 +13,7 @@ const ClearSliderValueButton = ({ onClick }: ClearSliderValueButtonProps) => {
             aria-label={'Clear button'}
             className={styles.clearButton}
             onClick={onClick}
+            tabIndex={-1}
         >
             ×
         </button>
