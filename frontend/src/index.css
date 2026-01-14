@@ -135,7 +135,7 @@ Link {
     --color-text-secondary-light: #5b5b5b;
     --color-text-muted-light: #888888;
 
-    /* Highlights */
+    /* Highlights / accents */
     --color-accent-blue-light: #00bcd4;
     --color-accent-magenta-light: #e91e63;
     --color-accent-green-light: #4caf50;
@@ -173,9 +173,9 @@ Link {
 
     /* Loading Bar */
     --loading-bar-line-light: var(--color-text-muted);
-    --loading-circle-animation-box-shadow:
+    --loading-circle-animation-box-shadow-light:
         8px 8px 14px #c5c5c5, -8px -8px 14px #ffffff;
-    --loading-dots-animation-box-shadow:
+    --loading-dots-animation-box-shadow-light:
         7px 7px 12px rgba(110, 110, 110, 0.95),
         -4px -4px 8px rgba(255, 255, 255, 0.9);
 
@@ -189,31 +189,147 @@ Link {
 
     /* Semantic mapping */
     --color-bg: var(--color-bg-light);
+
     --color-text-primary: var(--color-text-primary-light);
     --color-text-secondary: var(--color-text-secondary-light);
     --color-text-muted: var(--color-text-muted-light);
+
     --color-accent-blue: var(--color-accent-blue-light);
     --color-accent-magenta: var(--color-accent-magenta-light);
     --color-accent-green: var(--color-accent-green-light);
     --color-accent-purple: var(--color-accent-purple-light);
     --color-accent-yellow: var(--color-accent-yellow-light);
+
     --color-glow-blue: var(--color-glow-blue-light);
     --color-glow-magenta: var(--color-glow-magenta-light);
     --color-glow-green: var(--color-glow-green-light);
     --color-glow-purple: var(--color-glow-purple-light);
     --color-glow-yellow: var(--color-glow-yellow-light);
+
     --input-field-background: var(--input-field-background-light);
     --input-field-box-shadow: var(--input-field-box-shadow-light);
     --input-field-background-focus: var(--input-field-background-focus-light);
     --input-field-box-shadow-focus: var(--input-field-box-shadow-focus-light);
+
     --stdbutton-color-disabled: var(--stdbutton-color-disabled-light);
     --stdbutton-color-hover: var(--stdbutton-color-hover-light);
     --stdbutton-hover-shadow: var(--stdbutton-hover-shadow-light);
+
     --entry-card-chevron: var(--entry-card-chevron-light);
+
     --loading-bar-line: var(--loading-bar-line-light);
+    --loading-circle-animation-box-shadow: var(
+        --loading-circle-animation-box-shadow-light
+    );
+    --loading-dots-animation-box-shadow: var(
+        --loading-dots-animation-box-shadow-light
+    );
+
     --modal-backdrop: var(--modal-backdrop-light);
     --modal-box-shadow: var(--modal-box-shadow-light);
 }
 
 [data-theme='dark'] {
+    /* Background and surface */
+    --color-bg-dark: #1e2229;
+
+    /* Text */
+    --color-text-primary-dark: #e6e8eb;
+    --color-text-secondary-dark: #b5bac1;
+    --color-text-muted-dark: #7d828a;
+
+    /* Highlights / accents */
+    --color-accent-blue-dark: #4fc3d7;
+    --color-accent-magenta-dark: #f06292;
+    --color-accent-green-dark: #81c784;
+    --color-accent-purple-dark: #b39ddb;
+    --color-accent-yellow-dark: #ffd54f;
+
+    /* Glow effects */
+    --color-glow-blue-dark: 0 0 24px rgba(79, 195, 215, 0.35);
+    --color-glow-magenta-dark: 0 0 24px rgba(240, 98, 146, 0.35);
+    --color-glow-green-dark: 0 0 24px rgba(129, 199, 132, 0.35);
+    --color-glow-purple-dark: 0 0 24px rgba(179, 157, 219, 0.35);
+    --color-glow-yellow-dark: 0 0 24px rgba(255, 213, 79, 0.35);
+
+    /* Input field */
+    --input-field-background-dark: #1b1f26;
+    --input-field-box-shadow-dark:
+        inset 4px 4px 8px rgba(0, 0, 0, 0.6),
+        inset -4px -4px 8px rgba(255, 255, 255, 0.03);
+
+    --input-field-background-focus-dark: #22262e;
+    --input-field-box-shadow-focus-dark:
+        0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(255, 255, 255, 0);
+
+    /* Standard button */
+    --stdbutton-color-disabled-dark: #3a3f47;
+    --stdbutton-color-hover-dark: var(--color-accent-blue-dark);
+    --stdbutton-hover-shadow-dark: 0 0 24px rgba(79, 195, 215, 0.4);
+
+    /* Entry card */
+    --entry-card-purple-shadow-dark: 0 0 22px rgba(179, 157, 219, 0.35);
+    --entry-card-green-shadow-dark: 0 0 22px rgba(129, 199, 132, 0.35);
+    --entry-card-blue-shadow-dark: 0 0 22px rgba(79, 195, 215, 0.35);
+    --entry-card-yellow-shadow-dark: 0 0 22px rgba(255, 213, 79, 0.35);
+    --entry-card-magenta-shadow-dark: 0 0 22px rgba(240, 98, 146, 0.35);
+    --entry-card-chevron-dark: var(--color-text-muted-dark);
+
+    /* Loading bar */
+    --loading-bar-line-dark: var(--color-text-muted-dark);
+
+    --loading-circle-animation-box-shadow-dark:
+        6px 6px 12px rgba(0, 0, 0, 0.6),
+        -6px -6px 12px rgba(255, 255, 255, 0.03);
+
+    --loading-dots-animation-box-shadow-dark:
+        5px 5px 10px rgba(0, 0, 0, 0.7), -3px -3px 6px rgba(255, 255, 255, 0.04);
+
+    /* Modal */
+    --modal-backdrop-dark: rgba(30, 34, 41, 0.7);
+    --modal-box-shadow-dark:
+        inset 3px 3px 6px rgba(0, 0, 0, 0.6),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.04),
+        8px 8px 18px rgba(0, 0, 0, 0.7),
+        -8px -8px 22px rgba(255, 255, 255, 0.04);
+
+    /* Semantic remapping */
+    --color-bg: var(--color-bg-dark);
+    --color-text-primary: var(--color-text-primary-dark);
+    --color-text-secondary: var(--color-text-secondary-dark);
+    --color-text-muted: var(--color-text-muted-dark);
+
+    --color-accent-blue: var(--color-accent-blue-dark);
+    --color-accent-magenta: var(--color-accent-magenta-dark);
+    --color-accent-green: var(--color-accent-green-dark);
+    --color-accent-purple: var(--color-accent-purple-dark);
+    --color-accent-yellow: var(--color-accent-yellow-dark);
+
+    --color-glow-blue: var(--color-glow-blue-dark);
+    --color-glow-magenta: var(--color-glow-magenta-dark);
+    --color-glow-green: var(--color-glow-green-dark);
+    --color-glow-purple: var(--color-glow-purple-dark);
+    --color-glow-yellow: var(--color-glow-yellow-dark);
+
+    --input-field-background: var(--input-field-background-dark);
+    --input-field-box-shadow: var(--input-field-box-shadow-dark);
+    --input-field-background-focus: var(--input-field-background-focus-dark);
+    --input-field-box-shadow-focus: var(--input-field-box-shadow-focus-dark);
+
+    --stdbutton-color-disabled: var(--stdbutton-color-disabled-dark);
+    --stdbutton-color-hover: var(--stdbutton-color-hover-dark);
+    --stdbutton-hover-shadow: var(--stdbutton-hover-shadow-dark);
+
+    --entry-card-chevron: var(--entry-card-chevron-dark);
+
+    --loading-bar-line: var(--loading-bar-line-dark);
+    --loading-circle-animation-box-shadow: var(
+        --loading-circle-animation-box-shadow-dark
+    );
+    --loading-dots-animation-box-shadow: var(
+        --loading-dots-animation-box-shadow-dark
+    );
+
+    --modal-backdrop: var(--modal-backdrop-dark);
+    --modal-box-shadow: var(--modal-box-shadow-dark);
 }
