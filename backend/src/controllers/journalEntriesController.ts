@@ -285,19 +285,8 @@ const patchJournalEntry = async (
 
         // Necessary to avoid having an entry with status updated to something
         // that's not completed, and still maintain a rating
-        const nextStatus = Object.prototype.hasOwnProperty.call(
-            safeUpdatePayload,
-            'status',
-        )
-            ? safeUpdatePayload.status
-            : existingEntry.status;
-
-        const nextRating = Object.prototype.hasOwnProperty.call(
-            safeUpdatePayload,
-            'rating',
-        )
-            ? safeUpdatePayload.rating
-            : existingEntry.rating;
+        const nextStatus = updatePayload.status ?? existingEntry.status;
+        const nextRating = updatePayload.rating ?? existingEntry.rating;
 
         if (nextStatus !== 'completed' && nextRating !== undefined) {
             next(

@@ -103,11 +103,18 @@ const EntryDetailsPage = () => {
         void fetchEntry();
     }, [id, setFormData]);
 
-    // Convert rating to number (slider outputs a string)
-    // The condition formating in rating is important to prevent sending 0
+    // PATCH payloads should always be explicit
     const payload = {
-        ...formData,
-        ...(formData.rating !== null && { rating: formData.rating }),
+        ...(formData.title && { title: formData.title }),
+        ...(formData.platform && { platform: formData.platform }),
+        ...(formData.status && { status: formData.status }),
+        ...(formData.entryDate && { entryDate: formData.entryDate }),
+
+        // Convert rating to number (slider outputs a string)
+        // The condition formating in rating is important to prevent sending 0
+        ...(formData.rating != null && {
+            rating: Number(formData.rating),
+        }),
     };
 
     const handleClearTitle = makeClearHandler(setFormData, 'title', '');
