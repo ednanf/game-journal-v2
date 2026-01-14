@@ -12,11 +12,15 @@ import JournalPage from './pages/JournalPage/JournalPage.tsx';
 import LandingPage from './pages/LandingPage/LandingPage.tsx';
 import LoginPage from './pages/LoginPage/LoginPage.tsx';
 import RegistrationPage from './pages/RegistrationPage/RegistrationPage.tsx';
-import SettingsPage from './pages/SettingsPage/SettingsPage.tsx';
 import StatisticsPage from './pages/StatisticsPage/StatisticsPage.tsx';
+import SearchPage from './pages/SearchPage/SearchPage.tsx';
+import {
+    SettingsLayout,
+    SettingsPage,
+    AccountSettingsPage,
+} from './pages/SettingsPage/index.ts';
 
 import './index.css';
-import SearchPage from './pages/SearchPage/SearchPage.tsx';
 
 // "handle" is used in AppShell.tsx to pass props to the Header.tsx component
 const router = createBrowserRouter([
@@ -55,8 +59,19 @@ const router = createBrowserRouter([
             },
             {
                 path: 'settings',
-                element: <SettingsPage />,
+                element: <SettingsLayout />,
                 handle: { title: 'Settings' },
+                children: [
+                    {
+                        index: true,
+                        element: <SettingsPage />,
+                    },
+                    {
+                        path: 'account',
+                        element: <AccountSettingsPage />,
+                        handle: { title: 'Account settings' },
+                    },
+                ],
             },
             {
                 path: 'search',
