@@ -9,8 +9,6 @@ import { ToastContainer } from 'react-toastify';
 import Header from './Header/Header.tsx';
 import NavBar from './NavBar/NavBar.tsx';
 
-import appLogo from '../../assets/logo.png';
-
 import styles from './AppShell.module.css';
 
 type RouteHandle = {
@@ -36,7 +34,7 @@ const AppShell = () => {
         <div className={styles.layout}>
             {showLayout && (
                 <header>
-                    <Header title={title}></Header>
+                    <Header title={title} children={undefined}></Header>
                 </header>
             )}
 

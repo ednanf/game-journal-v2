@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 
 const SettingsLayout = () => {
     return (
-        <VStack padding={'md'} align={'center'}>
+        <VStack padding={'md'} align={'center'} style={{ marginTop: '2rem' }}>
             {/* shared settings UI can go here */}
             <Outlet />
         </VStack>

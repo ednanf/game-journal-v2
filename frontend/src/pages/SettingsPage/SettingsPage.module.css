@@ -1,0 +1,30 @@
+p {
+    color: var(--color-text-muted);
+}
+
+.currentUser {
+    margin-top: 2rem;
+}
+
+.githubFooter {
+    position: fixed;
+    bottom: 130px; /* match your NavBar height */
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    pointer-events: none; /* optional */
+}
+
+.githubLink,
+.githubLink:link,
+.githubLink:visited {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    pointer-events: auto;
+    text-shadow: var(--color-glow-blue);
+}
+
+.githubLink:hover {
+    color: var(--color-accent-blue);
+}
