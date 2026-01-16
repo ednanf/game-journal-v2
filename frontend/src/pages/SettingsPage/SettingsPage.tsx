@@ -12,12 +12,16 @@
 import { VStack } from 'react-swiftstacks';
 import { useNavigate, Link } from 'react-router-dom';
 
+import { useTheme } from '../../hooks/useTheme.ts';
+
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 
 import styles from './SettingsPage.module.css';
 
 const SettingsPage = () => {
     const navigate = useNavigate();
+
+    const { toggleTheme } = useTheme();
 
     const userEmail = localStorage.getItem('email');
 
@@ -28,10 +32,14 @@ const SettingsPage = () => {
     return (
         <VStack>
             <VStack gap={'lg'} align={'center'}>
-                <StdButton width={'200px'}>Toggle dark mode</StdButton>
+                <StdButton width={'200px'} onClick={toggleTheme}>
+                    Toggle dark mode
+                </StdButton>
+
                 <StdButton width={'200px'} onClick={handleAccountSettingsClick}>
                     Account settings
                 </StdButton>
+
                 <StdButton width={'200px'}>Log out</StdButton>
             </VStack>
 
