@@ -314,71 +314,134 @@ Link {
 }
 
 [data-theme='dark'] {
+    /* General rules ---------------------------------------------------------*/
+    font-family: Inter, sans-serif;
+    line-height: 1;
+    font-weight: 400;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* General Colors --------------------------------------------------------*/
+
     /* Background and surface */
-    --color-bg-dark: #1e2229;
+    --color-bg-dark: #1e2228;
 
     /* Text */
-    --color-text-primary-dark: #e6e8eb;
-    --color-text-secondary-dark: #b5bac1;
-    --color-text-muted-dark: #7d828a;
+    --color-text-primary-dark: #e3e6ea;
+    --color-text-secondary-dark: #b5bbc4;
+    --color-text-muted-dark: #7d8490;
 
     /* Highlights / accents */
-    --color-accent-blue-dark: #4fc3d7;
+    --color-accent-blue-dark: #4dd0e1;
     --color-accent-magenta-dark: #f06292;
-    --color-accent-green-dark: #81c784;
+    --color-accent-green-dark: #66bb6a;
     --color-accent-purple-dark: #b39ddb;
     --color-accent-yellow-dark: #ffd54f;
 
-    /* Glow effects */
-    --color-glow-blue-dark: 0 0 24px rgba(79, 195, 215, 0.35);
-    --color-glow-magenta-dark: 0 0 24px rgba(240, 98, 146, 0.35);
-    --color-glow-green-dark: 0 0 24px rgba(129, 199, 132, 0.35);
-    --color-glow-purple-dark: 0 0 24px rgba(179, 157, 219, 0.35);
-    --color-glow-yellow-dark: 0 0 24px rgba(255, 213, 79, 0.35);
+    /* Glow effect */
+    --color-glow-blue-dark: 0 0 30px rgba(77, 208, 225, 0.35);
+    --color-glow-magenta-dark: 0 0 30px rgba(240, 98, 146, 0.35);
+    --color-glow-green-dark: 0 0 30px rgba(102, 187, 106, 0.35);
+    --color-glow-purple-dark: 0 0 30px rgba(179, 157, 219, 0.35);
+    --color-glow-yellow-dark: 0 0 30px rgba(255, 213, 79, 0.35);
+
+    /* Component rules -------------------------------------------------------*/
 
     /* Input field */
-    --input-field-background-dark: #1b1f26;
+    --input-field-background-dark: #1b1f24;
     --input-field-box-shadow-dark:
         inset 4px 4px 8px rgba(0, 0, 0, 0.6),
-        inset -4px -4px 8px rgba(255, 255, 255, 0.03);
-
-    --input-field-background-focus-dark: #22262e;
+        inset -4px -4px 8px rgba(255, 255, 255, 0.04);
+    --input-field-background-focus-dark: #22262c;
     --input-field-box-shadow-focus-dark:
-        0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(255, 255, 255, 0);
+        inset 2px 2px 6px rgba(0, 0, 0, 0.7),
+        inset -2px -2px 6px rgba(255, 255, 255, 0.06);
 
     /* Standard button */
-    --stdbutton-color-disabled-dark: #3a3f47;
+    --stdbutton-box-shadow-dark:
+        6px 6px 12px rgba(0, 0, 0, 0.6),
+        -6px -6px 12px rgba(255, 255, 255, 0.04);
+    --stdbutton-box-shadow-active-dark:
+        inset 4px 4px 8px rgba(0, 0, 0, 0.6),
+        inset -4px -4px 8px rgba(255, 255, 255, 0.05);
+    --stdbutton-color-disabled-dark: #555b65;
     --stdbutton-color-hover-dark: var(--color-accent-blue-dark);
-    --stdbutton-hover-shadow-dark: 0 0 24px rgba(79, 195, 215, 0.4);
+    --stdbutton-hover-shadow-dark: var(--color-glow-blue-dark);
+
+    /* NavBar */
+    --navbar-box-shadow-dark:
+        8px 8px 16px rgba(0, 0, 0, 0.6),
+        -8px -8px 16px rgba(255, 255, 255, 0.03);
+
+    /* NavBar button */
+    --navbar-button-box-shadow-dark:
+        6px 6px 12px rgba(0, 0, 0, 0.6),
+        -6px -6px 12px rgba(255, 255, 255, 0.04);
+    --navbar-button-box-shadow-active-dark:
+        inset 4px 4px 8px rgba(0, 0, 0, 0.6),
+        inset -4px -4px 8px rgba(255, 255, 255, 0.05);
+    --navbar-button-box-shadow-pressed-dark:
+        inset 4px 4px 8px rgba(0, 0, 0, 0.6),
+        inset -4px -4px 8px rgba(255, 255, 255, 0.05);
 
     /* Entry card */
-    --entry-card-purple-shadow-dark: 0 0 22px rgba(179, 157, 219, 0.35);
-    --entry-card-green-shadow-dark: 0 0 22px rgba(129, 199, 132, 0.35);
-    --entry-card-blue-shadow-dark: 0 0 22px rgba(79, 195, 215, 0.35);
-    --entry-card-yellow-shadow-dark: 0 0 22px rgba(255, 213, 79, 0.35);
-    --entry-card-magenta-shadow-dark: 0 0 22px rgba(240, 98, 146, 0.35);
+    --entry-card-box-shadow-dark:
+        8px 8px 16px rgba(0, 0, 0, 0.55),
+        -8px -8px 16px rgba(255, 255, 255, 0.035);
+    --entry-card-box-shadow-active-dark:
+        inset 6px 6px 12px rgba(0, 0, 0, 0.6),
+        inset -6px -6px 12px rgba(255, 255, 255, 0.04);
     --entry-card-chevron-dark: var(--color-text-muted-dark);
+    --entry-card-status-badge-box-shadow-dark:
+        inset 2px 2px 5px rgba(0, 0, 0, 0.6),
+        inset -2px -2px 5px rgba(255, 255, 255, 0.04);
+    --entry-card-purple-shadow-dark: var(--color-glow-purple-dark);
+    --entry-card-green-shadow-dark: var(--color-glow-green-dark);
+    --entry-card-blue-shadow-dark: var(--color-glow-blue-dark);
+    --entry-card-yellow-shadow-dark: var(--color-glow-yellow-dark);
+    --entry-card-magenta-shadow-dark: var(--color-glow-magenta-dark);
 
-    /* Loading bar */
+    /* Status card - lifetime */
+    --status-card-lifetime-box-shadow-dark:
+        8px 8px 16px rgba(0, 0, 0, 0.55),
+        -8px -8px 16px rgba(255, 255, 255, 0.035);
+
+    /* Status card - lifetime slots */
+    --item-card-box-shadow-dark:
+        inset 3px 3px 6px rgba(0, 0, 0, 0.6),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.04);
+
+    /* Status card - yearly */
+    --status-card-yearly-box-shadow-dark:
+        6px 6px 12px rgba(0, 0, 0, 0.55),
+        -6px -6px 14px rgba(255, 255, 255, 0.04);
+
+    /* Status card - yearly slots */
+    --item-card-small-box-shadow-dark:
+        inset 2px 2px 4px rgba(0, 0, 0, 0.6),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.04);
+
+    /* Loading Bar */
     --loading-bar-line-dark: var(--color-text-muted-dark);
-
     --loading-circle-animation-box-shadow-dark:
-        6px 6px 12px rgba(0, 0, 0, 0.6),
-        -6px -6px 12px rgba(255, 255, 255, 0.03);
-
+        8px 8px 14px rgba(0, 0, 0, 0.6),
+        -8px -8px 14px rgba(255, 255, 255, 0.04);
     --loading-dots-animation-box-shadow-dark:
-        5px 5px 10px rgba(0, 0, 0, 0.7), -3px -3px 6px rgba(255, 255, 255, 0.04);
+        7px 7px 12px rgba(0, 0, 0, 0.8), -4px -4px 8px rgba(255, 255, 255, 0.04);
 
-    /* Modal */
-    --modal-backdrop-dark: rgba(30, 34, 41, 0.7);
+    /* Modal window */
+    --modal-backdrop-dark: rgba(30, 34, 40, 0.7);
     --modal-box-shadow-dark:
         inset 3px 3px 6px rgba(0, 0, 0, 0.6),
         inset -3px -3px 6px rgba(255, 255, 255, 0.04),
-        8px 8px 18px rgba(0, 0, 0, 0.7),
-        -8px -8px 22px rgba(255, 255, 255, 0.04);
+        10px 10px 20px rgba(0, 0, 0, 0.7);
 
-    /* Semantic remapping */
+    /* Semantic mapping ------------------------------------------------------*/
     --color-bg: var(--color-bg-dark);
+
     --color-text-primary: var(--color-text-primary-dark);
     --color-text-secondary: var(--color-text-secondary-dark);
     --color-text-muted: var(--color-text-muted-dark);
@@ -400,11 +463,43 @@ Link {
     --input-field-background-focus: var(--input-field-background-focus-dark);
     --input-field-box-shadow-focus: var(--input-field-box-shadow-focus-dark);
 
+    --stdbutton-box-shadow: var(--stdbutton-box-shadow-dark);
+    --stdbutton-box-shadow-active: var(--stdbutton-box-shadow-active-dark);
     --stdbutton-color-disabled: var(--stdbutton-color-disabled-dark);
     --stdbutton-color-hover: var(--stdbutton-color-hover-dark);
     --stdbutton-hover-shadow: var(--stdbutton-hover-shadow-dark);
 
+    --navbar-box-shadow: var(--navbar-box-shadow-dark);
+
+    --navbar-button-box-shadow: var(--navbar-button-box-shadow-dark);
+    --navbar-button-box-shadow-active: var(
+        --navbar-button-box-shadow-active-dark
+    );
+    --navbar-button-box-shadow-pressed: var(
+        --navbar-button-box-shadow-pressed-dark
+    );
+
+    --entry-card-box-shadow: var(--entry-card-box-shadow-dark);
+    --entry-card-box-shadow-active: var(--entry-card-box-shadow-active-dark);
     --entry-card-chevron: var(--entry-card-chevron-dark);
+    --entry-card-status-badge-box-shadow: var(
+        --entry-card-status-badge-box-shadow-dark
+    );
+    --entry-card-purple-shadow: var(--entry-card-purple-shadow-dark);
+    --entry-card-green-shadow: var(--entry-card-green-shadow-dark);
+    --entry-card-blue-shadow: var(--entry-card-blue-shadow-dark);
+    --entry-card-yellow-shadow: var(--entry-card-yellow-shadow-dark);
+    --entry-card-magenta-shadow: var(--entry-card-magenta-shadow-dark);
+
+    --status-card-lifetime-box-shadow: var(
+        --status-card-lifetime-box-shadow-dark
+    );
+
+    --item-card-box-shadow: var(--item-card-box-shadow-dark);
+
+    --status-card-yearly-box-shadow: var(--status-card-yearly-box-shadow-dark);
+
+    --item-card-small-box-shadow: var(--item-card-small-box-shadow-dark);
 
     --loading-bar-line: var(--loading-bar-line-dark);
     --loading-circle-animation-box-shadow: var(
