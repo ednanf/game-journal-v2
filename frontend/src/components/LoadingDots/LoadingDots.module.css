@@ -34,7 +34,7 @@
 
     30% {
         transform: translateY(-5px);
-        box-shadow: var(--loading-dots-animation-box-shadow-light);
+        box-shadow: var(--loading-dots-animation-box-shadow);
     }
 
     60% {

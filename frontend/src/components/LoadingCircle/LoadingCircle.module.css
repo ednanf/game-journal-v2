@@ -36,7 +36,7 @@
 
     100% {
         transform: scale(1);
-        box-shadow: var(--loading-circle-animation-box-shadow-light);
+        box-shadow: var(--loading-circle-animation-box-shadow);
     }
 }
 
@@ -48,7 +48,7 @@
 
     100% {
         transform: scale(1);
-        box-shadow: var(--loading-circle-animation-box-shadow-light);
+        box-shadow: var(--loading-circle-animation-box-shadow);
     }
 }
 
@@ -60,6 +60,6 @@
 
     100% {
         transform: scale(1);
-        box-shadow: var(--loading-circle-animation-box-shadow-light);
+        box-shadow: var(--loading-circle-animation-box-shadow);
     }
 }
