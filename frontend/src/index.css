@@ -115,7 +115,7 @@ Link {
 /* THEMING ================================================================== */
 
 :root {
-    /* General rules */
+    /* General rules ---------------------------------------------------------*/
     font-family: Inter, sans-serif;
     line-height: 1;
     font-weight: 400;
@@ -125,7 +125,7 @@ Link {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    /* General Colors */
+    /* General Colors --------------------------------------------------------*/
 
     /* Background and surface */
     --color-bg-light: #e0e5ec;
@@ -149,7 +149,7 @@ Link {
     --color-glow-purple-light: 0 0 30px rgba(166, 123, 255, 0.5);
     --color-glow-yellow-light: 0 0 30px rgba(255, 193, 7, 0.5);
 
-    /* Component specific */
+    /* Component rules -------------------------------------------------------*/
 
     /* Input field */
     --input-field-background-light: e1e2e3;
@@ -159,17 +159,69 @@ Link {
         13px 13px 100px #969696, -13px -13px 100px #ffffff;
 
     /* Standard button */
+    --stdbutton-box-shadow-light:
+        -7px -7px 20px 0 #fff9, -4px -4px 5px 0 #fff9, 7px 7px 20px 0 #0002,
+        4px 4px 5px 0 #0001;
+    --stdbutton-box-shadow-active-light:
+        inset -7px -7px 20px 0 #fff9, inset -4px -4px 5px 0 #fff9,
+        inset 7px 7px 20px 0 #0003, inset 4px 4px 5px 0 #0001;
     --stdbutton-color-disabled-light: #c5c5c5;
     --stdbutton-color-hover-light: var(--color-accent-blue);
     --stdbutton-hover-shadow-light: 0 0 30px rgba(0, 188, 212, 0.5);
 
+    /* NavBar */
+    --navbar-box-shadow-light:
+        -8px -8px 20px rgba(255, 255, 255, 0.9),
+        -4px -4px 6px rgba(255, 255, 255, 0.8),
+        8px 8px 20px rgba(0, 0, 0, 0.15), 4px 4px 6px rgba(0, 0, 0, 0.1);
+
+    /* NavBar button */
+    --navbar-button-box-shadow-light:
+        -7px -7px 20px 0 #fff9, -4px -4px 5px 0 #fff9, 7px 7px 20px 0 #0002,
+        4px 4px 5px 0 #0001;
+    --navbar-button-box-shadow-active-light:
+        inset -7px -7px 20px 0 #fff9, inset -4px -4px 5px 0 #fff9,
+        inset 7px 7px 20px 0 #0003, inset 4px 4px 5px 0 #0001;
+    --navbar-button-box-shadow-pressed-light:
+        inset -7px -7px 20px 0 #fff9, inset -4px -4px 5px 0 #fff9,
+        inset 7px 7px 20px 0 #0003, inset 4px 4px 5px 0 #0001;
+
     /* Entry card */
+    --entry-card-box-shadow-light:
+        8px 8px 15px rgba(163, 177, 198, 0.6),
+        -8px -8px 20px rgba(255, 255, 255, 0.8);
+    --entry-card-box-shadow-active-light:
+        inset 6px 6px 15px rgba(0, 0, 0, 0.15),
+        inset -6px -6px 15px rgba(255, 255, 255, 0.7);
+    --entry-card-chevron-light: var(--color-text-muted);
+    --entry-card-status-badge-box-shadow-light:
+        inset 2px 2px 5px rgba(0, 0, 0, 0.15),
+        inset -2px -2px 5px rgba(255, 255, 255, 0.9);
     --entry-card-purple-shadow-light: 0 0 30px rgba(166, 123, 255, 0.5);
     --entry-card-green-shadow-light: 0 0 30px rgba(76, 175, 80, 0.5);
     --entry-card-blue-shadow-light: 0 0 30px rgba(0, 188, 212, 0.5);
     --entry-card-yellow-shadow-light: 0 0 30px rgba(255, 193, 7, 0.5);
     --entry-card-magenta-shadow-light: 0 0 30px rgba(233, 30, 99, 0.5);
-    --entry-card-chevron-light: var(--color-text-muted);
+
+    /* Status card - lifetime */
+    --status-card-lifetime-box-shadow-light:
+        8px 8px 15px rgba(163, 177, 198, 0.6),
+        -8px -8px 20px rgba(255, 255, 255, 0.8);
+
+    /* Status card - lifetime slots */
+    --item-card-box-shadow-light:
+        inset 3px 3px 6px rgba(0, 0, 0, 0.15),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+
+    /* Status card - yearly */
+    --status-card-yearly-box-shadow-light:
+        6px 6px 12px rgba(163, 177, 198, 0.55),
+        -6px -6px 14px rgba(255, 255, 255, 0.85);
+
+    /* Status card - yearly slots */
+    --item-card-small-box-shadow-light:
+        inset 2px 2px 4px rgba(0, 0, 0, 0.12),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.85);
 
     /* Loading Bar */
     --loading-bar-line-light: var(--color-text-muted);
@@ -187,7 +239,7 @@ Link {
         8px 8px 18px rgba(163, 177, 198, 0.55),
         -8px -8px 22px rgba(255, 255, 255, 0.85);
 
-    /* Semantic mapping */
+    /* Semantic mapping ------------------------------------------------------*/
     --color-bg: var(--color-bg-light);
 
     --color-text-primary: var(--color-text-primary-light);
@@ -211,11 +263,43 @@ Link {
     --input-field-background-focus: var(--input-field-background-focus-light);
     --input-field-box-shadow-focus: var(--input-field-box-shadow-focus-light);
 
+    --stdbutton-box-shadow: var(--stdbutton-box-shadow-light);
+    --stdbutton-box-shadow-active: var(--stdbutton-box-shadow-active-light);
     --stdbutton-color-disabled: var(--stdbutton-color-disabled-light);
     --stdbutton-color-hover: var(--stdbutton-color-hover-light);
     --stdbutton-hover-shadow: var(--stdbutton-hover-shadow-light);
 
+    --navbar-box-shadow: var(--navbar-box-shadow-light);
+
+    --navbar-button-box-shadow: var(--navbar-button-box-shadow-light);
+    --navbar-button-box-shadow-active: var(
+        --navbar-button-box-shadow-active-light
+    );
+    --navbar-button-box-shadow-pressed: var(
+        --navbar-button-box-shadow-pressed-light
+    );
+
+    --entry-card-box-shadow: var(--entry-card-box-shadow-light);
+    --entry-card-box-shadow-active: var(--entry-card-box-shadow-active-light);
     --entry-card-chevron: var(--entry-card-chevron-light);
+    --entry-card-status-badge-box-shadow: var(
+        --entry-card-status-badge-box-shadow-light
+    );
+    --entry-card-purple-shadow: var(--entry-card-purple-shadow-light);
+    --entry-card-green-shadow: var(--entry-card-green-shadow-light);
+    --entry-card-blue-shadow: var(--entry-card-blue-shadow-light);
+    --entry-card-yellow-shadow: var(--entry-card-yellow-shadow-light);
+    --entry-card-magenta-shadow: var(--entry-card-magenta-shadow-light);
+
+    --status-card-lifetime-box-shadow: var(
+        --status-card-lifetime-box-shadow-light
+    );
+
+    --item-card-box-shadow: var(--item-card-box-shadow-light);
+
+    --status-card-yearly-box-shadow: var(--status-card-yearly-box-shadow-light);
+
+    --item-card-small-box-shadow: var(--item-card-small-box-shadow-light);
 
     --loading-bar-line: var(--loading-bar-line-light);
     --loading-circle-animation-box-shadow: var(

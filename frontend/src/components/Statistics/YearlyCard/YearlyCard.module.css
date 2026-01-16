@@ -1,16 +1,12 @@
 .cardContainer {
     position: relative;
-    background-color: #e0e5ec;
+    background-color: var(--color-bg);
     width: 90%;
     max-width: 400px;
     border-radius: 18px;
     padding: 0.75rem 1rem 1rem;
     margin: 0 auto 12px;
-
-    box-shadow:
-        6px 6px 12px rgba(163, 177, 198, 0.55),
-        -6px -6px 14px rgba(255, 255, 255, 0.85);
-
+    box-shadow: var(--status-card-yearly-box-shadow);
     user-select: none;
 }
 

@@ -3,10 +3,10 @@
     padding: 10px 20px;
     font-size: 16px;
     user-select: none;
-    background-color: #e0e5ec;
+    background-color: var(--color-bg);
     border: none;
     border-radius: 10px;
-    color: #555;
+    color: var(--color-text-secondary);
     cursor: pointer;
     outline: none;
 
@@ -14,11 +14,8 @@
     --glow-color: var(--color-accent-blue);
     --glow-shadow: var(--color-glow-blue);
 
-    box-shadow:
-        -7px -7px 20px 0 #fff9,
-        -4px -4px 5px 0 #fff9,
-        7px 7px 20px 0 #0002,
-        4px 4px 5px 0 #0001;
+    box-shadow: var(--stdbutton-box-shadow);
+
     transition:
         box-shadow 0.3s ease-in-out,
         color 0.2s ease;
@@ -30,11 +27,7 @@
 }
 
 .button:active {
-    box-shadow:
-        inset -7px -7px 20px 0 #fff9,
-        inset -4px -4px 5px 0 #fff9,
-        inset 7px 7px 20px 0 #0003,
-        inset 4px 4px 5px 0 #0001;
+    box-shadow: var(--stdbutton-box-shadow-active);
 }
 
 .button:disabled {

@@ -1,18 +1,13 @@
 .cardContainer {
-    background-color: #e0e5ec;
+    background-color: var(--color-bg);
     border-radius: 12px;
     padding: 0.4rem 0.55rem;
     min-width: 52px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    box-shadow:
-        inset 2px 2px 4px rgba(0, 0, 0, 0.12),
-        inset -2px -2px 4px rgba(255, 255, 255, 0.85);
-
+    box-shadow: var(--item-card-small-box-shadow);
     user-select: none;
 }
 
@@ -58,6 +53,7 @@
     text-shadow: var(--entry-card-magenta-shadow);
 }
 
+/* Fallback - should never activate */
 .defaultStatus {
     color: #999;
 }

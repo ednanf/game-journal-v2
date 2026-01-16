@@ -1,6 +1,6 @@
 .cardContainer {
     position: relative;
-    background-color: #e0e5ec;
+    background-color: var(--color-bg);
     width: 90%;
     max-width: 400px;
     border-radius: 20px;
@@ -8,9 +8,7 @@
     margin: 0 auto 12px;
     display: flex;
     align-items: center;
-    box-shadow:
-        8px 8px 15px rgba(163, 177, 198, 0.6),
-        -8px -8px 20px rgba(255, 255, 255, 0.8);
+    box-shadow: var(--entry-card-box-shadow);
     transition:
         box-shadow 0.3s ease,
         transform 0.15s ease;
@@ -23,9 +21,7 @@
 }
 
 .cardContainer:active {
-    box-shadow:
-        inset 6px 6px 15px rgba(0, 0, 0, 0.15),
-        inset -6px -6px 15px rgba(255, 255, 255, 0.7);
+    box-shadow: var(--entry-card-box-shadow-active);
     transform: translateY(1px);
 }
 
@@ -63,7 +59,7 @@
     height: 100%;
     width: 3rem;
     pointer-events: none;
-    background: linear-gradient(to right, transparent, #e0e5ec);
+    background: linear-gradient(to right, transparent, var(--color-bg));
 }
 
 .platform {
@@ -114,15 +110,13 @@
     font-size: 12px;
     border-radius: 35px;
     padding: 0.25rem 0.85rem;
-    background-color: #e0e5ec;
+    background-color: var(--color-bg);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-weight: 500;
     text-transform: capitalize;
-    box-shadow:
-        inset 2px 2px 5px rgba(0, 0, 0, 0.15),
-        inset -2px -2px 5px rgba(255, 255, 255, 0.9);
+    box-shadow: var(--entry-card-status-badge-box-shadow-light);
     user-select: none;
     cursor: default;
 }
@@ -152,6 +146,7 @@
     text-shadow: var(--color-glow-magenta);
 }
 
+/* Shouldn't ever happen - just a fallback */
 .defaultStatus {
     color: #999;
 }

@@ -17,15 +17,11 @@ a.link {
     -moz-user-select: none;
     -ms-user-select: none;
 
-    background-color: #e0e5ec;
+    background-color: var(--color-bg);
     border-radius: 50%;
     color: var(--color-text-secondary);
 
-    box-shadow:
-        -7px -7px 20px 0 #fff9,
-        -4px -4px 5px 0 #fff9,
-        7px 7px 20px 0 #0002,
-        4px 4px 5px 0 #0001;
+    box-shadow: var(--navbar-button-box-shadow);
 
     transition:
         box-shadow 0.18s ease-in-out,
@@ -54,21 +50,12 @@ a.link {
 /* Active (route-selected) state */
 .link.active,
 a.link:active {
-    box-shadow:
-        inset -7px -7px 20px 0 #fff9,
-        inset -4px -4px 5px 0 #fff9,
-        inset 7px 7px 20px 0 #0003,
-        inset 4px 4px 5px 0 #0001;
-
+    box-shadow: var(--navbar-button-box-shadow-active);
     color: var(--color-accent-blue);
 }
 
 a.link:active:not(.active) {
-    box-shadow:
-        inset -7px -7px 20px 0 #fff9,
-        inset -4px -4px 5px 0 #fff9,
-        inset 7px 7px 20px 0 #0003,
-        inset 4px 4px 5px 0 #0001;
+    box-shadow: var(--navbar-button-box-shadow-pressed);
 }
 
 /* Optional subtle hover (non-active only) */
