@@ -63,7 +63,7 @@ const EntryCard = ({
                                 {rating} / 10
                             </p>
                         )}
-                    </HStack>
+                    </HStack>{' '}
                     <HStack justify={'end'} className={styles.date}>
                         <p>
                             {entryDate.toLocaleDateString('en-US', {
