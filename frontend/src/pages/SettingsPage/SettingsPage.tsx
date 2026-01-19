@@ -1,14 +1,3 @@
-/*
- * Settings will contain:
- * - Toggle dark/light theme
- * - Account settings
- *   - Will take to another page with options to change email/password/delete acc
- * - Log out
- * - Current user logged in (email)
- * - GitHub link
- *
- * */
-
 import { VStack } from 'react-swiftstacks';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -30,7 +19,12 @@ const SettingsPage = () => {
     };
 
     return (
-        <VStack>
+        <VStack
+            padding={'md'}
+            align={'center'}
+            style={{ maxWidth: '400px', marginTop: '2rem' }}
+            className="formVStack"
+        >
             <VStack gap={'lg'} align={'center'}>
                 <StdButton width={'200px'} onClick={toggleTheme}>
                     Toggle dark mode
