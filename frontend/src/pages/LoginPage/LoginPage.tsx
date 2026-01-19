@@ -109,7 +109,6 @@ const LoginPage = () => {
                     password: formData.password,
                 },
             );
-            console.log('RESPONSE >>', response);
 
             localStorage.setItem('id', response.id);
             localStorage.setItem('email', response.email);
