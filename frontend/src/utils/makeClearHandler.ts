@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Returns a function that clears one specific field in a form state.
 const makeClearHandler =
     <T extends Record<string, unknown>>(
         setFormData: React.Dispatch<React.SetStateAction<T>>,

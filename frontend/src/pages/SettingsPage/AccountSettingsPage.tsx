@@ -43,21 +43,24 @@ const AccountSettingsPage = () => {
         confirmNewPassword: '',
     });
 
-    // Baseline for dirty checking
     const [initialEmail, setInitialEmail] = useState('');
     const [isInitialLoading, setIsInitialLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
+    // Trim email to evaluate changes and to prepare to send to the backend
     const trimmedEmail = formData.email.trim();
 
+    // Check if there were any changes – used for toast feedback
     const emailChanged =
         trimmedEmail.length > 0 && trimmedEmail !== initialEmail;
 
+    // Initial loading
     useEffect(() => {
         const fetchUserDetails = async () => {
             setIsInitialLoading(true);
+
             try {
                 const response =
                     await getUnwrapped<AccountDataApiResponse>('/user/');
@@ -67,6 +70,7 @@ const AccountSettingsPage = () => {
                     email: response.email,
                 }));
 
+                // Set initial email to compare if there were any changes
                 setInitialEmail(response.email);
             } catch (e) {
                 toast.error((e as { message: string }).message);
@@ -78,8 +82,11 @@ const AccountSettingsPage = () => {
         void fetchUserDetails();
     }, []);
 
+    // Generic handler for keystrokes in all input fields
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
+        // Ensure to TS that key will be one of the keys in EditAccountFormData
         const key = name as keyof EditAccountFormData;
 
         setFormData((prev) => ({
@@ -113,8 +120,10 @@ const AccountSettingsPage = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // Prevents submitting before the previous one is done
         if (isSubmitting) return;
 
+        // Ensures both password inputs are filled if one is typed in
         const wantsPasswordChange =
             formData.newPassword || formData.confirmNewPassword;
 
@@ -130,6 +139,7 @@ const AccountSettingsPage = () => {
             }
         }
 
+        // Builds the payload with trimmed email and updated password
         const payload: UpdateAccountPayload = {
             ...(emailChanged && { email: trimmedEmail }),
             ...(wantsPasswordChange && {
@@ -137,6 +147,7 @@ const AccountSettingsPage = () => {
             }),
         };
 
+        // Feedback when no change was detected
         if (Object.keys(payload).length === 0) {
             toast.info('No changes to save.');
             return;
