@@ -177,21 +177,21 @@ const SearchPage = () => {
                     />
 
                     <DateTimePicker
-                        label="From"
+                        label="Played after"
                         id="startDate"
                         name="startDate"
                         value={formData.startDate}
                         onChange={(date) => handleDateChange('startDate', date)}
-                        showTime
+                        placeholder={'Any start date...'}
                     />
 
                     <DateTimePicker
-                        label="To"
+                        label="Played before"
                         id="endDate"
                         name="endDate"
                         value={formData.endDate}
                         onChange={(date) => handleDateChange('endDate', date)}
-                        showTime
+                        placeholder={'Any end date...'}
                     />
 
                     <Slider

@@ -10,9 +10,9 @@ interface DateTimePickerProps {
     name: string;
     value: Date | null;
     onChange: (date: Date | null) => void;
-    showTime?: boolean;
     isInvalid?: boolean;
     errorMessage?: string;
+    placeholder?: string;
 }
 
 // Prevent mobile keyboard
@@ -29,9 +29,9 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     name,
     value,
     onChange,
-    showTime = true,
     isInvalid = false,
     errorMessage = 'Invalid date format.',
+    placeholder,
 }) => {
     const inputClasses = [
         styles.inputField,
@@ -57,6 +57,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
                     dateFormat={'P'}
                     isClearable
                     popperPlacement="top"
+                    placeholderText={placeholder}
                 />
             </VStack>
 
