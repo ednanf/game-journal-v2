@@ -1,7 +1,7 @@
 import { VStack } from 'react-swiftstacks';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useOutletContext } from 'react-router-dom';
 
-import { useTheme } from '../../hooks/useTheme.ts';
+import type { ThemeOutletContext } from '../../types/theme.ts';
 
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 
@@ -10,7 +10,7 @@ import styles from './SettingsPage.module.css';
 const SettingsPage = () => {
     const navigate = useNavigate();
 
-    const { toggleTheme } = useTheme();
+    const { toggleTheme, theme } = useOutletContext<ThemeOutletContext>();
 
     const userEmail = localStorage.getItem('email');
 
@@ -19,7 +19,8 @@ const SettingsPage = () => {
     };
 
     const handleLogoutClick = () => {
-        localStorage.clear();
+        localStorage.removeItem('token');
+        localStorage.removeItem('email');
 
         // Force re-check of token, updating the UI
         window.dispatchEvent(new Event('local-storage'));
@@ -36,15 +37,15 @@ const SettingsPage = () => {
         >
             <VStack gap={'lg'} align={'center'}>
                 <StdButton width={'200px'} onClick={toggleTheme}>
-                    Toggle dark mode
+                    Toggle {theme === 'light' ? 'Dark' : 'Light'} Mode
                 </StdButton>
 
                 <StdButton width={'200px'} onClick={handleAccountSettingsClick}>
-                    Account settings
+                    Account Settings
                 </StdButton>
 
                 <StdButton width={'200px'} onClick={handleLogoutClick}>
-                    Log out
+                    Log Out
                 </StdButton>
             </VStack>
 

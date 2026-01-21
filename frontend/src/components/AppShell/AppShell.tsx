@@ -6,6 +6,8 @@ import {
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
+import { useTheme } from '../../hooks/useTheme.ts';
+
 import Header from './Header/Header.tsx';
 import NavBar from './NavBar/NavBar.tsx';
 
@@ -20,6 +22,7 @@ type RouteHandle = {
 const AppShell = () => {
     const location = useLocation();
     const matches = useMatches() as UIMatch<RouteHandle>[]; // will be used to grab the title in main.tsx
+    const { theme, toggleTheme } = useTheme();
 
     // @ts-expect-error sometimes TS is fucking stupid like Microsoft
     const title = matches.findLast((m) => m.handle?.title)?.handle?.title; // pass the title as prop to the header
@@ -37,7 +40,7 @@ const AppShell = () => {
             )}
 
             <main className={styles.main}>
-                <Outlet />
+                <Outlet context={{ theme, toggleTheme }} />
             </main>
 
             {showLayout && (
@@ -47,13 +50,13 @@ const AppShell = () => {
             )}
 
             <ToastContainer
+                theme={theme}
                 position="top-center"
                 autoClose={2000}
                 hideProgressBar={false}
                 closeOnClick
                 pauseOnHover
                 newestOnTop
-                theme="light"
             />
         </div>
     );
