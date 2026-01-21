@@ -259,6 +259,13 @@ Link {
         inset 1px 1px 2px rgba(0, 0, 0, 0.2),
         inset -1px -1px 2px rgba(255, 255, 255, 0.9);
 
+    /* Date picker */
+    --date-picker-day-selected-light: #ffffff;
+    --date-picker-box-shadow-light:
+        12px 12px 24px rgba(0, 0, 0, 0.2),
+        -12px -12px 24px rgba(255, 255, 255, 0.7);
+    --date-picker-hover-background-color-light: rgba(111, 207, 255, 0.2);
+
     /* Semantic mapping ------------------------------------------------------*/
     --color-bg: var(--color-bg-light);
 
@@ -333,6 +340,12 @@ Link {
     --modal-box-shadow: var(--modal-box-shadow-light);
 
     --inset-divider-box-shadow: var(--inset-divider-box-shadow-light);
+
+    --date-picker-day-selected: var(--date-picker-day-selected-light);
+    --date-picker-box-shadow: var(--date-picker-box-shadow-light);
+    --date-picker-hover-background-color: var(
+        --date-picker-hover-background-color-light
+    );
 }
 
 [data-theme='dark'] {
@@ -466,6 +479,15 @@ Link {
         inset 1px 1px 2px rgba(0, 0, 0, 0.6),
         inset -1px -1px 2px rgba(255, 255, 255, 0.04);
 
+    /* Date picker – dark theme */
+    --date-picker-day-selected-dark: #f5f7fa;
+
+    --date-picker-box-shadow-dark:
+        10px 10px 20px rgba(0, 0, 0, 0.7),
+        -6px -6px 14px rgba(255, 255, 255, 0.04);
+
+    --date-picker-hover-background-color-dark: rgba(77, 208, 225, 0.12);
+
     /* Semantic mapping ------------------------------------------------------*/
     --color-bg: var(--color-bg-dark);
 
@@ -540,4 +562,10 @@ Link {
     --modal-box-shadow: var(--modal-box-shadow-dark);
 
     --inset-divider-box-shadow: var(--inset-divider-box-shadow-dark);
+
+    --date-picker-day-selected: var(--date-picker-day-selected-dark);
+    --date-picker-box-shadow: var(--date-picker-box-shadow-dark);
+    --date-picker-hover-background-color: var(
+        --date-picker-hover-background-color-dark
+    );
 }
