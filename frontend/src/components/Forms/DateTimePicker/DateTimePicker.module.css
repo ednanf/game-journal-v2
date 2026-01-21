@@ -149,30 +149,14 @@
     color: var(--date-picker-day-selected) !important;
 }
 
-/* ================= DATEPICKER ARROW – ACTUAL TRIANGLE FIX ================= */
+/* ================= DATEPICKER ARROW ================= */
 
-/* Remove the square background completely */
 :global(.react-datepicker__triangle) {
-    background: transparent !important;
+    color: var(--color-bg) !important;
 }
 
-/* POPPER ON TOP (arrow points down) */
-:global(
-    .react-datepicker-popper[data-placement^='top'],
-    .react-datepicker__triangle::before
-) {
-    border-top-color: var(--color-bg) !important;
-}
-
-/* POPPER ON BOTTOM (arrow points up) */
-:global(
-    .react-datepicker-popper[data-placement^='bottom'],
-    .react-datepicker__triangle::before
-) {
-    border-bottom-color: var(--color-bg) !important;
-}
-
-/* Kill the white outline layer */
-:global(.react-datepicker__triangle::after) {
-    border-color: transparent !important;
+:global(.react-datepicker__triangle path) {
+    stroke: currentColor !important;
+    fill: var(--color-bg) !important;
+    stroke-width: 2 !important;
 }
