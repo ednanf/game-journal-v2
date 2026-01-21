@@ -148,9 +148,9 @@ const AddEntryPage: React.FC = () => {
                         name="entryDate"
                         value={formData.entryDate}
                         onChange={handleDateChange}
-                        showTime
                         isInvalid={!!errors.entryDate}
                         errorMessage={errors.entryDate}
+                        placeholder={'Select the date this entry applies to...'}
                     />
 
                     <Slider
