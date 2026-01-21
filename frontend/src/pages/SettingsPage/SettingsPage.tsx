@@ -18,6 +18,15 @@ const SettingsPage = () => {
         navigate('account');
     };
 
+    const handleLogoutClick = () => {
+        localStorage.clear();
+
+        // Force re-check of token, updating the UI
+        window.dispatchEvent(new Event('local-storage'));
+
+        navigate('/');
+    };
+
     return (
         <VStack
             padding={'md'}
@@ -34,7 +43,9 @@ const SettingsPage = () => {
                     Account settings
                 </StdButton>
 
-                <StdButton width={'200px'}>Log out</StdButton>
+                <StdButton width={'200px'} onClick={handleLogoutClick}>
+                    Log out
+                </StdButton>
             </VStack>
 
             <p className={styles.currentUser}>Logged in as: {userEmail}</p>
