@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { VStack, HStack } from 'react-swiftstacks';
 
-import appIcon from '../../assets/logo.png';
+import Logo from '../../assets/logo-icon.png';
 import { FaGithubSquare } from 'react-icons/fa';
 
 import styles from './LandingPage.module.css';
@@ -15,7 +15,7 @@ const LandingPage = () => {
             style={{ margin: '7rem 0 auto' }}
         >
             <img
-                src={appIcon}
+                src={Logo}
                 className={styles.appLogo}
                 alt={'Game Journal Logo'}
             ></img>

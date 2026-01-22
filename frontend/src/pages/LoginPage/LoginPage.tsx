@@ -6,7 +6,7 @@ import { VStack } from 'react-swiftstacks';
 import InputField from '../../components/Forms/InputField/InputField.tsx';
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo-icon.png';
 
 import { postUnwrapped } from '../../utils/axiosInstance.ts';
 import makeClearHandler from '../../utils/makeClearHandler.ts';
