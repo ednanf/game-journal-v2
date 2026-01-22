@@ -1,8 +1,12 @@
-.lplinks {
+a.lplinks,
+a.lplinks:link,
+a.lplinks:visited {
+    color: var(--color-text-secondary);
     transition: color 0.2s ease-in-out;
+    text-decoration: underline;
 }
 
-.lplinks:hover {
+a.lplinks:hover {
     color: var(--color-accent-blue);
 }
 

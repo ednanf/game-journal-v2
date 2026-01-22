@@ -4,6 +4,7 @@ import { useNavigate, Link, useOutletContext } from 'react-router-dom';
 import type { ThemeOutletContext } from '../../types/theme.ts';
 
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 import styles from './SettingsPage.module.css';
 
@@ -57,7 +58,7 @@ const SettingsPage = () => {
                     target={'_blank'}
                     className={styles.githubLink}
                 >
-                    See this project on GitHub
+                    See this project on GitHub <FaExternalLinkAlt size={10} />
                 </Link>
             </div>
         </VStack>

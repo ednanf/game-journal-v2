@@ -19,7 +19,7 @@ a.link {
 
     background-color: var(--color-bg);
     border-radius: 50%;
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
 
     box-shadow: var(--navbar-button-box-shadow);
 

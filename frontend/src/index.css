@@ -42,11 +42,9 @@ h6 {
     color: var(--color-text-primary);
 }
 
-a:link,
-a:visited,
-a:hover,
-a:active {
+a {
     color: var(--color-text-primary);
+    text-decoration: none;
 }
 
 Link {
