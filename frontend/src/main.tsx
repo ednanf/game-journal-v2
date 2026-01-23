@@ -1,6 +1,10 @@
+// PWA
+import { registerSW } from 'virtual:pwa-register';
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import 'react-datepicker/dist/react-datepicker.css';
 
 // Pages
@@ -21,6 +25,12 @@ import {
 } from './pages/SettingsPage/index.ts';
 
 import './index.css';
+
+registerSW({
+    onOfflineReady() {
+        console.log('PWA ready for offline use');
+    },
+});
 
 // "handle" is used in AppShell.tsx to pass props to the Header.tsx component
 const router = createBrowserRouter([

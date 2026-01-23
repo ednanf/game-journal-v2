@@ -1,0 +1,27 @@
+{
+  "name": "Game Journal",
+  "short_name": "Journal",
+  "description": "Track games you played.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#e0e5ec",
+  "theme_color": "#e0e5ec",
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa-512x512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
