@@ -14,8 +14,8 @@ import DateTimePicker from '../../components/Forms/DateTimePicker/DateTimePicker
 import StdButton from '../../components/Buttons/StdButton/StdButton';
 
 import { API_BASE_URL } from '../../config/apiURL.ts';
-import { gameStatus } from '../../data/status';
-import { gamingPlatforms } from '../../data/platforms';
+import { gameStatus } from '../../components/Forms/Selector/status.ts';
+import { gamingPlatforms } from '../../components/Forms/Selector/platforms.ts';
 
 interface CreationResponse {
     message: string;

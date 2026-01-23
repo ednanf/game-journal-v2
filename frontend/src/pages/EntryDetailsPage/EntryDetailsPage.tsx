@@ -16,8 +16,8 @@ import Selector from '../../components/Forms/Selector/Selector';
 import Slider from '../../components/Forms/Slider/Slider';
 import StdButton from '../../components/Buttons/StdButton/StdButton';
 
-import { gameStatus } from '../../data/status';
-import { gamingPlatforms } from '../../data/platforms';
+import { gameStatus } from '../../components/Forms/Selector/status.ts';
+import { gamingPlatforms } from '../../components/Forms/Selector/platforms.ts';
 
 import type { EntryFormData } from '../../types/entryForm';
 import { API_BASE_URL } from '../../config/apiURL';
