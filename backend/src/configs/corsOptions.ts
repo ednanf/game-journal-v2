@@ -2,6 +2,8 @@
 // It allows requests from specific origins and defines allowed HTTP methods.
 const allowedOrigins = [
     'http://localhost:5173',
+    'http://localhost:4173',
+    'http://10.0.0.102:4173',
     'http://10.0.0.102:5173',
 ];
 
