@@ -10,8 +10,8 @@ import DateTimePicker from '../../components/Forms/DateTimePicker/DateTimePicker
 import Slider from '../../components/Forms/Slider/Slider.tsx';
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 
-import { gamingPlatforms } from '../../data/platforms.ts';
-import { gameStatus } from '../../data/status.ts';
+import { gamingPlatforms } from '../../components/Forms/Selector/platforms.ts';
+import { gameStatus } from '../../components/Forms/Selector/status.ts';
 
 import type { DateField, SearchFormData } from '../../types/search.ts';
 
