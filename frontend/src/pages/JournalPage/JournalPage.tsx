@@ -21,11 +21,15 @@ const JournalPage = () => {
             try {
                 setInitialLoading(true);
 
+                // Get all entries
                 const entries = await journalRepository.getAll();
+
+                // Exclude entries marked to be deleted (tombstones)
+                const visibleEntries = entries.filter((e) => !e.deleted);
 
                 if (ignore) return;
 
-                const sorted = [...entries].sort(
+                const sorted = [...visibleEntries].sort(
                     (a, b) =>
                         new Date(b.createdAt).getTime() -
                         new Date(a.createdAt).getTime(),

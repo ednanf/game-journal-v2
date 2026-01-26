@@ -156,8 +156,12 @@ const EntryDetailsPage = () => {
         setIsDeleting(true);
 
         try {
-            // Delete locally
-            await journalRepository.delete(entry.localId);
+            // Mark as deleted locally
+            await journalRepository.upsert({
+                ...entry,
+                deleted: true,
+                synced: false,
+            });
 
             // Backend delete if synced
             if (entry._id) {

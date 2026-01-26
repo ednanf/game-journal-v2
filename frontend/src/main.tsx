@@ -1,11 +1,20 @@
 // PWA
 import { registerSW } from 'virtual:pwa-register';
 
+// Normal imports
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import 'react-datepicker/dist/react-datepicker.css'; // Required by dependency
 
-import 'react-datepicker/dist/react-datepicker.css';
+// Offline sync
+import { syncJournalEntries } from './data/journalSync.ts';
+void syncJournalEntries();
+
+window.addEventListener('online', () => {
+    console.log('ONLINE EVENT FIRED');
+    void syncJournalEntries();
+});
 
 // Pages
 import AppShell from './components/AppShell/AppShell.tsx';
