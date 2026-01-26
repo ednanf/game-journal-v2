@@ -7,6 +7,9 @@ import { useEntryForm } from '../../hooks/useEntryForm.ts';
 import { postUnwrapped } from '../../utils/axiosInstance.ts';
 import makeClearHandler from '../../utils/makeClearHandler.ts';
 
+import { journalRepository } from '../../data/journalRepository.ts';
+import type { OfflineJournalEntry } from '../../data/journalTypes.ts';
+
 import InputField from '../../components/Forms/InputField/InputField';
 import Selector from '../../components/Forms/Selector/Selector';
 import Slider from '../../components/Forms/Slider/Slider';
@@ -21,9 +24,6 @@ interface CreationResponse {
     message: string;
 }
 
-// TODO: ensure new entries do not have a rating, unless they are completed
-// no default value - might have to change the backend
-
 const AddEntryPage: React.FC = () => {
     const {
         formData,
@@ -37,6 +37,8 @@ const AddEntryPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
+
+    const userId = localStorage.getItem('id');
 
     const requiresRating = formData.status === 'completed';
     const hasRating = formData.rating !== null && formData.rating !== undefined;
@@ -77,6 +79,37 @@ const AddEntryPage: React.FC = () => {
             return;
         }
 
+        // Guards to ensure offline db's integrity
+        if (!userId) {
+            toast.error('User not authenticated');
+            return;
+        }
+
+        const { title, platform, status, entryDate, rating } = payload;
+
+        if (!platform || !status || !entryDate) {
+            toast.error('Invalid form state');
+            return;
+        }
+
+        const now = new Date().toISOString();
+
+        // Create an offline entry first - saved in the browser's DB
+        const offlineEntry: OfflineJournalEntry = {
+            _id: crypto.randomUUID(), // client-side ID
+            createdBy: userId,
+            title,
+            platform,
+            status,
+            entryDate: new Date(entryDate).toISOString(),
+            rating: rating ?? null,
+            createdAt: now,
+            updatedAt: now,
+            synced: false,
+        };
+
+        await journalRepository.upsert(offlineEntry);
+
         setIsLoading(true);
 
         try {
@@ -87,9 +120,13 @@ const AddEntryPage: React.FC = () => {
 
             toast.success(response.message);
 
+            // TODO: mark entry as synced here
+
             navigate('/journal');
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) {
-            toast.error((e as { message: string }).message);
+            toast.info('Saved offline. Will sync when online.');
+            navigate('/journal');
         } finally {
             setIsLoading(false);
         }
