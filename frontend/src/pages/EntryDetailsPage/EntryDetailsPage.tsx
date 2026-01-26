@@ -1,45 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { VStack, HStack } from 'react-swiftstacks';
 
+import { journalRepository } from '../../data/journalRepository';
+import type { OfflineJournalEntry } from '../../data/journalTypes';
+
 import { useEntryForm } from '../../hooks/useEntryForm';
-import {
-    deleteUnwrapped,
-    getUnwrappedWithParams,
-    patchUnwrapped,
-} from '../../utils/axiosInstance';
+import { patchUnwrapped, deleteUnwrapped } from '../../utils/axiosInstance';
 
 import InputField from '../../components/Forms/InputField/InputField';
 import DateTimePicker from '../../components/Forms/DateTimePicker/DateTimePicker';
 import Selector from '../../components/Forms/Selector/Selector';
 import Slider from '../../components/Forms/Slider/Slider';
 import StdButton from '../../components/Buttons/StdButton/StdButton';
-
-import { gameStatus } from '../../components/Forms/Selector/status.ts';
-import { gamingPlatforms } from '../../components/Forms/Selector/platforms.ts';
-
-import type { EntryFormData } from '../../types/entryForm';
-import { API_BASE_URL } from '../../config/apiURL';
 import LoadingCircle from '../../components/LoadingCircle/LoadingCircle';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
+
+import { gameStatus } from '../../components/Forms/Selector/status';
+import { gamingPlatforms } from '../../components/Forms/Selector/platforms';
 import makeClearHandler from '../../utils/makeClearHandler';
-
-interface PatchResponse {
-    message: string;
-}
-
-type EntryDetailsApiResponse = {
-    message: string;
-    content: {
-        _id: string;
-        title: string;
-        platform: string;
-        status: EntryFormData['status'];
-        entryDate: string;
-        rating?: number;
-    };
-};
+import { API_BASE_URL } from '../../config/apiURL';
 
 const EntryDetailsPage = () => {
     const {
@@ -51,13 +32,14 @@ const EntryDetailsPage = () => {
         validate,
     } = useEntryForm();
 
+    const { id: localId } = useParams<{ id: string }>(); // ← ROUTING USES localId
+    const navigate = useNavigate();
+
+    const [entry, setEntry] = useState<OfflineJournalEntry | null>(null);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
-    const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
 
     const requiresRating = formData.status === 'completed';
     const hasRating = formData.rating !== null && formData.rating !== undefined;
@@ -69,52 +51,43 @@ const EntryDetailsPage = () => {
         formData.entryDate &&
         (!requiresRating || hasRating);
 
+    /**
+     * LOAD ENTRY (LOCAL SOURCE OF TRUTH)
+     */
     useEffect(() => {
-        if (!id) return;
+        if (!localId) return;
 
-        const fetchEntry = async () => {
-            setIsInitialLoading(true);
-
+        const loadEntry = async () => {
             try {
-                const response =
-                    await getUnwrappedWithParams<EntryDetailsApiResponse>(
-                        `/entries/${id}`,
-                    );
+                const storedEntry = await journalRepository.getById(localId);
 
-                const entry = response.content;
+                if (!storedEntry) {
+                    toast.error('Entry not found');
+                    navigate('/journal');
+                    return;
+                }
 
+                setEntry(storedEntry);
                 setFormData({
-                    title: entry.title,
-                    platform: entry.platform,
-                    status: entry.status,
-                    rating: entry.rating ?? null,
-                    entryDate: new Date(entry.entryDate),
+                    title: storedEntry.title,
+                    platform: storedEntry.platform,
+                    status: storedEntry.status,
+                    rating: storedEntry.rating ?? null,
+                    entryDate: new Date(storedEntry.entryDate),
                 });
-            } catch (e) {
-                toast.error((e as { message: string }).message);
+            } catch {
+                toast.error('Failed to load entry');
             } finally {
                 setIsInitialLoading(false);
             }
         };
 
-        void fetchEntry();
-    }, [id, setFormData]);
+        void loadEntry();
+    }, [localId, navigate, setFormData]);
 
-    const payload = {
-        ...(formData.title && { title: formData.title }),
-        ...(formData.platform && { platform: formData.platform }),
-        ...(formData.status && { status: formData.status }),
-        ...(formData.entryDate && { entryDate: formData.entryDate }),
-        ...(formData.rating != null && {
-            rating: Number(formData.rating),
-        }),
-    };
-
-    const handleClearTitle = makeClearHandler(setFormData, 'title', '');
-    const handleClearPlatform = makeClearHandler(setFormData, 'platform', null);
-    const handleClearStatus = makeClearHandler(setFormData, 'status', null);
-    const handleClearRating = makeClearHandler(setFormData, 'rating', null);
-
+    /**
+     * UPDATE (LOCAL FIRST, BACKEND OPTIONAL)
+     */
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -123,20 +96,85 @@ const EntryDetailsPage = () => {
             return;
         }
 
+        if (!entry) {
+            toast.error('Entry not loaded');
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {
-            const response = await patchUnwrapped<PatchResponse>(
-                `${API_BASE_URL}/entries/${id}`,
-                payload,
-            );
+            const now = new Date().toISOString();
 
-            toast.success(response.message);
+            const updatedEntry: OfflineJournalEntry = {
+                ...entry,
+                title: formData.title,
+                platform: formData.platform!,
+                status: formData.status!,
+                entryDate: new Date(formData.entryDate!).toISOString(),
+                rating: formData.rating ?? null,
+                updatedAt: now,
+                synced: false,
+            };
+
+            // Always update locally
+            await journalRepository.upsert(updatedEntry);
+
+            // Backend update ONLY if Mongo _id exists
+            if (entry._id) {
+                try {
+                    await patchUnwrapped(
+                        `${API_BASE_URL}/entries/${entry._id}`,
+                        {
+                            title: updatedEntry.title,
+                            platform: updatedEntry.platform,
+                            status: updatedEntry.status,
+                            entryDate: updatedEntry.entryDate,
+                            rating: updatedEntry.rating,
+                        },
+                    );
+                    toast.success('Entry updated');
+                } catch {
+                    toast.info('Updated offline. Will sync later.');
+                }
+            } else {
+                toast.info('Updated offline. Will sync later.');
+            }
+
             navigate('/journal');
-        } catch (e) {
-            toast.error((e as { message: string }).message);
         } finally {
             setIsSubmitting(false);
+        }
+    };
+
+    /**
+     * DELETE (LOCAL FIRST, BACKEND OPTIONAL)
+     */
+    const handleDeleteClick = async () => {
+        if (!entry) return;
+
+        setIsDeleting(true);
+
+        try {
+            // Delete locally
+            await journalRepository.delete(entry.localId);
+
+            // Backend delete if synced
+            if (entry._id) {
+                try {
+                    await deleteUnwrapped(
+                        `${API_BASE_URL}/entries/${entry._id}`,
+                    );
+                } catch {
+                    // intentionally ignored
+                }
+            }
+
+            toast.success('Entry deleted');
+            navigate('/journal');
+        } finally {
+            setIsDeleting(false);
+            setShowDeleteConfirm(false);
         }
     };
 
@@ -148,28 +186,10 @@ const EntryDetailsPage = () => {
         }
     };
 
-    const handleDeleteClick = async () => {
-        if (!id) {
-            toast.error('No entry with given ID found.');
-            return;
-        }
-
-        setIsDeleting(true);
-
-        try {
-            const response = await deleteUnwrapped<EntryDetailsApiResponse>(
-                `/entries/${id}`,
-            );
-
-            toast.success(response.message);
-            navigate('/journal');
-        } catch (e) {
-            toast.error((e as { message: string }).message);
-        } finally {
-            setIsDeleting(false);
-            setShowDeleteConfirm(false);
-        }
-    };
+    const handleClearTitle = makeClearHandler(setFormData, 'title', '');
+    const handleClearPlatform = makeClearHandler(setFormData, 'platform', null);
+    const handleClearStatus = makeClearHandler(setFormData, 'status', null);
+    const handleClearRating = makeClearHandler(setFormData, 'rating', null);
 
     if (isInitialLoading) {
         return (
@@ -234,7 +254,7 @@ const EntryDetailsPage = () => {
                         onChange={handleDateChange}
                         isInvalid={!!errors.entryDate}
                         errorMessage={errors.entryDate}
-                        placeholder={'Select the date this entry applies to...'}
+                        placeholder="Select the date this entry applies to..."
                     />
 
                     <Slider
@@ -248,11 +268,7 @@ const EntryDetailsPage = () => {
                         disabled={formData.status !== 'completed'}
                     />
 
-                    <HStack
-                        justify="center"
-                        gap="md"
-                        style={{ marginTop: '1rem' }}
-                    >
+                    <HStack justify="center" gap="md">
                         <StdButton
                             type="button"
                             onClick={handleCancelClick}

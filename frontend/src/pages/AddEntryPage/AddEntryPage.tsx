@@ -96,7 +96,8 @@ const AddEntryPage: React.FC = () => {
 
         // Create an offline entry first - saved in the browser's DB
         const offlineEntry: OfflineJournalEntry = {
-            _id: crypto.randomUUID(), // client-side ID
+            localId: crypto.randomUUID(),
+            _id: undefined as unknown as string,
             createdBy: userId,
             title,
             platform,
