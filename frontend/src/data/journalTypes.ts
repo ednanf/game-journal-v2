@@ -1,10 +1,26 @@
-import type { JournalEntry as DomainJournalEntry } from '../types/entry';
+import type { StatusType } from '../types/entry';
+
+export type JournalEntryBase = {
+    createdBy: string;
+    title: string;
+    entryDate: string;
+    platform: string;
+    status: StatusType;
+    rating: number | null;
+    createdAt: string;
+    updatedAt: string;
+};
 
 // New type used for a different concern - storing to Indexed DB - needs a key
 // to keep track if it was synced or not
-export type OfflineJournalEntry = DomainJournalEntry & {
-    localId: string; // client-generated, always exists
-    _id?: string; // present only after sync
-    synced: boolean; // whether the backend knows it
-    deleted?: boolean; // handle tombstones
+export type OfflineJournalEntry = JournalEntryBase & {
+    localId: string; // client-generated identity
+    _id?: string; // backend identity (added after sync)
+    synced: boolean;
+    deleted?: boolean;
+};
+
+export type SyncedJournalEntry = OfflineJournalEntry & {
+    _id: string;
+    synced: true;
 };

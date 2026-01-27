@@ -1,18 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { VStack } from 'react-swiftstacks';
 
 import { journalRepository } from '../../data/journalRepository';
+import {fetchNextJournalPage} from '../../data/journalFetcher.ts';
 import type { OfflineJournalEntry } from '../../data/journalTypes';
+
 
 import EntryCard from '../../components/EntryCard/EntryCard';
 import LoadingCircle from '../../components/LoadingCircle/LoadingCircle';
+import LoadingDots from '../../components/LoadingDots/LoadingDots.tsx';
 
 const JournalPage = () => {
+    // States
     const [journalEntries, setJournalEntries] = useState<OfflineJournalEntry[]>(
         [],
     );
     const [initialLoading, setInitialLoading] = useState<boolean>(false);
+
+    // Pagination states
+    const [cursor, setCursor] = useState<string | null>(null);
+    const [hasMore, setHasMore] = useState(true);
+    const [isFetchingMore, setIsFetchingMore] = useState(false);
+
+    // Debounce
+    const lastLoadTimeRef = useRef<number>(0);
 
     useEffect(() => {
         let ignore = false;
@@ -54,6 +66,62 @@ const JournalPage = () => {
         };
     }, []);
 
+    // *Always* read from IndexedDB and never append backend results directly
+    const loadNextPage = useCallback(async () => {
+        const now = Date.now();
+
+        // Soft debounce (cooldown)
+        if (now - lastLoadTimeRef.current < 250) {
+            return;
+        }
+
+        if (!hasMore || isFetchingMore) return;
+
+        lastLoadTimeRef.current = now;
+        setIsFetchingMore(true);
+
+        try {
+            const { nextCursor } = await fetchNextJournalPage(cursor);
+
+            setCursor(nextCursor);
+            setHasMore(!!nextCursor);
+
+            const entries = await journalRepository.getAll();
+            const visibleEntries = entries.filter((e) => !e.deleted);
+
+            const sorted = [...visibleEntries].sort(
+                (a, b) =>
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime(),
+            );
+
+            setJournalEntries(sorted);
+        } catch {
+            toast.error('Failed to load more entries');
+        } finally {
+            setIsFetchingMore(false);
+        }
+    }, [cursor, hasMore, isFetchingMore]);
+
+    // Pagination trigger
+    useEffect(() => {
+        if (!hasMore) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    void loadNextPage();
+                }
+            },
+            { threshold: 1 },
+        );
+
+        const element = document.getElementById('journal-loader');
+        if (element) observer.observe(element);
+
+        return () => observer.disconnect();
+    }, [cursor, hasMore, loadNextPage]);
+
     if (initialLoading) {
         return (
             <div className="fullscreenLoader">
@@ -78,6 +146,11 @@ const JournalPage = () => {
                         to={`/entries/${entry.localId}`}
                     />
                 ))
+            )}
+            {hasMore && (
+                <div id="journal-loader" style={{ margin: '2rem' }}>
+                    {isFetchingMore && <LoadingDots />}
+                </div>
             )}
         </VStack>
     );
