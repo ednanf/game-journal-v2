@@ -2,6 +2,7 @@ import { VStack } from 'react-swiftstacks';
 import { useNavigate, Link, useOutletContext } from 'react-router-dom';
 
 import type { ThemeOutletContext } from '../../types/theme.ts';
+import { useSyncStatus } from '../../hooks/useSyncStatus.ts';
 
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 import { FaExternalLinkAlt } from 'react-icons/fa';
@@ -10,6 +11,8 @@ import styles from './SettingsPage.module.css';
 
 const SettingsPage = () => {
     const navigate = useNavigate();
+
+    const syncStatus = useSyncStatus();
 
     const { toggleTheme, theme } = useOutletContext<ThemeOutletContext>();
 
@@ -51,6 +54,26 @@ const SettingsPage = () => {
             </VStack>
 
             <p className={styles.currentUser}>Logged in as: {userEmail}</p>
+
+            <VStack gap="xs" align="center" style={{ marginTop: '1.5rem' }}>
+                <strong>Sync status</strong>
+
+                {syncStatus === 'all-synced' && (
+                    <span>✓ All changes synced</span>
+                )}
+
+                {syncStatus === 'pending' && <span>Changes pending sync</span>}
+
+                {syncStatus === 'syncing' && <span>Syncing…</span>}
+
+                {syncStatus === 'offline' && (
+                    <span>Offline — changes saved locally</span>
+                )}
+
+                {syncStatus === 'unreachable' && (
+                    <span>Server waking up — sync pending</span>
+                )}
+            </VStack>
 
             <div className={styles.githubFooter}>
                 <Link
