@@ -4,6 +4,7 @@ p {
 
 .currentUser {
     margin-top: 2rem;
+    user-select: none;
 }
 
 .githubFooter {
