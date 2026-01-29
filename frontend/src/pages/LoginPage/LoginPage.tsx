@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { VStack } from 'react-swiftstacks';
 
-import {useAuth} from '../../auth/AuthContext.tsx';
+import { useAuth } from '../../auth/AuthContext.tsx';
 
 import InputField from '../../components/Forms/InputField/InputField.tsx';
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
@@ -12,6 +12,7 @@ import logo from '../../assets/logo-icon.png';
 
 import { postUnwrapped } from '../../utils/axiosInstance.ts';
 import makeClearHandler from '../../utils/makeClearHandler.ts';
+import { syncJournalEntries } from '../../data/journalSync.ts';
 
 import '../shared.css';
 
@@ -115,6 +116,8 @@ const LoginPage = () => {
             localStorage.setItem('token', response.token);
 
             login(); // tell AuthContext the user is authenticated
+
+            await syncJournalEntries();
 
             toast.success(response.message);
 
