@@ -1,4 +1,5 @@
-import { dbPromise } from './db';
+import {getDb} from './db';
+
 import type { OfflineJournalEntry } from './journalTypes';
 
 /**
@@ -15,25 +16,32 @@ function normalizeEntry(entry: OfflineJournalEntry): OfflineJournalEntry {
     };
 }
 
+
 export const journalRepository = {
+
     async getAll(): Promise<OfflineJournalEntry[]> {
-        const db = await dbPromise;
+        const db = await getDb();
+
         return db.getAll('entries');
     },
 
     async getById(localId: string): Promise<OfflineJournalEntry | undefined> {
-        const db = await dbPromise;
+        const db = await getDb();
+
         return db.get('entries', localId);
     },
 
     async upsert(entry: OfflineJournalEntry): Promise<void> {
-        const db = await dbPromise;
+        const db = await getDb();
+
         const normalized = normalizeEntry(entry);
+
         await db.put('entries', normalized);
     },
 
     async delete(localId: string): Promise<void> {
-        const db = await dbPromise;
+        const db = await getDb();
+
         await db.delete('entries', localId);
     },
 };

@@ -33,14 +33,36 @@ const JournalPage = () => {
             try {
                 setInitialLoading(true);
 
-                // Get all entries
                 const entries = await journalRepository.getAll();
-
-                // Exclude entries marked to be deleted (tombstones)
                 const visibleEntries = entries.filter((e) => !e.deleted);
 
-                if (ignore) return;
+                // Cold start bootstrap
+                if (visibleEntries.length === 0) {
+                    const { nextCursor } = await fetchNextJournalPage(null);
 
+                    if (ignore) return;
+
+                    setCursor(nextCursor);
+                    setHasMore(!!nextCursor);
+
+                    // Get entries in IndexedDB
+                    const refreshedEntries = await journalRepository.getAll();
+                    const refreshedVisible = refreshedEntries.filter(
+                        (e) => !e.deleted,
+                    );
+
+                    // Sort entries
+                    const sorted = [...refreshedVisible].sort(
+                        (a, b) =>
+                            new Date(b.createdAt).getTime() -
+                            new Date(a.createdAt).getTime(),
+                    );
+
+                    setJournalEntries(sorted);
+                    return;
+                }
+
+                // Normal path (existing behavior)
                 const sorted = [...visibleEntries].sort(
                     (a, b) =>
                         new Date(b.createdAt).getTime() -

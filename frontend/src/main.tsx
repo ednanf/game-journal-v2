@@ -15,11 +15,6 @@ import { ProtectedRoute } from './auth/ProtectedRoute.tsx';
 import { syncJournalEntries } from './data/journalSync.ts';
 void syncJournalEntries();
 
-window.addEventListener('online', () => {
-    console.log('ONLINE EVENT FIRED');
-    void syncJournalEntries();
-});
-
 // Pages
 import AppShell from './components/AppShell/AppShell.tsx';
 import AddEntryPage from './pages/AddEntryPage/AddEntryPage.tsx';

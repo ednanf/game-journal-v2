@@ -101,10 +101,6 @@ const LoginPage = () => {
         setIsLoading(true);
 
         try {
-            console.log('payload:', {
-                email: formData.email,
-                password: formData.password,
-            });
             // Send
             const response = await postUnwrapped<RegistrationResponse>(
                 'auth/login',
