@@ -9,7 +9,6 @@ import type { OfflineJournalEntry } from '../../data/journalTypes';
 import EntryCard from '../../components/EntryCard/EntryCard';
 import LoadingCircle from '../../components/LoadingCircle/LoadingCircle';
 import LoadingDots from '../../components/LoadingDots/LoadingDots.tsx';
-import { syncJournalEntries } from '../../data/journalSync.ts';
 
 const JournalPage = () => {
     // States
@@ -25,21 +24,6 @@ const JournalPage = () => {
 
     // Debounce
     const lastLoadTimeRef = useRef<number>(0);
-
-    // Sync
-    useEffect(() => {
-        void syncJournalEntries();
-    }, []);
-
-    // Sync when back online
-    useEffect(() => {
-        const handleOnline = () => {
-            void syncJournalEntries();
-        };
-
-        window.addEventListener('online', handleOnline);
-        return () => window.removeEventListener('online', handleOnline);
-    }, []);
 
     useEffect(() => {
         let ignore = false;
