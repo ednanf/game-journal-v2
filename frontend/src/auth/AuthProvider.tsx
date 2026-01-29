@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 import { AuthContext, type AuthState } from './AuthContext';
 
-import {clearDb} from '../data/db.ts';
+import { syncJournalEntries } from '../data/journalSync';
+import { clearDb } from '../data/db.ts';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [auth, setAuth] = useState<AuthState>(() => {
@@ -15,10 +16,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const logout = async () => {
+        try {
+            await syncJournalEntries({ force: true });
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (e) {
+            alert(
+                'You have unsynced changes and are currently offline. ' +
+                    'Please connect to the internet before logging out.',
+            );
+            return; // abort logout
+        }
+
         localStorage.removeItem('token');
         localStorage.removeItem('email');
 
-        await clearDb(); // Clear data, keep schema/version
+        await clearDb();
 
         setAuth({ status: 'logged_out' });
     };

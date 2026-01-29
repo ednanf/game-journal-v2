@@ -11,10 +11,6 @@ import 'react-datepicker/dist/react-datepicker.css'; // Required by dependency
 import { AuthProvider } from './auth/AuthProvider.tsx';
 import { ProtectedRoute } from './auth/ProtectedRoute.tsx';
 
-// Offline sync
-import { syncJournalEntries } from './data/journalSync.ts';
-void syncJournalEntries();
-
 // Pages
 import AppShell from './components/AppShell/AppShell.tsx';
 import AddEntryPage from './pages/AddEntryPage/AddEntryPage.tsx';

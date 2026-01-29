@@ -1,5 +1,5 @@
 import { journalRepository } from './journalRepository';
-import type { OfflineJournalEntry } from './journalTypes';
+
 import {
     postUnwrapped,
     patchUnwrapped,
@@ -7,28 +7,53 @@ import {
 } from '../utils/axiosInstance';
 import { API_BASE_URL } from '../config/apiURL';
 
-export async function syncJournalEntries(): Promise<void> {
-    // Don’t even try if offline
-    if (!navigator.onLine) return;
+type SyncOptions = {
+    force?: boolean;
+};
 
-    // Grab entries from Indexed DB
+/**
+ * Sync local IndexedDB journal entries to the backend.
+ *
+ * - Default behavior: best-effort (silent failure, retry later)
+ * - force = true: must succeed or throw (used on logout)
+ */
+export async function syncJournalEntries(options?: SyncOptions): Promise<void> {
+    const force = options?.force === true;
+
+    // If offline
+    if (!navigator.onLine) {
+        if (force) {
+            throw new Error('Offline: cannot sync journal entries');
+        }
+        return;
+    }
+
+    // Read from IndexedDB
     const entries = await journalRepository.getAll();
 
-    // Filter entries that are not synced
+    // Only entries that need syncing
     const unsynced = entries.filter((e) => !e.synced);
 
-    // Loop through unsynced entries to either POST or PATCH according to the
-    // presence of mongoDB's _id
+    if (unsynced.length === 0) {
+        return;
+    }
+
     for (const entry of unsynced) {
         try {
-            // If entry is marked as deleted and was synced (_id exists)
+            /**
+             * Case 1: Entry was deleted locally AND already existed remotely
+             */
             if (entry.deleted && entry._id) {
                 await deleteUnwrapped(`${API_BASE_URL}/entries/${entry._id}`);
+
+                // Remove locally after confirmed remote delete
                 await journalRepository.delete(entry.localId);
                 continue;
             }
 
-            // If it's an entry with no _id → POST
+            /**
+             * Case 2: New local entry → POST
+             */
             if (!entry._id) {
                 const payload: Record<string, unknown> = {
                     title: entry.title,
@@ -45,45 +70,46 @@ export async function syncJournalEntries(): Promise<void> {
                     content: { _id: string };
                 }>(`${API_BASE_URL}/entries`, payload);
 
-                // Set synced to true and add mongoDB's _id
-                const syncedEntry: OfflineJournalEntry = {
+                await journalRepository.upsert({
                     ...entry,
                     _id: response.content._id,
                     synced: true,
-                };
-
-                // Insert into Indexed DB
-                await journalRepository.upsert(syncedEntry);
-            }
-
-            // If it's an entry with _id → PATCH
-            else {
-                const payload: Record<string, unknown> = {
-                    title: entry.title,
-                    platform: entry.platform,
-                    status: entry.status,
-                    entryDate: entry.entryDate,
-                };
-
-                if (entry.rating !== null) {
-                    payload.rating = entry.rating;
-                }
-
-                await patchUnwrapped(
-                    `${API_BASE_URL}/entries/${entry._id}`,
-                    payload,
-                );
-
-                // Set synced to true
-                await journalRepository.upsert({
-                    ...entry,
-                    synced: true,
                 });
+
+                continue;
             }
-        } catch (e) {
-            // Stop syncing on first failure
-            // Remaining entries will retry later
-            console.warn('Sync failed, will retry later', e);
+
+            /**
+             * Case 3: Existing remote entry → PATCH
+             */
+            const payload: Record<string, unknown> = {
+                title: entry.title,
+                platform: entry.platform,
+                status: entry.status,
+                entryDate: entry.entryDate,
+            };
+
+            if (entry.rating !== null) {
+                payload.rating = entry.rating;
+            }
+
+            await patchUnwrapped(
+                `${API_BASE_URL}/entries/${entry._id}`,
+                payload,
+            );
+
+            await journalRepository.upsert({
+                ...entry,
+                synced: true,
+            });
+        } catch (error) {
+            if (force) {
+                // 🔥 Logout path: do NOT swallow errors
+                throw error;
+            }
+
+            // Background sync: stop early, retry later
+            console.warn('Sync failed, will retry later', error);
             return;
         }
     }
