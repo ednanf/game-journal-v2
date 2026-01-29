@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { VStack } from 'react-swiftstacks';
-import { useNavigate, Link, useOutletContext } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 
-import {useAuth} from '../../auth/AuthContext.tsx';
+import { useAuth } from '../../auth/AuthContext.tsx';
 import type { ThemeOutletContext } from '../../types/theme.ts';
 
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal.tsx';
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
@@ -11,8 +13,11 @@ import SyncStatus from '../../components/SyncStatus/SyncStatus.tsx';
 import styles from './SettingsPage.module.css';
 
 const SettingsPage = () => {
+    const [showUnsyncedModal, setShowUnsyncedModal] = useState(false);
+    const [loggingOut, setLoggingOut] = useState(false);
+
     const navigate = useNavigate();
-    const {logout} = useAuth();
+    const { logout, forceLogout } = useAuth();
 
     const { toggleTheme, theme } = useOutletContext<ThemeOutletContext>();
 
@@ -22,9 +27,17 @@ const SettingsPage = () => {
         navigate('account');
     };
 
-    const handleLogoutClick = () => {
-        logout();
-        navigate('/', { replace: true });
+    const handleLogoutClick = async () => {
+        setLoggingOut(true);
+        try {
+            await logout();
+        } catch (e) {
+            if ((e as Error).message === 'UNSYNCED_DATA') {
+                setShowUnsyncedModal(true);
+            }
+        } finally {
+            setLoggingOut(false);
+        }
     };
 
     return (
@@ -51,7 +64,7 @@ const SettingsPage = () => {
             <p className={styles.currentUser}>Logged in as: {userEmail}</p>
 
             <VStack gap="xs" align="center" style={{ marginTop: '1.5rem' }}>
-                <SyncStatus/>
+                <SyncStatus />
             </VStack>
 
             <div className={styles.githubFooter}>
@@ -63,6 +76,30 @@ const SettingsPage = () => {
                     See this project on GitHub <FaExternalLinkAlt size={10} />
                 </Link>
             </div>
+            <ConfirmModal
+                open={showUnsyncedModal}
+                title="Unsynced changes"
+                description={
+                    <>
+                        You have changes that haven't been synced yet.
+                        <br />
+                        Logging out now will permanently discard them.
+                    </>
+                }
+                confirmLabel="Log out anyway"
+                confirmColor="red"
+                loading={loggingOut}
+                onCancel={() => setShowUnsyncedModal(false)}
+                onConfirm={async () => {
+                    setLoggingOut(true);
+                    try {
+                        await forceLogout();
+                        setShowUnsyncedModal(false);
+                    } finally {
+                        setLoggingOut(false);
+                    }
+                }}
+            />
         </VStack>
     );
 };

@@ -1,9 +1,8 @@
 import { journalRepository } from './journalRepository';
-
 import {
-    postUnwrapped,
-    patchUnwrapped,
     deleteUnwrapped,
+    patchUnwrapped,
+    postUnwrapped,
 } from '../utils/axiosInstance';
 import { API_BASE_URL } from '../config/apiURL';
 
@@ -104,7 +103,7 @@ export async function syncJournalEntries(options?: SyncOptions): Promise<void> {
             });
         } catch (error) {
             if (force) {
-                // 🔥 Logout path: do NOT swallow errors
+                // Logout path: do NOT swallow errors
                 throw error;
             }
 

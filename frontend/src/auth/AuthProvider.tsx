@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { AuthContext, type AuthState } from './AuthContext';
 
+import { journalRepository } from '../data/journalRepository.ts';
 import { syncJournalEntries } from '../data/journalSync';
 import { clearDb } from '../data/db.ts';
 
@@ -16,17 +17,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const logout = async () => {
-        try {
-            await syncJournalEntries({ force: true });
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (e) {
-            alert(
-                'You have unsynced changes and are currently offline. ' +
-                    'Please connect to the internet before logging out.',
-            );
-            return; // abort logout
+        const entries = await journalRepository.getAll();
+        const hasUnsynced = entries.some((e) => !e.synced);
+
+        // If there is unsynced data, require a forced sync
+        if (hasUnsynced) {
+            try {
+                await syncJournalEntries({ force: true });
+            } catch {
+                throw new Error('UNSYNCED_DATA');
+            }
         }
 
+        await forceLogout();
+    };
+
+    const forceLogout = async () => {
         localStorage.removeItem('token');
         localStorage.removeItem('email');
 
@@ -36,7 +42,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ auth, login, logout }}>
+        <AuthContext.Provider value={{ auth, login, logout, forceLogout }}>
             {children}
         </AuthContext.Provider>
     );

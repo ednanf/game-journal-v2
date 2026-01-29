@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { HStack } from 'react-swiftstacks';
 
 import StdButton from '../Buttons/StdButton/StdButton';
@@ -8,7 +8,7 @@ import styles from './ConfirmModal.module.css';
 interface ConfirmModalProps {
     open: boolean;
     title: string;
-    description?: string;
+    description?: React.ReactElement;
     confirmLabel?: string;
     cancelLabel?: string;
     confirmColor?: 'red' | 'green' | 'default';
