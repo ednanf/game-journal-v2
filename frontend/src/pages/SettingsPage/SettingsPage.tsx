@@ -1,16 +1,18 @@
 import { VStack } from 'react-swiftstacks';
 import { useNavigate, Link, useOutletContext } from 'react-router-dom';
 
+import {useAuth} from '../../auth/AuthContext.tsx';
 import type { ThemeOutletContext } from '../../types/theme.ts';
 
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
-import styles from './SettingsPage.module.css';
 import SyncStatus from '../../components/SyncStatus/SyncStatus.tsx';
+import styles from './SettingsPage.module.css';
 
 const SettingsPage = () => {
     const navigate = useNavigate();
+    const {logout} = useAuth();
 
     const { toggleTheme, theme } = useOutletContext<ThemeOutletContext>();
 
@@ -21,13 +23,8 @@ const SettingsPage = () => {
     };
 
     const handleLogoutClick = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('email');
-
-        // Force re-check of token, updating the UI
-        window.dispatchEvent(new Event('local-storage'));
-
-        navigate('/');
+        logout();
+        navigate('/', { replace: true });
     };
 
     return (

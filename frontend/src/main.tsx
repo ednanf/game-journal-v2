@@ -7,6 +7,10 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css'; // Required by dependency
 
+// Auth protection
+import { AuthProvider } from './auth/AuthProvider.tsx';
+import { ProtectedRoute } from './auth/ProtectedRoute.tsx';
+
 // Offline sync
 import { syncJournalEntries } from './data/journalSync.ts';
 void syncJournalEntries();
@@ -35,6 +39,7 @@ import {
 
 import './index.css';
 
+
 registerSW({
     onOfflineReady() {
         console.log('PWA ready for offline use');
@@ -43,19 +48,28 @@ registerSW({
 
 // "handle" is used in AppShell.tsx to pass props to the Header.tsx component
 const router = createBrowserRouter([
+    // Public routes
     {
         path: '/',
-        element: <AppShell />,
+        element: <LandingPage />,
+    },
+    {
+        path: '/login',
+        element: <LoginPage />,
+    },
+    {
+        path: '/register',
+        element: <RegistrationPage />,
+    },
+
+    // Protected routes
+    {
+        element: (
+            <ProtectedRoute>
+                <AppShell />
+            </ProtectedRoute>
+        ),
         children: [
-            {
-                index: true,
-                element: <LandingPage />,
-            },
-            {
-                path: 'login',
-                element: <LoginPage />,
-            },
-            { path: 'register', element: <RegistrationPage /> },
             {
                 path: 'journal',
                 element: <JournalPage />,
@@ -81,10 +95,7 @@ const router = createBrowserRouter([
                 element: <SettingsLayout />,
                 handle: { title: 'Settings' },
                 children: [
-                    {
-                        index: true,
-                        element: <SettingsPage />,
-                    },
+                    { index: true, element: <SettingsPage /> },
                     {
                         path: 'account',
                         element: <AccountSettingsPage />,
@@ -97,13 +108,17 @@ const router = createBrowserRouter([
                 element: <SearchPage />,
                 handle: { title: 'Search' },
             },
-            { path: '*', element: <ErrorPage /> },
         ],
     },
+
+    // Catch-all
+    { path: '*', element: <ErrorPage /> },
 ]);
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <RouterProvider router={router} />
+        <AuthProvider>
+            <RouterProvider router={router} />
+        </AuthProvider>
     </StrictMode>,
 );

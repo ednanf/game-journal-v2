@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
 import {
     Outlet,
     type UIMatch,
     useLocation,
     useMatches,
-    useNavigate,
+
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
@@ -19,22 +18,10 @@ type RouteHandle = {
     title?: string;
 };
 
-// TODO: change toast theme conditionally with local storage's current theme
-
 const AppShell = () => {
     const location = useLocation();
     const matches = useMatches() as UIMatch<RouteHandle>[]; // will be used to grab the title in main.tsx
     const { theme, toggleTheme } = useTheme();
-    const navigate = useNavigate();
-
-    // Prevent access to protected routes if not authenticated
-    const isAuthenticated = !!localStorage.getItem('token');
-
-    useEffect(() => {
-        if (!isAuthenticated) {
-            navigate('/');
-        }
-    }, [isAuthenticated, navigate]);
 
     // @ts-expect-error sometimes TS is fucking stupid like Microsoft
     const title = matches.findLast((m) => m.handle?.title)?.handle?.title; // pass the title as prop to the header
