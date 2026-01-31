@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { VStack, HStack } from 'react-swiftstacks';
 
 import { journalRepository } from '../../data/journalRepository';
-import type { OfflineJournalEntry } from '../../data/journalTypes';
+import type { OfflineJournalEntry } from '../../types/journalTypes.ts';
 
 import { useEntryForm } from '../../hooks/useEntryForm';
 import { patchUnwrapped, deleteUnwrapped } from '../../utils/axiosInstance';

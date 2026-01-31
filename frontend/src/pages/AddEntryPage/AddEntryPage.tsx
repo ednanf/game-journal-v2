@@ -7,7 +7,7 @@ import { useEntryForm } from '../../hooks/useEntryForm.ts';
 import makeClearHandler from '../../utils/makeClearHandler.ts';
 
 import { journalRepository } from '../../data/journalRepository.ts';
-import type { OfflineJournalEntry } from '../../data/journalTypes.ts';
+import type { OfflineJournalEntry } from '../../types/journalTypes.ts';
 
 import InputField from '../../components/Forms/InputField/InputField';
 import Selector from '../../components/Forms/Selector/Selector';

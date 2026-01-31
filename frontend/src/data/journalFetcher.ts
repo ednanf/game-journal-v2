@@ -1,5 +1,5 @@
 import { journalRepository } from './journalRepository';
-import type { OfflineJournalEntry } from './journalTypes';
+import type { OfflineJournalEntry } from '../types/journalTypes.ts';
 import { getUnwrappedWithParams } from '../utils/axiosInstance';
 import { API_BASE_URL } from '../config/apiURL';
 import type { PaginatedResponse } from '../types/entry';

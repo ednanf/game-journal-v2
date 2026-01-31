@@ -4,7 +4,7 @@ import { VStack } from 'react-swiftstacks';
 
 import { journalRepository } from '../../data/journalRepository';
 import { fetchNextJournalPage } from '../../data/journalFetcher.ts';
-import type { OfflineJournalEntry } from '../../data/journalTypes';
+import type { OfflineJournalEntry } from '../../types/journalTypes.ts';
 
 import EntryCard from '../../components/EntryCard/EntryCard';
 import LoadingCircle from '../../components/LoadingCircle/LoadingCircle';

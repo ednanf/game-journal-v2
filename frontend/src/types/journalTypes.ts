@@ -1,4 +1,4 @@
-import type { StatusType } from '../types/entry';
+import type { StatusType } from './entry.ts';
 
 export type JournalEntryBase = {
     createdBy: string;

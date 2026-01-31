@@ -1,6 +1,6 @@
-import {getDb} from './db';
+import { getDb } from './db';
 
-import type { OfflineJournalEntry } from './journalTypes';
+import type { OfflineJournalEntry } from '../types/journalTypes.ts';
 
 /**
  * Normalize entries before writing to IndexedDB.
@@ -16,9 +16,7 @@ function normalizeEntry(entry: OfflineJournalEntry): OfflineJournalEntry {
     };
 }
 
-
 export const journalRepository = {
-
     async getAll(): Promise<OfflineJournalEntry[]> {
         const db = await getDb();
 
