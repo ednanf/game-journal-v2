@@ -19,8 +19,6 @@ import '../shared.css';
 import SearchResultsPage from '../SearchResultsPage/SearchResultsPage.tsx';
 import makeClearHandler from '../../utils/makeClearHandler.ts';
 
-// TODO: clear search filters UI
-
 const SearchPage = () => {
     const navigate = useNavigate();
 
