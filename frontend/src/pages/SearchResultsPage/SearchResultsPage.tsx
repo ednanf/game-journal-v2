@@ -3,16 +3,17 @@ import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { HStack, VStack } from 'react-swiftstacks';
 
-import { getUnwrapped } from '../../utils/axiosInstance.ts';
+import { searchEntries } from '../../services/searchService';
 
 import LoadingCircle from '../../components/LoadingCircle/LoadingCircle.tsx';
 import EntryCard from '../../components/EntryCard/EntryCard.tsx';
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
+import ActiveFilters from '../../components/ActiveFilters/ActiveFilters.tsx';
 
-import type { JournalEntry } from '../../types/entry.ts';
+import type { StatusType } from '../../types/entry.ts';
+import type { OfflineJournalEntry } from '../../types/journalTypes.ts';
 
 import styles from './SearchResultsPage.module.css';
-import ActiveFilters from '../../components/ActiveFilters/ActiveFilters.tsx';
 
 const SearchResultsPage = () => {
     const [searchParams] = useSearchParams();
@@ -25,7 +26,7 @@ const SearchResultsPage = () => {
     const location = useLocation();
 
     const [isLoading, setIsLoading] = useState(false);
-    const [entries, setEntries] = useState<JournalEntry[]>([]);
+    const [entries, setEntries] = useState<OfflineJournalEntry[]>([]);
     const [nextCursor, setNextCursor] = useState<string | null>(null);
     const [page, setPage] = useState(pageFromUrl);
     const [error, setError] = useState<string | null>(null);
@@ -71,14 +72,26 @@ const SearchResultsPage = () => {
             setError(null);
 
             try {
-                const response = await getUnwrapped<{
-                    entries: JournalEntry[];
-                    nextCursor: string | null;
-                }>(url);
+                const statusParam = searchParams.get('status');
+
+                const result = await searchEntries({
+                    limit: BACKEND_LIMIT,
+                    title: searchParams.get('title') ?? undefined,
+                    platform: searchParams.get('platform') ?? undefined,
+                    status: statusParam
+                        ? (statusParam as StatusType)
+                        : undefined,
+                    rating: searchParams.get('rating')
+                        ? Number(searchParams.get('rating'))
+                        : undefined,
+                    startDate: searchParams.get('startDate') ?? undefined,
+                    endDate: searchParams.get('endDate') ?? undefined,
+                    cursor: searchParams.get('cursor') ?? undefined,
+                });
 
                 if (!ignore) {
-                    setEntries(response.entries);
-                    setNextCursor(response.nextCursor);
+                    setEntries(result.entries);
+                    setNextCursor(result.nextCursor);
                 }
             } catch (e: unknown) {
                 if (!ignore) {
@@ -101,7 +114,7 @@ const SearchResultsPage = () => {
         return () => {
             ignore = true;
         };
-    }, [url, error]);
+    }, [url, error, searchParams]);
 
     // Maintain page number correctly synchronized
     useEffect(() => {
@@ -180,17 +193,22 @@ const SearchResultsPage = () => {
                 <ActiveFilters filters={visibleFilters} />
             )}
 
-            {entries.map((entry) => (
-                <EntryCard
-                    key={entry._id}
-                    title={entry.title}
-                    platform={entry.platform}
-                    status={entry.status}
-                    rating={entry.rating}
-                    entryDate={new Date(entry.entryDate)}
-                    to={`/entries/${entry._id}`}
-                />
-            ))}
+            {entries.map((entry) => {
+                // Stable React key
+                const id = entry._id ?? entry.localId;
+
+                return (
+                    <EntryCard
+                        key={id}
+                        title={entry.title}
+                        platform={entry.platform}
+                        status={entry.status}
+                        rating={entry.rating}
+                        entryDate={new Date(entry.entryDate)}
+                        to={entry._id ? `/entries/${entry._id}` : undefined}
+                    />
+                );
+            })}
 
             <HStack padding="md" gap="md">
                 <StdButton
