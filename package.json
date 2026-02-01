@@ -1,0 +1,24 @@
+{
+  "name": "game-journal-v2",
+  "version": "1.0.0",
+  "description": "- The backend is hosted on Render and takes a moment to wake up after periods   of inactivity. Please allow time for the server to respond on your first   request. - Currently, the auth token is stored in local storage instead of cookies to   avoid CORS complications, particularly with WebKit on iOS.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "tree:repo": "tree -L 4 -I \"node_modules|dist|build|.git|coverage|.next|out\" frontend backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ednanf/game-journal-v2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ednanf/game-journal-v2/issues"
+  },
+  "homepage": "https://github.com/ednanf/game-journal-v2#readme"
+}
