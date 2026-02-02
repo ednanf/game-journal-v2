@@ -168,48 +168,38 @@ Link {
     --input-field-background-light: e1e2e3;
     --input-field-box-shadow-light: inset 2px 5px 10px rgba(0, 0, 0, 0.3);
     --input-field-background-focus-light: #ffffff;
-    --input-field-box-shadow-focus-light:
-        13px 13px 100px #969696, -13px -13px 100px #ffffff;
+    --input-field-box-shadow-focus-light: 13px 13px 100px #969696, -13px -13px 100px #ffffff;
 
     /* Standard button */
-    --stdbutton-box-shadow-light:
-        -7px -7px 20px 0 #fff9, -4px -4px 5px 0 #fff9, 7px 7px 20px 0 #0002,
-        4px 4px 5px 0 #0001;
-    --stdbutton-box-shadow-active-light:
-        inset -7px -7px 20px 0 #fff9, inset -4px -4px 5px 0 #fff9,
-        inset 7px 7px 20px 0 #0003, inset 4px 4px 5px 0 #0001;
+    --stdbutton-box-shadow-light: -7px -7px 20px 0 #fff9, -4px -4px 5px 0 #fff9, 7px 7px 20px 0 #0002,
+    4px 4px 5px 0 #0001;
+    --stdbutton-box-shadow-active-light: inset -7px -7px 20px 0 #fff9, inset -4px -4px 5px 0 #fff9,
+    inset 7px 7px 20px 0 #0003, inset 4px 4px 5px 0 #0001;
     --stdbutton-color-disabled-light: #c5c5c5;
     --stdbutton-color-hover-light: var(--color-accent-blue);
     --stdbutton-hover-shadow-light: 0 0 30px rgba(0, 188, 212, 0.5);
 
     /* NavBar */
-    --navbar-box-shadow-light:
-        -8px -8px 20px rgba(255, 255, 255, 0.9),
-        -4px -4px 6px rgba(255, 255, 255, 0.8),
-        8px 8px 20px rgba(0, 0, 0, 0.15), 4px 4px 6px rgba(0, 0, 0, 0.1);
+    --navbar-box-shadow-light: -8px -8px 20px rgba(255, 255, 255, 0.9),
+    -4px -4px 6px rgba(255, 255, 255, 0.8),
+    8px 8px 20px rgba(0, 0, 0, 0.15), 4px 4px 6px rgba(0, 0, 0, 0.1);
 
     /* NavBar button */
-    --navbar-button-box-shadow-light:
-        -7px -7px 20px 0 #fff9, -4px -4px 5px 0 #fff9, 7px 7px 20px 0 #0002,
-        4px 4px 5px 0 #0001;
-    --navbar-button-box-shadow-active-light:
-        inset -7px -7px 20px 0 #fff9, inset -4px -4px 5px 0 #fff9,
-        inset 7px 7px 20px 0 #0003, inset 4px 4px 5px 0 #0001;
-    --navbar-button-box-shadow-pressed-light:
-        inset -7px -7px 20px 0 #fff9, inset -4px -4px 5px 0 #fff9,
-        inset 7px 7px 20px 0 #0003, inset 4px 4px 5px 0 #0001;
+    --navbar-button-box-shadow-light: -7px -7px 20px 0 #fff9, -4px -4px 5px 0 #fff9, 7px 7px 20px 0 #0002,
+    4px 4px 5px 0 #0001;
+    --navbar-button-box-shadow-active-light: inset -7px -7px 20px 0 #fff9, inset -4px -4px 5px 0 #fff9,
+    inset 7px 7px 20px 0 #0003, inset 4px 4px 5px 0 #0001;
+    --navbar-button-box-shadow-pressed-light: inset -7px -7px 20px 0 #fff9, inset -4px -4px 5px 0 #fff9,
+    inset 7px 7px 20px 0 #0003, inset 4px 4px 5px 0 #0001;
 
     /* Entry card */
-    --entry-card-box-shadow-light:
-        8px 8px 15px rgba(163, 177, 198, 0.6),
-        -8px -8px 20px rgba(255, 255, 255, 0.8);
-    --entry-card-box-shadow-active-light:
-        inset 6px 6px 15px rgba(0, 0, 0, 0.15),
-        inset -6px -6px 15px rgba(255, 255, 255, 0.7);
+    --entry-card-box-shadow-light: 8px 8px 15px rgba(163, 177, 198, 0.6),
+    -8px -8px 20px rgba(255, 255, 255, 0.8);
+    --entry-card-box-shadow-active-light: inset 6px 6px 15px rgba(0, 0, 0, 0.15),
+    inset -6px -6px 15px rgba(255, 255, 255, 0.7);
     --entry-card-chevron-light: var(--color-text-muted);
-    --entry-card-status-badge-box-shadow-light:
-        inset 2px 2px 5px rgba(0, 0, 0, 0.15),
-        inset -2px -2px 5px rgba(255, 255, 255, 0.9);
+    --entry-card-status-badge-box-shadow-light: inset 2px 2px 5px rgba(0, 0, 0, 0.15),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.9);
     --entry-card-purple-shadow-light: 0 0 30px rgba(166, 123, 255, 0.5);
     --entry-card-green-shadow-light: 0 0 30px rgba(76, 175, 80, 0.5);
     --entry-card-blue-shadow-light: 0 0 30px rgba(0, 188, 212, 0.5);
@@ -217,52 +207,50 @@ Link {
     --entry-card-magenta-shadow-light: 0 0 30px rgba(233, 30, 99, 0.5);
 
     /* Status card - lifetime */
-    --status-card-lifetime-box-shadow-light:
-        8px 8px 15px rgba(163, 177, 198, 0.6),
-        -8px -8px 20px rgba(255, 255, 255, 0.8);
+    --status-card-lifetime-box-shadow-light: 8px 8px 15px rgba(163, 177, 198, 0.6),
+    -8px -8px 20px rgba(255, 255, 255, 0.8);
 
     /* Status card - lifetime slots */
-    --item-card-box-shadow-light:
-        inset 3px 3px 6px rgba(0, 0, 0, 0.15),
-        inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --item-card-box-shadow-light: inset 3px 3px 6px rgba(0, 0, 0, 0.15),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.9);
 
     /* Status card - yearly */
-    --status-card-yearly-box-shadow-light:
-        6px 6px 12px rgba(163, 177, 198, 0.55),
-        -6px -6px 14px rgba(255, 255, 255, 0.85);
+    --status-card-yearly-box-shadow-light: 6px 6px 12px rgba(163, 177, 198, 0.55),
+    -6px -6px 14px rgba(255, 255, 255, 0.85);
 
     /* Status card - yearly slots */
-    --item-card-small-box-shadow-light:
-        inset 2px 2px 4px rgba(0, 0, 0, 0.12),
-        inset -2px -2px 4px rgba(255, 255, 255, 0.85);
+    --item-card-small-box-shadow-light: inset 2px 2px 4px rgba(0, 0, 0, 0.12),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.85);
 
     /* Loading Bar */
     --loading-bar-line-light: var(--color-text-muted);
-    --loading-circle-animation-box-shadow-light:
-        8px 8px 14px #c5c5c5, -8px -8px 14px #ffffff;
-    --loading-dots-animation-box-shadow-light:
-        7px 7px 12px rgba(110, 110, 110, 0.95),
-        -4px -4px 8px rgba(255, 255, 255, 0.9);
+    --loading-circle-animation-box-shadow-light: 8px 8px 14px #c5c5c5, -8px -8px 14px #ffffff;
+    --loading-dots-animation-box-shadow-light: 7px 7px 12px rgba(110, 110, 110, 0.95),
+    -4px -4px 8px rgba(255, 255, 255, 0.9);
 
     /* Modal window */
     --modal-backdrop-light: rgba(224, 229, 236, 0.65);
-    --modal-box-shadow-light:
-        inset 3px 3px 6px rgba(0, 0, 0, 0.08),
-        inset -3px -3px 6px rgba(255, 255, 255, 0.9),
-        8px 8px 18px rgba(163, 177, 198, 0.55),
-        -8px -8px 22px rgba(255, 255, 255, 0.85);
+    --modal-box-shadow-light: inset 3px 3px 6px rgba(0, 0, 0, 0.08),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.9),
+    8px 8px 18px rgba(163, 177, 198, 0.55),
+    -8px -8px 22px rgba(255, 255, 255, 0.85);
 
     /* Inset divider */
-    --inset-divider-box-shadow-light:
-        inset 1px 1px 2px rgba(0, 0, 0, 0.2),
-        inset -1px -1px 2px rgba(255, 255, 255, 0.9);
+    --inset-divider-box-shadow-light: inset 1px 1px 2px rgba(0, 0, 0, 0.2),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.9);
 
     /* Date picker */
     --date-picker-day-selected-light: #ffffff;
-    --date-picker-box-shadow-light:
-        12px 12px 24px rgba(0, 0, 0, 0.2),
-        -12px -12px 24px rgba(255, 255, 255, 0.7);
+    --date-picker-box-shadow-light: 12px 12px 24px rgba(0, 0, 0, 0.2),
+    -12px -12px 24px rgba(255, 255, 255, 0.7);
     --date-picker-hover-background-color-light: rgba(111, 207, 255, 0.2);
+
+    /* Search parameters chips */
+    --chip-bg-box-shadow-light: -7px -7px 20px 0 #fff9,
+    -4px -4px 5px 0 #fff9,
+    7px 7px 20px 0 #0002,
+    4px 4px 5px 0 #0001;
+    --chip-text-fade-light: var(--color-bg-light);
 
     /* Semantic mapping ------------------------------------------------------*/
     --color-bg: var(--color-bg-light);
@@ -298,17 +286,17 @@ Link {
 
     --navbar-button-box-shadow: var(--navbar-button-box-shadow-light);
     --navbar-button-box-shadow-active: var(
-        --navbar-button-box-shadow-active-light
+            --navbar-button-box-shadow-active-light
     );
     --navbar-button-box-shadow-pressed: var(
-        --navbar-button-box-shadow-pressed-light
+            --navbar-button-box-shadow-pressed-light
     );
 
     --entry-card-box-shadow: var(--entry-card-box-shadow-light);
     --entry-card-box-shadow-active: var(--entry-card-box-shadow-active-light);
     --entry-card-chevron: var(--entry-card-chevron-light);
     --entry-card-status-badge-box-shadow: var(
-        --entry-card-status-badge-box-shadow-light
+            --entry-card-status-badge-box-shadow-light
     );
     --entry-card-purple-shadow: var(--entry-card-purple-shadow-light);
     --entry-card-green-shadow: var(--entry-card-green-shadow-light);
@@ -317,7 +305,7 @@ Link {
     --entry-card-magenta-shadow: var(--entry-card-magenta-shadow-light);
 
     --status-card-lifetime-box-shadow: var(
-        --status-card-lifetime-box-shadow-light
+            --status-card-lifetime-box-shadow-light
     );
 
     --item-card-box-shadow: var(--item-card-box-shadow-light);
@@ -328,10 +316,10 @@ Link {
 
     --loading-bar-line: var(--loading-bar-line-light);
     --loading-circle-animation-box-shadow: var(
-        --loading-circle-animation-box-shadow-light
+            --loading-circle-animation-box-shadow-light
     );
     --loading-dots-animation-box-shadow: var(
-        --loading-dots-animation-box-shadow-light
+            --loading-dots-animation-box-shadow-light
     );
 
     --modal-backdrop: var(--modal-backdrop-light);
@@ -342,8 +330,11 @@ Link {
     --date-picker-day-selected: var(--date-picker-day-selected-light);
     --date-picker-box-shadow: var(--date-picker-box-shadow-light);
     --date-picker-hover-background-color: var(
-        --date-picker-hover-background-color-light
+            --date-picker-hover-background-color-light
     );
+
+    --chip-bg-box-shadow: var(--chip-bg-box-shadow-light);
+    --chip-text-fade: var(--chip-text-fade-light);
 }
 
 [data-theme='dark'] {
@@ -385,52 +376,41 @@ Link {
 
     /* Input field */
     --input-field-background-dark: #1b1f24;
-    --input-field-box-shadow-dark:
-        inset 4px 4px 8px rgba(0, 0, 0, 0.6),
-        inset -4px -4px 8px rgba(255, 255, 255, 0.04);
+    --input-field-box-shadow-dark: inset 4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.04);
     --input-field-background-focus-dark: #22262c;
-    --input-field-box-shadow-focus-dark:
-        inset 2px 2px 6px rgba(0, 0, 0, 0.7),
-        inset -2px -2px 6px rgba(255, 255, 255, 0.06);
+    --input-field-box-shadow-focus-dark: inset 2px 2px 6px rgba(0, 0, 0, 0.7),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.06);
 
     /* Standard button */
-    --stdbutton-box-shadow-dark:
-        6px 6px 12px rgba(0, 0, 0, 0.6),
-        -6px -6px 12px rgba(255, 255, 255, 0.04);
-    --stdbutton-box-shadow-active-dark:
-        inset 4px 4px 8px rgba(0, 0, 0, 0.6),
-        inset -4px -4px 8px rgba(255, 255, 255, 0.05);
+    --stdbutton-box-shadow-dark: 6px 6px 12px rgba(0, 0, 0, 0.6),
+    -6px -6px 12px rgba(255, 255, 255, 0.04);
+    --stdbutton-box-shadow-active-dark: inset 4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.05);
     --stdbutton-color-disabled-dark: #555b65;
     --stdbutton-color-hover-dark: var(--color-accent-blue-dark);
     --stdbutton-hover-shadow-dark: var(--color-glow-blue-dark);
 
     /* NavBar */
-    --navbar-box-shadow-dark:
-        8px 8px 16px rgba(0, 0, 0, 0.6),
-        -8px -8px 16px rgba(255, 255, 255, 0.03);
+    --navbar-box-shadow-dark: 8px 8px 16px rgba(0, 0, 0, 0.6),
+    -8px -8px 16px rgba(255, 255, 255, 0.03);
 
     /* NavBar button */
-    --navbar-button-box-shadow-dark:
-        6px 6px 12px rgba(0, 0, 0, 0.6),
-        -6px -6px 12px rgba(255, 255, 255, 0.04);
-    --navbar-button-box-shadow-active-dark:
-        inset 4px 4px 8px rgba(0, 0, 0, 0.6),
-        inset -4px -4px 8px rgba(255, 255, 255, 0.05);
-    --navbar-button-box-shadow-pressed-dark:
-        inset 4px 4px 8px rgba(0, 0, 0, 0.6),
-        inset -4px -4px 8px rgba(255, 255, 255, 0.05);
+    --navbar-button-box-shadow-dark: 6px 6px 12px rgba(0, 0, 0, 0.6),
+    -6px -6px 12px rgba(255, 255, 255, 0.04);
+    --navbar-button-box-shadow-active-dark: inset 4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.05);
+    --navbar-button-box-shadow-pressed-dark: inset 4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.05);
 
     /* Entry card */
-    --entry-card-box-shadow-dark:
-        8px 8px 16px rgba(0, 0, 0, 0.55),
-        -8px -8px 16px rgba(255, 255, 255, 0.035);
-    --entry-card-box-shadow-active-dark:
-        inset 6px 6px 12px rgba(0, 0, 0, 0.6),
-        inset -6px -6px 12px rgba(255, 255, 255, 0.04);
+    --entry-card-box-shadow-dark: 8px 8px 16px rgba(0, 0, 0, 0.55),
+    -8px -8px 16px rgba(255, 255, 255, 0.035);
+    --entry-card-box-shadow-active-dark: inset 6px 6px 12px rgba(0, 0, 0, 0.6),
+    inset -6px -6px 12px rgba(255, 255, 255, 0.04);
     --entry-card-chevron-dark: var(--color-text-muted-dark);
-    --entry-card-status-badge-box-shadow-dark:
-        inset 2px 2px 5px rgba(0, 0, 0, 0.6),
-        inset -2px -2px 5px rgba(255, 255, 255, 0.04);
+    --entry-card-status-badge-box-shadow-dark: inset 2px 2px 5px rgba(0, 0, 0, 0.6),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.04);
     --entry-card-purple-shadow-dark: var(--color-glow-purple-dark);
     --entry-card-green-shadow-dark: var(--color-glow-green-dark);
     --entry-card-blue-shadow-dark: var(--color-glow-blue-dark);
@@ -438,53 +418,47 @@ Link {
     --entry-card-magenta-shadow-dark: var(--color-glow-magenta-dark);
 
     /* Status card - lifetime */
-    --status-card-lifetime-box-shadow-dark:
-        8px 8px 16px rgba(0, 0, 0, 0.55),
-        -8px -8px 16px rgba(255, 255, 255, 0.035);
+    --status-card-lifetime-box-shadow-dark: 8px 8px 16px rgba(0, 0, 0, 0.55),
+    -8px -8px 16px rgba(255, 255, 255, 0.035);
 
     /* Status card - lifetime slots */
-    --item-card-box-shadow-dark:
-        inset 3px 3px 6px rgba(0, 0, 0, 0.6),
-        inset -3px -3px 6px rgba(255, 255, 255, 0.04);
+    --item-card-box-shadow-dark: inset 3px 3px 6px rgba(0, 0, 0, 0.6),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.04);
 
     /* Status card - yearly */
-    --status-card-yearly-box-shadow-dark:
-        6px 6px 12px rgba(0, 0, 0, 0.55),
-        -6px -6px 14px rgba(255, 255, 255, 0.04);
+    --status-card-yearly-box-shadow-dark: 6px 6px 12px rgba(0, 0, 0, 0.55),
+    -6px -6px 14px rgba(255, 255, 255, 0.04);
 
     /* Status card - yearly slots */
-    --item-card-small-box-shadow-dark:
-        inset 2px 2px 4px rgba(0, 0, 0, 0.6),
-        inset -2px -2px 4px rgba(255, 255, 255, 0.04);
+    --item-card-small-box-shadow-dark: inset 2px 2px 4px rgba(0, 0, 0, 0.6),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.04);
 
     /* Loading Bar */
     --loading-bar-line-dark: var(--color-text-muted-dark);
-    --loading-circle-animation-box-shadow-dark:
-        8px 8px 14px rgba(0, 0, 0, 0.6),
-        -8px -8px 14px rgba(255, 255, 255, 0.04);
-    --loading-dots-animation-box-shadow-dark:
-        7px 7px 12px rgba(0, 0, 0, 0.8), -4px -4px 8px rgba(255, 255, 255, 0.04);
+    --loading-circle-animation-box-shadow-dark: 8px 8px 14px rgba(0, 0, 0, 0.6),
+    -8px -8px 14px rgba(255, 255, 255, 0.04);
+    --loading-dots-animation-box-shadow-dark: 7px 7px 12px rgba(0, 0, 0, 0.8), -4px -4px 8px rgba(255, 255, 255, 0.04);
 
     /* Modal window */
     --modal-backdrop-dark: rgba(30, 34, 40, 0.7);
-    --modal-box-shadow-dark:
-        inset 3px 3px 6px rgba(0, 0, 0, 0.6),
-        inset -3px -3px 6px rgba(255, 255, 255, 0.04),
-        10px 10px 20px rgba(0, 0, 0, 0.7);
+    --modal-box-shadow-dark: inset 3px 3px 6px rgba(0, 0, 0, 0.6),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.04),
+    10px 10px 20px rgba(0, 0, 0, 0.7);
 
     /* Inset divider */
-    --inset-divider-box-shadow-dark:
-        inset 1px 1px 2px rgba(0, 0, 0, 0.6),
-        inset -1px -1px 2px rgba(255, 255, 255, 0.04);
+    --inset-divider-box-shadow-dark: inset 1px 1px 2px rgba(0, 0, 0, 0.6),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.04);
 
     /* Date picker – dark theme */
     --date-picker-day-selected-dark: #f5f7fa;
-
-    --date-picker-box-shadow-dark:
-        10px 10px 20px rgba(0, 0, 0, 0.7),
-        -6px -6px 14px rgba(255, 255, 255, 0.04);
-
+    --date-picker-box-shadow-dark: 10px 10px 20px rgba(0, 0, 0, 0.7),
+    -6px -6px 14px rgba(255, 255, 255, 0.04);
     --date-picker-hover-background-color-dark: rgba(77, 208, 225, 0.12);
+
+    /* Search parameters chips */
+    --chip-bg-box-shadow-dark: 4px 4px 8px rgba(0, 0, 0, 0.6),
+    -2px -2px 4px rgba(255, 255, 255, 0.03);
+    --chip-text-fade-dark: var(--color-bg-dark);
 
     /* Semantic mapping ------------------------------------------------------*/
     --color-bg: var(--color-bg-dark);
@@ -520,17 +494,17 @@ Link {
 
     --navbar-button-box-shadow: var(--navbar-button-box-shadow-dark);
     --navbar-button-box-shadow-active: var(
-        --navbar-button-box-shadow-active-dark
+            --navbar-button-box-shadow-active-dark
     );
     --navbar-button-box-shadow-pressed: var(
-        --navbar-button-box-shadow-pressed-dark
+            --navbar-button-box-shadow-pressed-dark
     );
 
     --entry-card-box-shadow: var(--entry-card-box-shadow-dark);
     --entry-card-box-shadow-active: var(--entry-card-box-shadow-active-dark);
     --entry-card-chevron: var(--entry-card-chevron-dark);
     --entry-card-status-badge-box-shadow: var(
-        --entry-card-status-badge-box-shadow-dark
+            --entry-card-status-badge-box-shadow-dark
     );
     --entry-card-purple-shadow: var(--entry-card-purple-shadow-dark);
     --entry-card-green-shadow: var(--entry-card-green-shadow-dark);
@@ -539,7 +513,7 @@ Link {
     --entry-card-magenta-shadow: var(--entry-card-magenta-shadow-dark);
 
     --status-card-lifetime-box-shadow: var(
-        --status-card-lifetime-box-shadow-dark
+            --status-card-lifetime-box-shadow-dark
     );
 
     --item-card-box-shadow: var(--item-card-box-shadow-dark);
@@ -550,10 +524,10 @@ Link {
 
     --loading-bar-line: var(--loading-bar-line-dark);
     --loading-circle-animation-box-shadow: var(
-        --loading-circle-animation-box-shadow-dark
+            --loading-circle-animation-box-shadow-dark
     );
     --loading-dots-animation-box-shadow: var(
-        --loading-dots-animation-box-shadow-dark
+            --loading-dots-animation-box-shadow-dark
     );
 
     --modal-backdrop: var(--modal-backdrop-dark);
@@ -564,6 +538,9 @@ Link {
     --date-picker-day-selected: var(--date-picker-day-selected-dark);
     --date-picker-box-shadow: var(--date-picker-box-shadow-dark);
     --date-picker-hover-background-color: var(
-        --date-picker-hover-background-color-dark
+            --date-picker-hover-background-color-dark
     );
+
+    --chip-bg-box-shadow: var(--chip-bg-box-shadow-dark);
+    --chip-text-fade: var(--chip-text-fade-dark);
 }
