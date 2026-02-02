@@ -8,7 +8,7 @@ import styles from './ConfirmModal.module.css';
 interface ConfirmModalProps {
     open: boolean;
     title: string;
-    description?: React.ReactElement;
+    description?: React.ReactElement | string;
     confirmLabel?: string;
     cancelLabel?: string;
     confirmColor?: 'red' | 'green' | 'default';
