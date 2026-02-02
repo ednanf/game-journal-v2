@@ -7,7 +7,7 @@ import { journalRepository } from '../../data/journalRepository';
 import type { OfflineJournalEntry } from '../../types/journalTypes.ts';
 
 import { useEntryForm } from '../../hooks/useEntryForm';
-import { patchUnwrapped, deleteUnwrapped } from '../../utils/axiosInstance';
+import { patchUnwrapped } from '../../utils/axiosInstance';
 
 import InputField from '../../components/Forms/InputField/InputField';
 import DateTimePicker from '../../components/Forms/DateTimePicker/DateTimePicker';
@@ -162,17 +162,6 @@ const EntryDetailsPage = () => {
                 deleted: true,
                 synced: false,
             });
-
-            // Backend delete if synced
-            if (entry._id) {
-                try {
-                    await deleteUnwrapped(
-                        `${API_BASE_URL}/entries/${entry._id}`,
-                    );
-                } catch {
-                    // intentionally ignored
-                }
-            }
 
             toast.success('Entry deleted');
             navigate('/journal');

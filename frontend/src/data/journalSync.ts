@@ -1,3 +1,4 @@
+import type { AxiosError } from 'axios';
 import { journalRepository } from './journalRepository';
 import {
     deleteUnwrapped,
@@ -10,16 +11,9 @@ type SyncOptions = {
     force?: boolean;
 };
 
-/**
- * Sync local IndexedDB journal entries to the backend.
- *
- * - Default behavior: best-effort (silent failure, retry later)
- * - force = true: must succeed or throw (used on logout)
- */
 export async function syncJournalEntries(options?: SyncOptions): Promise<void> {
     const force = options?.force === true;
 
-    // If offline
     if (!navigator.onLine) {
         if (force) {
             throw new Error('Offline: cannot sync journal entries');
@@ -27,33 +21,41 @@ export async function syncJournalEntries(options?: SyncOptions): Promise<void> {
         return;
     }
 
-    // Read from IndexedDB
     const entries = await journalRepository.getAll();
-
-    // Only entries that need syncing
     const unsynced = entries.filter((e) => !e.synced);
 
-    if (unsynced.length === 0) {
-        return;
-    }
-
     for (const entry of unsynced) {
-        try {
-            /**
-             * Case 1: Entry was deleted locally AND already existed remotely
-             */
-            if (entry.deleted && entry._id) {
-                await deleteUnwrapped(`${API_BASE_URL}/entries/${entry._id}`);
-
-                // Remove locally after confirmed remote delete
+        /**
+         * CASE 1: Local delete
+         */
+        if (entry.deleted) {
+            // Never existed remotely
+            if (!entry._id) {
                 await journalRepository.delete(entry.localId);
                 continue;
             }
 
-            /**
-             * Case 2: New local entry → POST
-             */
-            if (!entry._id) {
+            try {
+                await deleteUnwrapped(`${API_BASE_URL}/entries/${entry._id}`);
+            } catch (error) {
+                const axiosError = error as AxiosError;
+
+                // 404 = already deleted → success
+                if (axiosError.response?.status !== 404) {
+                    console.warn('Delete sync failed, will retry later', error);
+                    return;
+                }
+            }
+
+            await journalRepository.delete(entry.localId);
+            continue;
+        }
+
+        /**
+         * CASE 2: New entry → POST
+         */
+        if (!entry._id) {
+            try {
                 const payload: Record<string, unknown> = {
                     title: entry.title,
                     platform: entry.platform,
@@ -74,13 +76,18 @@ export async function syncJournalEntries(options?: SyncOptions): Promise<void> {
                     _id: response.content._id,
                     synced: true,
                 });
-
-                continue;
+            } catch (error) {
+                console.warn('Create sync failed, will retry later', error);
+                return;
             }
 
-            /**
-             * Case 3: Existing remote entry → PATCH
-             */
+            continue;
+        }
+
+        /**
+         * CASE 3: Update → PATCH
+         */
+        try {
             const payload: Record<string, unknown> = {
                 title: entry.title,
                 platform: entry.platform,
@@ -102,13 +109,7 @@ export async function syncJournalEntries(options?: SyncOptions): Promise<void> {
                 synced: true,
             });
         } catch (error) {
-            if (force) {
-                // Logout path: do NOT swallow errors
-                throw error;
-            }
-
-            // Background sync: stop early, retry later
-            console.warn('Sync failed, will retry later', error);
+            console.warn('Update sync failed, will retry later', error);
             return;
         }
     }
