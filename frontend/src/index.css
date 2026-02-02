@@ -457,7 +457,7 @@ Link {
 
     /* Search parameters chips */
     --chip-bg-box-shadow-dark: 4px 4px 8px rgba(0, 0, 0, 0.6),
-    -2px -2px 4px rgba(255, 255, 255, 0.03);
+    -2px -2px 4px rgba(255, 255, 255, 0.04);
     --chip-text-fade-dark: var(--color-bg-dark);
 
     /* Semantic mapping ------------------------------------------------------*/
