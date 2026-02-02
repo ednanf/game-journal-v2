@@ -39,8 +39,10 @@ export async function searchEntries(
 }
 
 async function localSearch(params: SearchQueryParams): Promise<SearchResult> {
+    // Grab all local entries
     const allEntries: OfflineJournalEntry[] = await journalRepository.getAll();
 
+    // Filter
     const filtered = allEntries.filter((entry) => {
         if (entry.deleted) return false;
 
@@ -80,14 +82,25 @@ async function localSearch(params: SearchQueryParams): Promise<SearchResult> {
         return true;
     });
 
+    // Sort
     const sorted = filtered.sort(
         (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
 
+    // Offline pagination offset if cursor exists
+    const offset = params.cursor ? Number(params.cursor) : 0;
+
+    const paginated = sorted.slice(offset, offset + params.limit);
+
+    const nextOffset =
+        offset + params.limit < sorted.length
+            ? String(offset + params.limit)
+            : null;
+
     return {
-        entries: sorted.slice(0, params.limit),
-        nextCursor: null,
+        entries: paginated,
+        nextCursor: nextOffset,
         source: 'local',
     };
 }
