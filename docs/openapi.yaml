@@ -1,0 +1,653 @@
+openapi: 3.0.3
+info:
+  title: Game Journal API
+  version: 1.0.0
+  description: API specification for game-journal-v2 backend.
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: http://localhost:3000/api/v1
+    description: Local development (v1 base)
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ApiResponseSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        data:
+          type: object
+      required: [status, data]
+
+    ApiResponseError:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+            errorId:
+              type: string
+      required: [status, data]
+
+    UserRegisterBody:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+      required: [email, password]
+      additionalProperties: false
+
+    UserLoginBody:
+      $ref: '#/components/schemas/UserRegisterBody'
+
+    UserPatchBody:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+      additionalProperties: false
+
+    AuthSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        token:
+          type: string
+      required: [message, id, email, token]
+
+    LogoutSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+      required: [message]
+
+    UserWhoAmISuccess:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+      required: [message, id, email]
+
+    UserPatchSuccess:
+      $ref: '#/components/schemas/UserWhoAmISuccess'
+
+    UserDeleteSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+      required: [message]
+
+    JournalEntry:
+      type: object
+      properties:
+        _id:
+          type: string
+        createdBy:
+          type: string
+        title:
+          type: string
+          maxLength: 100
+        platform:
+          type: string
+        status:
+          type: string
+          enum: [started, completed, dropped, revisited, paused]
+        entryDate:
+          type: string
+          format: date-time
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+          nullable: true
+        notes:
+          type: string
+          maxLength: 1000
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - _id
+        - createdBy
+        - title
+        - platform
+        - status
+        - entryDate
+        - createdAt
+        - updatedAt
+
+    JournalEntryCreateBody:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        platform:
+          type: string
+          minLength: 1
+        status:
+          type: string
+          enum: [started, completed, dropped, revisited, paused]
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+        notes:
+          type: string
+          maxLength: 1000
+        entryDate:
+          type: string
+          format: date-time
+      required: [title, platform, status, entryDate]
+      additionalProperties: false
+      allOf:
+        - if:
+            properties:
+              status:
+                const: completed
+          then:
+            required: [rating]
+        - if:
+            properties:
+              status:
+                not:
+                  const: completed
+          then:
+            not:
+              required: [rating]
+
+    JournalEntryPatchBody:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        platform:
+          type: string
+          minLength: 1
+        status:
+          type: string
+          enum: [started, completed, dropped, revisited, paused]
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+        notes:
+          type: string
+          maxLength: 1000
+        entryDate:
+          type: string
+          format: date-time
+      additionalProperties: false
+
+    JournalEntriesList:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/JournalEntry'
+        nextCursor:
+          type: string
+          format: date-time
+          nullable: true
+      required: [entries, nextCursor]
+
+    JournalStats:
+      type: object
+      properties:
+        message:
+          type: string
+        lifetime:
+          type: object
+          additionalProperties:
+            type: integer
+        byYear:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: integer
+      required: [message, lifetime, byYear]
+
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponseError'
+
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponseError'
+
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponseError'
+
+paths:
+  /api/v1/auth/register:
+    post:
+      summary: Register user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterBody'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success]
+                  data:
+                    $ref: '#/components/schemas/AuthSuccess'
+                required: [status, data]
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Conflict (duplicate email)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+
+  /api/v1/auth/login:
+    post:
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success]
+                  data:
+                    $ref: '#/components/schemas/AuthSuccess'
+                required: [status, data]
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/auth/logout:
+    post:
+      summary: Logout user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success]
+                  data:
+                    $ref: '#/components/schemas/LogoutSuccess'
+                required: [status, data]
+
+  /api/v1/user:
+    get:
+      summary: Who am I
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success]
+                  data:
+                    $ref: '#/components/schemas/UserWhoAmISuccess'
+                required: [status, data]
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    patch:
+      summary: Update current user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPatchBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success]
+                  data:
+                    $ref: '#/components/schemas/UserPatchSuccess'
+                required: [status, data]
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Delete current user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success]
+                  data:
+                    $ref: '#/components/schemas/UserDeleteSuccess'
+                required: [status, data]
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/v1/entries:
+    get:
+      summary: List journal entries
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+        - in: query
+          name: cursor
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: title
+          schema:
+            type: string
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [started, completed, dropped, revisited, paused]
+        - in: query
+          name: rating
+          schema:
+            type: integer
+        - in: query
+          name: platform
+          schema:
+            type: string
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success]
+                  data:
+                    $ref: '#/components/schemas/JournalEntriesList'
+                required: [status, data]
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      summary: Create journal entry
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JournalEntryCreateBody'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success]
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      content:
+                        $ref: '#/components/schemas/JournalEntry'
+                    required: [message, content]
+                required: [status, data]
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/entries/statistics:
+    get:
+      summary: Journal entries statistics
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success]
+                  data:
+                    $ref: '#/components/schemas/JournalStats'
+                required: [status, data]
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/entries/{id}:
+    get:
+      summary: Get journal entry by id
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success]
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      content:
+                        $ref: '#/components/schemas/JournalEntry'
+                    required: [message, content]
+                required: [status, data]
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      summary: Patch journal entry
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JournalEntryPatchBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success]
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      journalEntry:
+                        $ref: '#/components/schemas/JournalEntryPatchBody'
+                    required: [message, journalEntry]
+                required: [status, data]
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Delete journal entry
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success]
+                  data:
+                    $ref: '#/components/schemas/UserDeleteSuccess'
+                required: [status, data]
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
