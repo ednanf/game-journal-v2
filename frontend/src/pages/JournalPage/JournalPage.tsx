@@ -50,22 +50,22 @@ const JournalPage = () => {
                         (e) => !e.deleted,
                     );
 
-                    // Sort entries
+                    // Sort by entryDate (user-facing chronology)
                     const sorted = [...refreshedVisible].sort(
                         (a, b) =>
-                            new Date(b.createdAt).getTime() -
-                            new Date(a.createdAt).getTime(),
+                            new Date(b.entryDate).getTime() -
+                            new Date(a.entryDate).getTime(),
                     );
 
                     setJournalEntries(sorted);
                     return;
                 }
 
-                // Normal path (existing behavior)
+                // Sort by entryDate (user-facing chronology)
                 const sorted = [...visibleEntries].sort(
                     (a, b) =>
-                        new Date(b.createdAt).getTime() -
-                        new Date(a.createdAt).getTime(),
+                        new Date(b.entryDate).getTime() -
+                        new Date(a.entryDate).getTime(),
                 );
 
                 setJournalEntries(sorted);
@@ -110,10 +110,11 @@ const JournalPage = () => {
             const entries = await journalRepository.getAll();
             const visibleEntries = entries.filter((e) => !e.deleted);
 
+            // Sort by entryDate (user-facing chronology)
             const sorted = [...visibleEntries].sort(
                 (a, b) =>
-                    new Date(b.createdAt).getTime() -
-                    new Date(a.createdAt).getTime(),
+                    new Date(b.entryDate).getTime() -
+                    new Date(a.entryDate).getTime(),
             );
 
             setJournalEntries(sorted);

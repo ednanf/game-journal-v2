@@ -82,10 +82,10 @@ async function localSearch(params: SearchQueryParams): Promise<SearchResult> {
         return true;
     });
 
-    // Sort
+    // Sort by entryDate (user-facing chronology)
     const sorted = filtered.sort(
         (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+            new Date(b.entryDate).getTime() - new Date(a.entryDate).getTime(),
     );
 
     // Offline pagination offset if cursor exists
