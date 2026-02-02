@@ -3,7 +3,7 @@ import type { OfflineJournalEntry } from './journalTypes.ts';
 
 export type DateField = 'startDate' | 'endDate';
 
-// Used by the UI in forms
+// Used by the UI layer
 export type SearchFormData = {
     title: string;
     platform: string | null;
