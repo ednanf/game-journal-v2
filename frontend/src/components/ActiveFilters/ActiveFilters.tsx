@@ -5,9 +5,10 @@ import styles from './ActiveFilters.module.css';
 
 interface ActiveFiltersProps {
     filters: [string, string][];
+    infoChips?: string[];
 }
 
-const ActiveFilters = ({ filters }: ActiveFiltersProps) => {
+const ActiveFilters = ({ filters, infoChips }: ActiveFiltersProps) => {
     // Remove the time and format the iso date to locale
     const formatFilterValue = (key: string, value: string) => {
         if (key === 'startDate' || key === 'endDate') {
@@ -33,6 +34,14 @@ const ActiveFilters = ({ filters }: ActiveFiltersProps) => {
     // dates to have it applied to
     return (
         <HStack justify={'center'} gap={'sm'} className={styles.container} wrap>
+            {infoChips?.map((label) => (
+                <span
+                    key={label}
+                    className={`${styles.resultChip} ${styles.infoChip}`}
+                >
+                    {label}
+                </span>
+            ))}
             {filters.map(([key, value]) => (
                 <span key={key} className={styles.resultChip}>
                     {formatFilterLabel(key)}: {formatFilterValue(key, value)}

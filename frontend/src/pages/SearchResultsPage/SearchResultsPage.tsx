@@ -29,6 +29,9 @@ const SearchResultsPage = () => {
     const [entries, setEntries] = useState<OfflineJournalEntry[]>([]);
     const [nextCursor, setNextCursor] = useState<string | null>(null);
     const [page, setPage] = useState(pageFromUrl);
+    const [searchSource, setSearchSource] = useState<'remote' | 'local'>(
+        'remote',
+    );
     const [error, setError] = useState<string | null>(null);
 
     const BACKEND_LIMIT = 10;
@@ -92,6 +95,7 @@ const SearchResultsPage = () => {
                 if (!ignore) {
                     setEntries(result.entries);
                     setNextCursor(result.nextCursor);
+                    setSearchSource(result.source);
                 }
             } catch (e: unknown) {
                 if (!ignore) {
@@ -190,7 +194,12 @@ const SearchResultsPage = () => {
     return (
         <VStack align="center" className={styles.body}>
             {visibleFilters.length > 0 && (
-                <ActiveFilters filters={visibleFilters} />
+                <ActiveFilters
+                    filters={visibleFilters}
+                    infoChips={
+                        searchSource === 'local' ? ['Local results'] : undefined
+                    }
+                />
             )}
 
             {entries.map((entry) => {

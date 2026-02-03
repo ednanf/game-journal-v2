@@ -3,6 +3,12 @@
     max-width: 500px;
 }
 
+.infoChip {
+    color: var(--color-text-muted);
+    background: var(--color-bg);
+    font-style: italic;
+}
+
 .resultChip {
     position: relative;
     max-width: 170px;
