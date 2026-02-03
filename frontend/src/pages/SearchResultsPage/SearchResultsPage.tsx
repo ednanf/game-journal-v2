@@ -29,10 +29,15 @@ const SearchResultsPage = () => {
     const [entries, setEntries] = useState<OfflineJournalEntry[]>([]);
     const [nextCursor, setNextCursor] = useState<string | null>(null);
     const [page, setPage] = useState(pageFromUrl);
+    const [error, setError] = useState<string | null>(null);
+
+    // Search source states
     const [searchSource, setSearchSource] = useState<'remote' | 'local'>(
         'remote',
     );
-    const [error, setError] = useState<string | null>(null);
+    const [prevSearchSource, setPrevSearchSource] = useState<
+        'remote' | 'local'
+    >('remote');
 
     const BACKEND_LIMIT = 10;
 
@@ -95,6 +100,27 @@ const SearchResultsPage = () => {
                 if (!ignore) {
                     setEntries(result.entries);
                     setNextCursor(result.nextCursor);
+
+                    // Detect source transition
+                    setSearchSource((currentSource) => {
+                        if (currentSource !== result.source) {
+                            setPrevSearchSource(currentSource);
+
+                            // Reset pagination by clearing cursor + page
+                            const params = new URLSearchParams(searchParams);
+                            params.delete('cursor');
+                            params.delete('page');
+
+                            navigate(`/search?${params.toString()}`, {
+                                replace: true,
+                            });
+
+                            return result.source;
+                        }
+
+                        return currentSource;
+                    });
+
                     setSearchSource(result.source);
                 }
             } catch (e: unknown) {
@@ -118,7 +144,7 @@ const SearchResultsPage = () => {
         return () => {
             ignore = true;
         };
-    }, [url, error, searchParams]);
+    }, [url, error, searchParams, navigate]);
 
     // Maintain page number correctly synchronized
     useEffect(() => {
@@ -145,8 +171,18 @@ const SearchResultsPage = () => {
 
         const params = new URLSearchParams(searchParams);
 
-        params.set('cursor', nextCursor);
-        params.set('page', String(page + 1));
+        // Dealing with online/offline changes during search
+        const isSourceTransition = prevSearchSource !== searchSource;
+
+        if (isSourceTransition) {
+            // Reset pagination only once, on mode change
+            params.delete('cursor');
+            params.set('page', '1');
+        } else {
+            // Normal pagination (remote or local)
+            params.set('cursor', nextCursor);
+            params.set('page', String(page + 1));
+        }
 
         navigate(`/search?${params.toString()}`);
     };

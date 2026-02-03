@@ -5,6 +5,12 @@ import { journalRepository } from '../data/journalRepository.ts';
 import type { OfflineJournalEntry } from '../types/journalTypes.ts';
 import type { SearchQueryParams, SearchResult } from '../types/search';
 
+/*
+ * Observation: if the search transitions from online to offline or vice versa,
+ * the cursor will be reset and the search will restart.
+ * This behavior ensures consistency in pagination and an honest UX.
+ * */
+
 export async function searchEntries(
     params: SearchQueryParams,
 ): Promise<SearchResult> {
@@ -89,7 +95,10 @@ async function localSearch(params: SearchQueryParams): Promise<SearchResult> {
     );
 
     // Offline pagination offset if cursor exists
-    const offset = params.cursor ? Number(params.cursor) : 0;
+    const offset =
+        params.cursor && Number.isInteger(Number(params.cursor))
+            ? Number(params.cursor)
+            : 0;
 
     const paginated = sorted.slice(offset, offset + params.limit);
 
