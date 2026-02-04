@@ -17,6 +17,7 @@ import StdButton from '../../components/Buttons/StdButton/StdButton';
 
 import { gameStatus } from '../../components/Forms/Selector/status.ts';
 import { gamingPlatforms } from '../../components/Forms/Selector/platforms.ts';
+import { syncJournalEntries } from '../../data/journalSync.ts';
 
 const AddEntryPage: React.FC = () => {
     const {
@@ -88,6 +89,11 @@ const AddEntryPage: React.FC = () => {
         };
 
         await journalRepository.upsert(offlineEntry);
+
+        // fire-and-forget sync nudge
+        if (navigator.onLine) {
+            void syncJournalEntries();
+        }
 
         if (navigator.onLine) {
             toast.success('Entry saved.');
