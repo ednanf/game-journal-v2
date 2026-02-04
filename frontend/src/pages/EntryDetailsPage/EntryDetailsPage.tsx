@@ -8,6 +8,8 @@ import type { OfflineJournalEntry } from '../../types/journalTypes.ts';
 
 import { useEntryForm } from '../../hooks/useEntryForm';
 import { patchUnwrapped } from '../../utils/axiosInstance';
+import { syncJournalEntries } from '../../data/journalSync.ts';
+import makeClearHandler from '../../utils/makeClearHandler';
 
 import InputField from '../../components/Forms/InputField/InputField';
 import DateTimePicker from '../../components/Forms/DateTimePicker/DateTimePicker';
@@ -19,7 +21,6 @@ import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 
 import { gameStatus } from '../../components/Forms/Selector/status';
 import { gamingPlatforms } from '../../components/Forms/Selector/platforms';
-import makeClearHandler from '../../utils/makeClearHandler';
 import { API_BASE_URL } from '../../config/apiURL';
 
 const EntryDetailsPage = () => {
@@ -106,13 +107,17 @@ const EntryDetailsPage = () => {
         try {
             const now = new Date().toISOString();
 
+            // Rating MUST be a number or undefined.
             const updatedEntry: OfflineJournalEntry = {
                 ...entry,
                 title: formData.title,
                 platform: formData.platform!,
                 status: formData.status!,
                 entryDate: new Date(formData.entryDate!).toISOString(),
-                rating: formData.rating ?? null,
+                rating:
+                    formData.rating === null || formData.rating === undefined
+                        ? undefined
+                        : Number(formData.rating),
                 updatedAt: now,
                 synced: false,
             };
@@ -120,18 +125,31 @@ const EntryDetailsPage = () => {
             // Always update locally
             await journalRepository.upsert(updatedEntry);
 
+            // Give a nudge to sync
+            if (navigator.onLine) {
+                void syncJournalEntries();
+            }
+
             // Backend update ONLY if Mongo _id exists
             if (entry._id) {
                 try {
+                    const patchPayload: Record<string, unknown> = {
+                        title: updatedEntry.title,
+                        platform: updatedEntry.platform,
+                        status: updatedEntry.status,
+                        entryDate: updatedEntry.entryDate,
+                    };
+
+                    if (
+                        updatedEntry.rating !== null &&
+                        updatedEntry.rating !== undefined
+                    ) {
+                        patchPayload.rating = Number(updatedEntry.rating);
+                    }
+
                     await patchUnwrapped(
                         `${API_BASE_URL}/entries/${entry._id}`,
-                        {
-                            title: updatedEntry.title,
-                            platform: updatedEntry.platform,
-                            status: updatedEntry.status,
-                            entryDate: updatedEntry.entryDate,
-                            rating: updatedEntry.rating,
-                        },
+                        patchPayload,
                     );
                     toast.success('Entry updated');
                 } catch {

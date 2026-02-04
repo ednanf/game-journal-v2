@@ -6,7 +6,7 @@ export type JournalEntryBase = {
     entryDate: string;
     platform: string;
     status: StatusType;
-    rating: number | null;
+    rating: number | undefined;
     createdAt: string;
     updatedAt: string;
 };

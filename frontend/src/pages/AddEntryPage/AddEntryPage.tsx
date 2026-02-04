@@ -79,9 +79,9 @@ const AddEntryPage: React.FC = () => {
             status: formData.status,
             entryDate: new Date(formData.entryDate).toISOString(),
             rating:
-                formData.status === 'completed'
-                    ? Number(formData.rating)
-                    : null,
+                formData.rating === null || formData.rating === undefined
+                    ? undefined
+                    : Number(formData.rating),
             createdAt: now,
             updatedAt: now,
             synced: false,
