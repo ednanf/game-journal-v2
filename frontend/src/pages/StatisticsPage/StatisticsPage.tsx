@@ -74,7 +74,7 @@ const StatisticsPage = () => {
             ) : (
                 <>
                     {!navigator.onLine && (
-                        <HStack style={{ marginBottom: '2rem' }}>
+                        <HStack style={{ marginBottom: '1rem' }}>
                             <p>
                                 Offline — statistics reflect locally available
                                 entries
