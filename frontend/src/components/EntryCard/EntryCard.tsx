@@ -10,7 +10,7 @@ interface JournalEntry {
     title: string;
     platform: string;
     status: string;
-    rating: number | null;
+    rating: number | undefined;
     entryDate: Date;
     to?: string;
 }
