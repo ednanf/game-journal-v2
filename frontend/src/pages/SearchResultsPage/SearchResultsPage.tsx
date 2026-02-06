@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { HStack, VStack } from 'react-swiftstacks';
 
 import { searchEntries } from '../../services/searchService';
+import { ensureLocalEntry } from '../../data/ensureLocalEntry.ts';
 
 import LoadingCircle from '../../components/LoadingCircle/LoadingCircle.tsx';
 import EntryCard from '../../components/EntryCard/EntryCard.tsx';
@@ -165,6 +166,26 @@ const SearchResultsPage = () => {
         setPage(safePage);
     }, [searchParams]);
 
+    // Ensure results' cards will have a working id to navigate
+    const handleSelectEntry = async (entry: OfflineJournalEntry) => {
+        try {
+            // Already local → fast path
+            if (entry.localId) {
+                navigate(`/entries/${entry.localId}`);
+                return;
+            }
+
+            // Remote-only → materialize lazily
+            const localEntry = await ensureLocalEntry(entry);
+
+            navigate(`/entries/${localEntry.localId}`);
+        } catch (e) {
+            const message =
+                e instanceof Error ? e.message : 'Failed to open entry.';
+            toast.error(message);
+        }
+    };
+
     // Will navigate to a new URL, triggering a refresh/fetch
     const handleNext = () => {
         if (!nextCursor) return;
@@ -239,19 +260,37 @@ const SearchResultsPage = () => {
             )}
 
             {entries.map((entry) => {
-                // Stable React key
-                const id = entry._id ?? entry.localId;
+                const key = entry.localId ?? entry._id;
+
+                // Avoid needing double clicks on cancel
+                const handleClick = () => {
+                    if (!entry.localId) {
+                        void handleSelectEntry(entry);
+                    }
+                };
 
                 return (
-                    <EntryCard
-                        key={id}
-                        title={entry.title}
-                        platform={entry.platform}
-                        status={entry.status}
-                        rating={entry.rating}
-                        entryDate={new Date(entry.entryDate)}
-                        to={entry._id ? `/entries/${entry._id}` : undefined}
-                    />
+                    <div
+                        key={key}
+                        onClick={handleClick}
+                        style={{
+                            cursor: 'pointer',
+                            width: '400px',
+                        }}
+                    >
+                        <EntryCard
+                            title={entry.title}
+                            platform={entry.platform}
+                            status={entry.status}
+                            rating={entry.rating}
+                            entryDate={new Date(entry.entryDate)}
+                            to={
+                                entry.localId
+                                    ? `/entries/${entry.localId}`
+                                    : undefined
+                            }
+                        />
+                    </div>
                 );
             })}
 

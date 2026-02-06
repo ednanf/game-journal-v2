@@ -1,3 +1,4 @@
+// Query orchestration layer
 import { getUnwrapped } from '../utils/axiosInstance';
 
 import { journalRepository } from '../data/journalRepository.ts';

@@ -21,7 +21,7 @@ export async function fetchNextJournalPage(
         platform: entry.platform,
         status: entry.status,
         entryDate: entry.entryDate,
-        rating: entry.rating ?? null,
+        rating: entry.rating ?? undefined,
         createdAt: entry.createdAt,
         updatedAt: entry.updatedAt,
         synced: true, // REQUIRED
