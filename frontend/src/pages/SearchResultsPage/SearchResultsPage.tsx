@@ -15,6 +15,7 @@ import type { StatusType } from '../../types/entry.ts';
 import type { OfflineJournalEntry } from '../../types/journalTypes.ts';
 
 import styles from './SearchResultsPage.module.css';
+import LoadingDots from '../../components/LoadingDots/LoadingDots.tsx';
 
 const SearchResultsPage = () => {
     const [searchParams] = useSearchParams();
@@ -28,6 +29,7 @@ const SearchResultsPage = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [entries, setEntries] = useState<OfflineJournalEntry[]>([]);
+    const [resolvingKey, setResolvingKey] = useState<string | null>(null);
     const [nextCursor, setNextCursor] = useState<string | null>(null);
     const [page, setPage] = useState(pageFromUrl);
     const [error, setError] = useState<string | null>(null);
@@ -168,14 +170,21 @@ const SearchResultsPage = () => {
 
     // Ensure results' cards will have a working id to navigate
     const handleSelectEntry = async (entry: OfflineJournalEntry) => {
-        try {
-            // Already local → fast path
-            if (entry.localId) {
-                navigate(`/entries/${entry.localId}`);
-                return;
-            }
+        if (entry.localId) {
+            // Local entries are handled by <Link>
+            return;
+        }
 
-            // Remote-only → materialize lazily
+        const key = entry.localId ?? entry._id;
+
+        if (!key) {
+            // This should never happen if backend invariants hold
+            throw new Error('Search entry has neither localId nor _id');
+        }
+
+        try {
+            setResolvingKey(key);
+
             const localEntry = await ensureLocalEntry(entry);
 
             navigate(`/entries/${localEntry.localId}`);
@@ -183,6 +192,7 @@ const SearchResultsPage = () => {
             const message =
                 e instanceof Error ? e.message : 'Failed to open entry.';
             toast.error(message);
+            setResolvingKey(null);
         }
     };
 
@@ -261,8 +271,8 @@ const SearchResultsPage = () => {
 
             {entries.map((entry) => {
                 const key = entry.localId ?? entry._id;
+                const isResolving = resolvingKey === key;
 
-                // Avoid needing double clicks on cancel
                 const handleClick = () => {
                     if (!entry.localId) {
                         void handleSelectEntry(entry);
@@ -273,23 +283,30 @@ const SearchResultsPage = () => {
                     <div
                         key={key}
                         onClick={handleClick}
-                        style={{
-                            cursor: 'pointer',
-                            width: '400px',
-                        }}
+                        style={{ cursor: 'pointer', width: '400px' }}
                     >
-                        <EntryCard
-                            title={entry.title}
-                            platform={entry.platform}
-                            status={entry.status}
-                            rating={entry.rating}
-                            entryDate={new Date(entry.entryDate)}
-                            to={
-                                entry.localId
-                                    ? `/entries/${entry.localId}`
-                                    : undefined
-                            }
-                        />
+                        {isResolving ? (
+                            <HStack
+                                justify={'center'}
+                                padding={'md'}
+                                style={{ marginTop: '2rem', width: '400px' }}
+                            >
+                                <LoadingDots />
+                            </HStack>
+                        ) : (
+                            <EntryCard
+                                title={entry.title}
+                                platform={entry.platform}
+                                status={entry.status}
+                                rating={entry.rating}
+                                entryDate={new Date(entry.entryDate)}
+                                to={
+                                    entry.localId
+                                        ? `/entries/${entry.localId}`
+                                        : undefined
+                                }
+                            />
+                        )}
                     </div>
                 );
             })}
