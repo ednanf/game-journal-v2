@@ -4,11 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
     plugins: [
-        react({
-            babel: {
-                plugins: [['babel-plugin-react-compiler']],
-            },
-        }),
+        react(),
         VitePWA({
             registerType: 'autoUpdate',
             manifest: {
@@ -37,15 +33,27 @@ export default defineConfig({
                     },
                 ],
             },
+            workbox: {
+                runtimeCaching: [
+                    // NEVER cache statistics
+                    {
+                        urlPattern: ({ url }) =>
+                            url.pathname === '/api/v1/entries/statistics',
+                        handler: 'NetworkOnly',
+                    },
+
+                    // Normal API calls
+                    {
+                        urlPattern: ({ url }) =>
+                            url.pathname.startsWith('/api/v1'),
+                        handler: 'NetworkFirst',
+                        options: {
+                            cacheName: 'api-cache',
+                            networkTimeoutSeconds: 3,
+                        },
+                    },
+                ],
+            },
         }),
     ],
-    server: {
-        allowedHosts: ['choice-joint-ghost.ngrok-free.app'],
-        proxy: {
-            '/api/v1': {
-                target: 'http://localhost:5173',
-                changeOrigin: true,
-            },
-        },
-    },
 });

@@ -1,163 +1,181 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { toast } from 'react-toastify';
-import { getUnwrapped } from '../../utils/axiosInstance.ts';
 import { VStack } from 'react-swiftstacks';
 
-import EntryCard from '../../components/EntryCard/EntryCard.tsx';
-import LoadingCircle from '../../components/LoadingCircle/LoadingCircle.tsx';
+import { journalRepository } from '../../data/journalRepository';
+import { fetchNextJournalPage } from '../../data/journalFetcher.ts';
+import type { OfflineJournalEntry } from '../../types/journalTypes.ts';
 
-import type { JournalEntry, PaginatedResponse } from '../../types/entry.ts';
+import EntryCard from '../../components/EntryCard/EntryCard';
+import LoadingCircle from '../../components/LoadingCircle/LoadingCircle';
 import LoadingDots from '../../components/LoadingDots/LoadingDots.tsx';
 
-// Backend sends a string that should be converted *before* going into as prop
-// const entry = {
-//     ...rawEntry,
-//     entryDate: new Date(rawEntry.entryDate),
-// };
-
 const JournalPage = () => {
-    const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
-    const [cursor, setCursor] = useState<string | null>(null);
-    const [hasMore, setHasMore] = useState<boolean>(false);
-    const [initialLoading, setInitialLoading] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [_error, setError] = useState<string | null>(null);
-
-    const observer = useRef<IntersectionObserver | null>(null);
-
-    const fetchMoreEntries = useCallback(async () => {
-        if (isLoading || !hasMore || !cursor) return;
-
-        try {
-            // Create params variable and attach default values
-            const params = new URLSearchParams();
-            params.append('limit', '10');
-            params.append('cursor', cursor);
-
-            const response = await getUnwrapped<PaginatedResponse>(
-                `/entries?${params.toString()}`,
-            );
-
-            setJournalEntries((prevEntries) => [
-                ...prevEntries,
-                ...response.entries,
-            ]);
-
-            setCursor(response.nextCursor);
-
-            setHasMore(!!response.nextCursor);
-        } catch (e: unknown) {
-            const message =
-                e instanceof Error
-                    ? e.message
-                    : 'An unexpected error occurred.';
-            toast.error(message);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [isLoading, hasMore, cursor]);
-
-    const loaderRef = useCallback(
-        (node: HTMLDivElement | null) => {
-            // No observer work if we are already loading or there's nothing left to load
-            if (isLoading || !hasMore) return;
-
-            // Clean up any existing observer before creating a new one
-            if (observer.current) observer.current.disconnect();
-
-            // Create a new IntersectionObserver instance to detect when the loader enters the viewport.
-            observer.current = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting) {
-                    // 'void' is intentional to silence the unhandled promise lint warning.
-                    void fetchMoreEntries();
-                }
-            });
-
-            if (node) observer.current.observe(node);
-        },
-        [isLoading, hasMore, fetchMoreEntries],
+    // States
+    const [journalEntries, setJournalEntries] = useState<OfflineJournalEntry[]>(
+        [],
     );
+    const [initialLoading, setInitialLoading] = useState<boolean>(false);
 
-    // Initial fetch
+    // Pagination states
+    const [cursor, setCursor] = useState<string | null>(null);
+    const [hasMore, setHasMore] = useState(true);
+    const [isFetchingMore, setIsFetchingMore] = useState(false);
+
+    // Debounce
+    const lastLoadTimeRef = useRef<number>(0);
+
     useEffect(() => {
         let ignore = false;
 
-        // Initialize loading states and error
-        setIsLoading(true);
-        setInitialLoading(true);
-        setError(null);
-
-        const fetchInitialPosts = async () => {
+        const loadLocalEntries = async () => {
             try {
-                const params = new URLSearchParams();
-                params.append('limit', '10');
+                setInitialLoading(true);
 
-                const response = await getUnwrapped<PaginatedResponse>(
-                    `/entries?${params.toString()}`,
+                const entries = await journalRepository.getAll();
+                const visibleEntries = entries.filter((e) => !e.deleted);
+
+                // Cold start bootstrap
+                if (visibleEntries.length === 0) {
+                    const { nextCursor } = await fetchNextJournalPage(null);
+
+                    if (ignore) return;
+
+                    setCursor(nextCursor);
+                    setHasMore(!!nextCursor);
+
+                    // Get entries in IndexedDB
+                    const refreshedEntries = await journalRepository.getAll();
+                    const refreshedVisible = refreshedEntries.filter(
+                        (e) => !e.deleted,
+                    );
+
+                    // Sort by entryDate (user-facing chronology)
+                    const sorted = [...refreshedVisible].sort(
+                        (a, b) =>
+                            new Date(b.entryDate).getTime() -
+                            new Date(a.entryDate).getTime(),
+                    );
+
+                    setJournalEntries(sorted);
+                    return;
+                }
+
+                // Sort by entryDate (user-facing chronology)
+                const sorted = [...visibleEntries].sort(
+                    (a, b) =>
+                        new Date(b.entryDate).getTime() -
+                        new Date(a.entryDate).getTime(),
                 );
 
+                setJournalEntries(sorted);
+            } catch {
                 if (!ignore) {
-                    setJournalEntries(response.entries);
-                    setCursor(response.nextCursor);
-                    setHasMore(!!response.nextCursor);
-                }
-            } catch (e: unknown) {
-                if (!ignore) {
-                    const message =
-                        e instanceof Error
-                            ? e.message
-                            : 'Failed to fetch entries.';
-                    setError(message);
-                    toast.error(message);
+                    toast.error('Failed to load journal entries');
                 }
             } finally {
                 if (!ignore) {
-                    setIsLoading(false);
                     setInitialLoading(false);
                 }
             }
         };
 
-        void fetchInitialPosts();
+        void loadLocalEntries();
 
         return () => {
             ignore = true;
         };
     }, []);
 
+    // *Always* read from IndexedDB and never append backend results directly
+    const loadNextPage = useCallback(async () => {
+        const now = Date.now();
+
+        // Soft debounce (cooldown)
+        if (now - lastLoadTimeRef.current < 250) {
+            return;
+        }
+
+        if (!hasMore || isFetchingMore) return;
+
+        lastLoadTimeRef.current = now;
+        setIsFetchingMore(true);
+
+        try {
+            const { nextCursor } = await fetchNextJournalPage(cursor);
+
+            setCursor(nextCursor);
+            setHasMore(!!nextCursor);
+
+            const entries = await journalRepository.getAll();
+            const visibleEntries = entries.filter((e) => !e.deleted);
+
+            // Sort by entryDate (user-facing chronology)
+            const sorted = [...visibleEntries].sort(
+                (a, b) =>
+                    new Date(b.entryDate).getTime() -
+                    new Date(a.entryDate).getTime(),
+            );
+
+            setJournalEntries(sorted);
+        } catch {
+            toast.error('Failed to load more entries');
+        } finally {
+            setIsFetchingMore(false);
+        }
+    }, [cursor, hasMore, isFetchingMore]);
+
+    // Pagination trigger
+    useEffect(() => {
+        if (!hasMore) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    void loadNextPage();
+                }
+            },
+            { threshold: 1 },
+        );
+
+        const element = document.getElementById('journal-loader');
+        if (element) observer.observe(element);
+
+        return () => observer.disconnect();
+    }, [cursor, hasMore, loadNextPage]);
+
+    if (initialLoading) {
+        return (
+            <div className="fullscreenLoader">
+                <LoadingCircle />
+            </div>
+        );
+    }
+
     return (
-        <VStack align={'center'} style={{ marginTop: '2rem' }}>
-            {journalEntries.length === 0 && initialLoading ? (
-                <div className="fullscreenLoader">
-                    <LoadingCircle />
-                </div>
+        <VStack align="center" style={{ marginTop: '2rem' }}>
+            {journalEntries.length === 0 ? (
+                <p>No journal entries yet.</p>
             ) : (
-                <>
-                    {journalEntries.map((entry) => (
-                        <EntryCard
-                            key={entry._id}
-                            title={entry.title}
-                            platform={entry.platform}
-                            status={entry.status}
-                            rating={entry.rating}
-                            entryDate={new Date(entry.entryDate)}
-                            to={`/entries/${entry._id}`}
-                        />
-                    ))}
-                    {hasMore && (
-                        <div ref={loaderRef}>
-                            <VStack
-                                justify={'center'}
-                                align={'center'}
-                                style={{ marginBottom: '2rem' }}
-                            >
-                                <LoadingDots />
-                            </VStack>
-                        </div>
-                    )}
-                </>
+                journalEntries.map((entry) => (
+                    <EntryCard
+                        key={entry.localId}
+                        title={entry.title}
+                        platform={entry.platform}
+                        status={entry.status}
+                        rating={entry.rating}
+                        entryDate={new Date(entry.entryDate)}
+                        to={`/entries/${entry.localId}`}
+                    />
+                ))
+            )}
+            {hasMore && (
+                <div id="journal-loader" style={{ margin: '2rem' }}>
+                    {isFetchingMore && <LoadingDots />}
+                </div>
             )}
         </VStack>
     );
 };
+
 export default JournalPage;

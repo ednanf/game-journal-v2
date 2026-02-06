@@ -10,9 +10,9 @@ interface JournalEntry {
     title: string;
     platform: string;
     status: string;
-    rating: number | null;
+    rating: number | undefined;
     entryDate: Date;
-    to: string;
+    to?: string;
 }
 
 const EntryCard = ({
@@ -40,43 +40,48 @@ const EntryCard = ({
         }
     };
 
-    return (
+    // Component without navigation prop "to"
+    const content = (
+        <HStack gap={'md'} className={styles.cardContainer}>
+            <VStack className={styles.content}>
+                <h3 className={styles.title}>
+                    {title}
+                    {title.length > 31 && <span className={styles.titleFade} />}
+                </h3>
+                <p className={styles.platform}>{platform}</p>
+                <HStack gap={'md'} align={'center'}>
+                    <p
+                        className={`${statusLabelStyle(status)} ${styles.statusBadge}`}
+                    >
+                        {status}
+                    </p>
+                    {status === 'completed' && (
+                        <p className={styles.rating}>
+                            <FaStar size={14} />
+                            {rating} / 10
+                        </p>
+                    )}
+                </HStack>
+                <HStack justify={'end'} className={styles.date}>
+                    <p>
+                        {entryDate.toLocaleDateString('en-US', {
+                            month: '2-digit',
+                            day: '2-digit',
+                            year: 'numeric',
+                        })}
+                    </p>
+                </HStack>
+            </VStack>
+            <FaChevronRight className={styles.cardChevron} />
+        </HStack>
+    );
+
+    return to ? (
         <Link to={to} className={styles.link}>
-            <HStack gap={'md'} className={styles.cardContainer}>
-                <VStack className={styles.content}>
-                    <h3 className={styles.title}>
-                        {title}
-                        {title.length > 31 && (
-                            <span className={styles.titleFade} />
-                        )}
-                    </h3>
-                    <p className={styles.platform}>{platform}</p>
-                    <HStack gap={'md'} align={'center'}>
-                        <p
-                            className={`${statusLabelStyle(status)} ${styles.statusBadge}`}
-                        >
-                            {status}
-                        </p>
-                        {status === 'completed' && (
-                            <p className={styles.rating}>
-                                <FaStar size={14} />
-                                {rating} / 10
-                            </p>
-                        )}
-                    </HStack>{' '}
-                    <HStack justify={'end'} className={styles.date}>
-                        <p>
-                            {entryDate.toLocaleDateString('en-US', {
-                                month: '2-digit',
-                                day: '2-digit',
-                                year: 'numeric',
-                            })}
-                        </p>
-                    </HStack>
-                </VStack>
-                <FaChevronRight className={styles.cardChevron} />
-            </HStack>
+            {content}
         </Link>
+    ) : (
+        <div className={styles.link}>{content}</div>
     );
 };
 

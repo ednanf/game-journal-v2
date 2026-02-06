@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { VStack } from 'react-swiftstacks';
 
+import { useAuth } from '../../auth/AuthContext';
+
 import InputField from '../../components/Forms/InputField/InputField.tsx';
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 
@@ -46,6 +48,8 @@ const RegistrationPage = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
+
+    const { login } = useAuth();
 
     // Check if form is filled -> returns true if so
     const isFormReady = () => {
@@ -151,9 +155,7 @@ const RegistrationPage = () => {
             localStorage.setItem('email', data.email);
             localStorage.setItem('token', data.token);
 
-            // Dispatch a custom event to notify other parts of the app about the local storage change
-            // Needed for things like showing the correct nav bar options
-            window.dispatchEvent(new Event('local-storage'));
+            login(); // tell AuthContext the user is authenticated
 
             toast.success(data.message);
 

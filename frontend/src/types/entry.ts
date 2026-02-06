@@ -6,10 +6,10 @@ export type StatusType =
     | 'revisited';
 
 export type JournalEntry = {
-    _id: string;
+    _id: string; // backend-only identity
     createdBy: string;
     title: string;
-    entryDate: string; // needs to be converted to ISO as shown above
+    entryDate: string;
     platform: string;
     status: StatusType;
     rating: number | null;

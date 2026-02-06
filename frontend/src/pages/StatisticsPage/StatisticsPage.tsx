@@ -1,32 +1,15 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { VStack } from 'react-swiftstacks';
+import { HStack, VStack } from 'react-swiftstacks';
 
-import { getUnwrapped } from '../../utils/axiosInstance.ts';
+import { getStatistics } from '../../services/statisticsServices.ts';
 
 import LifetimeCard from '../../components/Statistics/LifetimeCard/LifetimeCard.tsx';
 import YearlyCard from '../../components/Statistics/YearlyCard/YearlyCard.tsx';
 import InsetDivider from '../../components/InsetDivider/InsetDivider.tsx';
 import LoadingCircle from '../../components/LoadingCircle/LoadingCircle.tsx';
 
-type Statistics = {
-    lifetime: {
-        completed: number;
-        started: number;
-        paused: number;
-        revisited: number;
-        dropped: number;
-    };
-    byYear: {
-        [year: string]: {
-            completed: number;
-            started: number;
-            paused: number;
-            revisited: number;
-            dropped: number;
-        };
-    };
-};
+import type { Statistics } from '../../types/statistics.ts';
 
 const StatisticsPage = () => {
     const [statistics, setStatistics] = useState<Statistics>({
@@ -42,21 +25,14 @@ const StatisticsPage = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const [_error, setError] = useState<string | null>(null);
-
     useEffect(() => {
         const fetchStatistics = async () => {
-            setIsLoading(true);
-
             try {
-                const response = await getUnwrapped<Statistics>(
-                    '/entries/statistics',
-                );
-
+                setIsLoading(true);
+                const response = await getStatistics();
                 setStatistics(response);
             } catch (e) {
                 const message = (e as Error).message;
-                setError(message);
                 toast.error(`Error fetching statistics: ${message}`);
             } finally {
                 setIsLoading(false);
@@ -64,6 +40,24 @@ const StatisticsPage = () => {
         };
 
         void fetchStatistics();
+
+        // Ensure statistics are refreshed
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                void fetchStatistics();
+            }
+        };
+
+        window.addEventListener('focus', fetchStatistics);
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            window.removeEventListener('focus', fetchStatistics);
+            document.removeEventListener(
+                'visibilitychange',
+                handleVisibilityChange,
+            );
+        };
     }, []);
 
     // Sort entries by year regardless of how the backend will send
@@ -79,6 +73,14 @@ const StatisticsPage = () => {
                 </div>
             ) : (
                 <>
+                    {!navigator.onLine && (
+                        <HStack style={{ marginBottom: '1rem' }}>
+                            <p>
+                                Offline — statistics reflect locally available
+                                entries
+                            </p>
+                        </HStack>
+                    )}
                     <LifetimeCard
                         title={'Lifetime'}
                         started={statistics.lifetime.started}

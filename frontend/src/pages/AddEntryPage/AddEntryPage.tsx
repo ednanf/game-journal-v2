@@ -4,8 +4,10 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 import { useEntryForm } from '../../hooks/useEntryForm.ts';
-import { postUnwrapped } from '../../utils/axiosInstance.ts';
 import makeClearHandler from '../../utils/makeClearHandler.ts';
+
+import { journalRepository } from '../../data/journalRepository.ts';
+import type { OfflineJournalEntry } from '../../types/journalTypes.ts';
 
 import InputField from '../../components/Forms/InputField/InputField';
 import Selector from '../../components/Forms/Selector/Selector';
@@ -13,16 +15,9 @@ import Slider from '../../components/Forms/Slider/Slider';
 import DateTimePicker from '../../components/Forms/DateTimePicker/DateTimePicker';
 import StdButton from '../../components/Buttons/StdButton/StdButton';
 
-import { API_BASE_URL } from '../../config/apiURL.ts';
-import { gameStatus } from '../../data/status';
-import { gamingPlatforms } from '../../data/platforms';
-
-interface CreationResponse {
-    message: string;
-}
-
-// TODO: ensure new entries do not have a rating, unless they are completed
-// no default value - might have to change the backend
+import { gameStatus } from '../../components/Forms/Selector/status.ts';
+import { gamingPlatforms } from '../../components/Forms/Selector/platforms.ts';
+import { syncJournalEntries } from '../../data/journalSync.ts';
 
 const AddEntryPage: React.FC = () => {
     const {
@@ -35,8 +30,9 @@ const AddEntryPage: React.FC = () => {
     } = useEntryForm();
 
     const [isLoading, setIsLoading] = useState(false);
-
     const navigate = useNavigate();
+
+    const userId = localStorage.getItem('id');
 
     const requiresRating = formData.status === 'completed';
     const hasRating = formData.rating !== null && formData.rating !== undefined;
@@ -48,25 +44,9 @@ const AddEntryPage: React.FC = () => {
         formData.entryDate &&
         (!requiresRating || hasRating);
 
-    // Convert rating to number (slider outputs a string). Also ensure rating
-    // is only sent when status is "completed."
-    const payload = {
-        title: formData.title,
-        platform: formData.platform,
-        status: formData.status,
-        entryDate: formData.entryDate,
-        ...(formData.status === 'completed' &&
-            formData.rating != null && {
-                rating: Number(formData.rating),
-            }),
-    };
-
     const handleClearTitle = makeClearHandler(setFormData, 'title', '');
-
     const handleClearPlatform = makeClearHandler(setFormData, 'platform', null);
-
     const handleClearStatus = makeClearHandler(setFormData, 'status', null);
-
     const handleClearRating = makeClearHandler(setFormData, 'rating', null);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -77,22 +57,53 @@ const AddEntryPage: React.FC = () => {
             return;
         }
 
+        if (!userId) {
+            toast.error('User not authenticated');
+            return;
+        }
+
+        if (!formData.platform || !formData.status || !formData.entryDate) {
+            toast.error('Invalid form state');
+            return;
+        }
+
         setIsLoading(true);
 
-        try {
-            const response = await postUnwrapped<CreationResponse>(
-                `${API_BASE_URL}/entries`,
-                payload,
-            );
+        const now = new Date().toISOString();
 
-            toast.success(response.message);
+        const offlineEntry: OfflineJournalEntry = {
+            localId: crypto.randomUUID(),
+            createdBy: userId,
+            title: formData.title,
+            platform: formData.platform,
+            status: formData.status,
+            entryDate: new Date(formData.entryDate).toISOString(),
+            rating:
+                formData.rating === null || formData.rating === undefined
+                    ? undefined
+                    : Number(formData.rating),
+            createdAt: now,
+            updatedAt: now,
+            synced: false,
+            deleted: false,
+        };
 
-            navigate('/journal');
-        } catch (e) {
-            toast.error((e as { message: string }).message);
-        } finally {
-            setIsLoading(false);
+        await journalRepository.upsert(offlineEntry);
+
+        // fire-and-forget sync nudge
+        if (navigator.onLine) {
+            void syncJournalEntries();
         }
+
+        if (navigator.onLine) {
+            toast.success('Entry saved.');
+        } else {
+            toast.info('Entry saved. Will sync when you’re back online.');
+        }
+
+        navigate('/journal');
+
+        setIsLoading(false);
     };
 
     return (
@@ -150,7 +161,7 @@ const AddEntryPage: React.FC = () => {
                         onChange={handleDateChange}
                         isInvalid={!!errors.entryDate}
                         errorMessage={errors.entryDate}
-                        placeholder={'Select the date this entry applies to...'}
+                        placeholder="Select the date this entry applies to..."
                     />
 
                     <Slider
@@ -165,23 +176,13 @@ const AddEntryPage: React.FC = () => {
                     />
 
                     <VStack align="center" style={{ marginTop: '1rem' }}>
-                        {!isLoading ? (
-                            <StdButton
-                                type="submit"
-                                width="200px"
-                                disabled={!isFormReady || isLoading}
-                            >
-                                Add Entry
-                            </StdButton>
-                        ) : (
-                            <StdButton
-                                type="submit"
-                                width="200px"
-                                disabled={!isFormReady || isLoading}
-                            >
-                                Saving...
-                            </StdButton>
-                        )}
+                        <StdButton
+                            type="submit"
+                            width="200px"
+                            disabled={!isFormReady || isLoading}
+                        >
+                            {isLoading ? 'Saving…' : 'Add Entry'}
+                        </StdButton>
                     </VStack>
                 </VStack>
             </form>

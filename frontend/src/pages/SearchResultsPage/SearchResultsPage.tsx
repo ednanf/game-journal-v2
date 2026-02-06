@@ -3,16 +3,19 @@ import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { HStack, VStack } from 'react-swiftstacks';
 
-import { getUnwrapped } from '../../utils/axiosInstance.ts';
+import { searchEntries } from '../../services/searchService';
+import { ensureLocalEntry } from '../../data/ensureLocalEntry.ts';
 
 import LoadingCircle from '../../components/LoadingCircle/LoadingCircle.tsx';
 import EntryCard from '../../components/EntryCard/EntryCard.tsx';
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
+import ActiveFilters from '../../components/ActiveFilters/ActiveFilters.tsx';
 
-import type { JournalEntry } from '../../types/entry.ts';
+import type { StatusType } from '../../types/entry.ts';
+import type { OfflineJournalEntry } from '../../types/journalTypes.ts';
 
 import styles from './SearchResultsPage.module.css';
-import ActiveFilters from '../../components/ActiveFilters/ActiveFilters.tsx';
+import LoadingDots from '../../components/LoadingDots/LoadingDots.tsx';
 
 const SearchResultsPage = () => {
     const [searchParams] = useSearchParams();
@@ -25,10 +28,19 @@ const SearchResultsPage = () => {
     const location = useLocation();
 
     const [isLoading, setIsLoading] = useState(false);
-    const [entries, setEntries] = useState<JournalEntry[]>([]);
+    const [entries, setEntries] = useState<OfflineJournalEntry[]>([]);
+    const [resolvingKey, setResolvingKey] = useState<string | null>(null);
     const [nextCursor, setNextCursor] = useState<string | null>(null);
     const [page, setPage] = useState(pageFromUrl);
     const [error, setError] = useState<string | null>(null);
+
+    // Search source states
+    const [searchSource, setSearchSource] = useState<'remote' | 'local'>(
+        'remote',
+    );
+    const [prevSearchSource, setPrevSearchSource] = useState<
+        'remote' | 'local'
+    >('remote');
 
     const BACKEND_LIMIT = 10;
 
@@ -71,14 +83,48 @@ const SearchResultsPage = () => {
             setError(null);
 
             try {
-                const response = await getUnwrapped<{
-                    entries: JournalEntry[];
-                    nextCursor: string | null;
-                }>(url);
+                const statusParam = searchParams.get('status');
+
+                const result = await searchEntries({
+                    limit: BACKEND_LIMIT,
+                    title: searchParams.get('title') ?? undefined,
+                    platform: searchParams.get('platform') ?? undefined,
+                    status: statusParam
+                        ? (statusParam as StatusType)
+                        : undefined,
+                    rating: searchParams.get('rating')
+                        ? Number(searchParams.get('rating'))
+                        : undefined,
+                    startDate: searchParams.get('startDate') ?? undefined,
+                    endDate: searchParams.get('endDate') ?? undefined,
+                    cursor: searchParams.get('cursor') ?? undefined,
+                });
 
                 if (!ignore) {
-                    setEntries(response.entries);
-                    setNextCursor(response.nextCursor);
+                    setEntries(result.entries);
+                    setNextCursor(result.nextCursor);
+
+                    // Detect source transition
+                    setSearchSource((currentSource) => {
+                        if (currentSource !== result.source) {
+                            setPrevSearchSource(currentSource);
+
+                            // Reset pagination by clearing cursor + page
+                            const params = new URLSearchParams(searchParams);
+                            params.delete('cursor');
+                            params.delete('page');
+
+                            navigate(`/search?${params.toString()}`, {
+                                replace: true,
+                            });
+
+                            return result.source;
+                        }
+
+                        return currentSource;
+                    });
+
+                    setSearchSource(result.source);
                 }
             } catch (e: unknown) {
                 if (!ignore) {
@@ -101,7 +147,7 @@ const SearchResultsPage = () => {
         return () => {
             ignore = true;
         };
-    }, [url, error]);
+    }, [url, error, searchParams, navigate]);
 
     // Maintain page number correctly synchronized
     useEffect(() => {
@@ -122,14 +168,52 @@ const SearchResultsPage = () => {
         setPage(safePage);
     }, [searchParams]);
 
+    // Ensure results' cards will have a working id to navigate
+    const handleSelectEntry = async (entry: OfflineJournalEntry) => {
+        if (entry.localId) {
+            // Local entries are handled by <Link>
+            return;
+        }
+
+        const key = entry.localId ?? entry._id;
+
+        if (!key) {
+            // This should never happen if backend invariants hold
+            throw new Error('Search entry has neither localId nor _id');
+        }
+
+        try {
+            setResolvingKey(key);
+
+            const localEntry = await ensureLocalEntry(entry);
+
+            navigate(`/entries/${localEntry.localId}`);
+        } catch (e) {
+            const message =
+                e instanceof Error ? e.message : 'Failed to open entry.';
+            toast.error(message);
+            setResolvingKey(null);
+        }
+    };
+
     // Will navigate to a new URL, triggering a refresh/fetch
     const handleNext = () => {
         if (!nextCursor) return;
 
         const params = new URLSearchParams(searchParams);
 
-        params.set('cursor', nextCursor);
-        params.set('page', String(page + 1));
+        // Dealing with online/offline changes during search
+        const isSourceTransition = prevSearchSource !== searchSource;
+
+        if (isSourceTransition) {
+            // Reset pagination only once, on mode change
+            params.delete('cursor');
+            params.set('page', '1');
+        } else {
+            // Normal pagination (remote or local)
+            params.set('cursor', nextCursor);
+            params.set('page', String(page + 1));
+        }
 
         navigate(`/search?${params.toString()}`);
     };
@@ -177,20 +261,55 @@ const SearchResultsPage = () => {
     return (
         <VStack align="center" className={styles.body}>
             {visibleFilters.length > 0 && (
-                <ActiveFilters filters={visibleFilters} />
+                <ActiveFilters
+                    filters={visibleFilters}
+                    infoChips={
+                        searchSource === 'local' ? ['Local results'] : undefined
+                    }
+                />
             )}
 
-            {entries.map((entry) => (
-                <EntryCard
-                    key={entry._id}
-                    title={entry.title}
-                    platform={entry.platform}
-                    status={entry.status}
-                    rating={entry.rating}
-                    entryDate={new Date(entry.entryDate)}
-                    to={`/entries/${entry._id}`}
-                />
-            ))}
+            {entries.map((entry) => {
+                const key = entry.localId ?? entry._id;
+                const isResolving = resolvingKey === key;
+
+                const handleClick = () => {
+                    if (!entry.localId) {
+                        void handleSelectEntry(entry);
+                    }
+                };
+
+                return (
+                    <div
+                        key={key}
+                        onClick={handleClick}
+                        style={{ cursor: 'pointer', width: '400px' }}
+                    >
+                        {isResolving ? (
+                            <HStack
+                                justify={'center'}
+                                padding={'md'}
+                                style={{ marginTop: '2rem', width: '400px' }}
+                            >
+                                <LoadingDots />
+                            </HStack>
+                        ) : (
+                            <EntryCard
+                                title={entry.title}
+                                platform={entry.platform}
+                                status={entry.status}
+                                rating={entry.rating}
+                                entryDate={new Date(entry.entryDate)}
+                                to={
+                                    entry.localId
+                                        ? `/entries/${entry.localId}`
+                                        : undefined
+                                }
+                            />
+                        )}
+                    </div>
+                );
+            })}
 
             <HStack padding="md" gap="md">
                 <StdButton
