@@ -2,10 +2,12 @@
 import { registerSW } from 'virtual:pwa-register';
 
 // Normal imports
-import { StrictMode } from 'react';
+import { StrictMode, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css'; // Required by dependency
+
+import LoadingCircle from './components/LoadingCircle/LoadingCircle.tsx';
 
 // Auth protection
 import { AuthProvider } from './auth/AuthProvider.tsx';
@@ -13,23 +15,30 @@ import { ProtectedRoute } from './auth/ProtectedRoute.tsx';
 
 // Pages
 import AppShell from './components/AppShell/AppShell.tsx';
-import AddEntryPage from './pages/AddEntryPage/AddEntryPage.tsx';
-import EntryDetailsPage from './pages/EntryDetailsPage/EntryDetailsPage.tsx';
+const AddEntryPage = lazy(
+    () => import('./pages/AddEntryPage/AddEntryPage.tsx'),
+);
+const SearchPage = lazy(() => import('./pages/SearchPage/SearchPage.tsx'));
+const EntryDetailsPage = lazy(
+    () => import('./pages/EntryDetailsPage/EntryDetailsPage.tsx'),
+);
 import ErrorPage from './pages/ErrorPage/ErrorPage.tsx';
 import JournalPage from './pages/JournalPage/JournalPage.tsx';
 import LandingPage from './pages/LandingPage/LandingPage.tsx';
 import LoginPage from './pages/LoginPage/LoginPage.tsx';
 import RegistrationPage from './pages/RegistrationPage/RegistrationPage.tsx';
-import StatisticsPage from './pages/StatisticsPage/StatisticsPage.tsx';
-import SearchPage from './pages/SearchPage/SearchPage.tsx';
-import {
-    SettingsLayout,
-    SettingsPage,
-    AccountSettingsPage,
-} from './pages/SettingsPage/index.ts';
+const StatisticsPage = lazy(
+    () => import('./pages/StatisticsPage/StatisticsPage.tsx'),
+);
+const SettingsPage = lazy(
+    () => import('./pages/SettingsPage/SettingsPage.tsx'),
+);
+const AccountSettingsPage = lazy(
+    () => import('./pages/SettingsPage/AccountSettingsPage.tsx'),
+);
+import { SettingsLayout } from './pages/SettingsPage/index.ts';
 
 import './index.css';
-
 
 registerSW({
     onOfflineReady() {
@@ -38,6 +47,7 @@ registerSW({
 });
 
 // "handle" is used in AppShell.tsx to pass props to the Header.tsx component
+// DO NOT use Suspense on AppShell, auth-related or data-layers
 const router = createBrowserRouter([
     // Public routes
     {
@@ -67,18 +77,39 @@ const router = createBrowserRouter([
                 handle: { title: 'Journal' },
             },
             {
+                path: 'search',
+                element: (
+                    <Suspense fallback={<LoadingCircle />}>
+                        <SearchPage />
+                    </Suspense>
+                ),
+                handle: { title: 'Search' },
+            },
+            {
                 path: 'addEntry',
-                element: <AddEntryPage />,
+                element: (
+                    <Suspense fallback={<LoadingCircle />}>
+                        <AddEntryPage />
+                    </Suspense>
+                ),
                 handle: { title: 'Create a new entry' },
             },
             {
                 path: 'statistics',
-                element: <StatisticsPage />,
+                element: (
+                    <Suspense fallback={<LoadingCircle />}>
+                        <StatisticsPage />
+                    </Suspense>
+                ),
                 handle: { title: 'Statistics' },
             },
             {
                 path: 'entries/:id',
-                element: <EntryDetailsPage />,
+                element: (
+                    <Suspense fallback={<LoadingCircle />}>
+                        <EntryDetailsPage />
+                    </Suspense>
+                ),
                 handle: { title: 'Entry details' },
             },
             {
@@ -86,18 +117,24 @@ const router = createBrowserRouter([
                 element: <SettingsLayout />,
                 handle: { title: 'Settings' },
                 children: [
-                    { index: true, element: <SettingsPage /> },
+                    {
+                        index: true,
+                        element: (
+                            <Suspense fallback={<LoadingCircle />}>
+                                <SettingsPage />
+                            </Suspense>
+                        ),
+                    },
                     {
                         path: 'account',
-                        element: <AccountSettingsPage />,
+                        element: (
+                            <Suspense fallback={<LoadingCircle />}>
+                                <AccountSettingsPage />
+                            </Suspense>
+                        ),
                         handle: { title: 'Account settings' },
                     },
                 ],
-            },
-            {
-                path: 'search',
-                element: <SearchPage />,
-                handle: { title: 'Search' },
             },
         ],
     },
