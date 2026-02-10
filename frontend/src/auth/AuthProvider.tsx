@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { registerAuthInvalidHandler } from './authBridge.ts';
 
 import { AuthContext, type AuthState } from './AuthContext';
 
@@ -40,6 +41,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         setAuth({ status: 'logged_out' });
     };
+
+    // React when the backend says the token is invalid
+    useEffect(() => {
+        registerAuthInvalidHandler(forceLogout);
+    }, []);
 
     return (
         <AuthContext.Provider value={{ auth, login, logout, forceLogout }}>
