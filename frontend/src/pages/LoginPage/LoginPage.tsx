@@ -132,7 +132,7 @@ const LoginPage = () => {
             <VStack align={'center'} style={{ marginTop: '1rem' }}>
                 <img
                     src={Logo}
-                    style={{ height: '100px' }}
+                    style={{ height: '40px' }}
                     alt={'Game Journal logo'}
                 ></img>
                 <h2>Sign in to your account</h2>

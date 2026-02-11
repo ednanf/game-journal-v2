@@ -175,7 +175,7 @@ const RegistrationPage = () => {
             <VStack align={'center'} style={{ marginTop: '1rem' }}>
                 <img
                     src={logo}
-                    style={{ height: '100px' }}
+                    style={{ height: '40px' }}
                     alt={'Game Journal logo'}
                 ></img>
                 <h2>Create your account</h2>
