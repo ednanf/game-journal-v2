@@ -8,7 +8,7 @@ import { useAuth } from '../../auth/AuthContext.tsx';
 import InputField from '../../components/Forms/InputField/InputField.tsx';
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 
-import logo from '../../assets/logo-icon.png';
+import Logo from '../../assets/logo-icon.png';
 
 import { postUnwrapped } from '../../utils/axiosInstance.ts';
 import makeClearHandler from '../../utils/makeClearHandler.ts';
@@ -131,7 +131,7 @@ const LoginPage = () => {
         <VStack>
             <VStack align={'center'} style={{ marginTop: '1rem' }}>
                 <img
-                    src={logo}
+                    src={Logo}
                     style={{ height: '100px' }}
                     alt={'Game Journal logo'}
                 ></img>
