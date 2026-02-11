@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { VStack, HStack } from 'react-swiftstacks';
 
 import Logo from '../../assets/logo-icon.png';
@@ -6,8 +6,15 @@ import { FaGithubSquare } from 'react-icons/fa';
 
 import styles from './LandingPage.module.css';
 import '../shared.css';
+import { useAuth } from '../../auth/AuthContext.tsx';
 
 const LandingPage = () => {
+    const { auth } = useAuth();
+
+    if (auth.status === 'authenticated') {
+        return <Navigate to="/journal" replace />;
+    }
+
     return (
         <VStack
             align={'center'}
