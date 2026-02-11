@@ -4,6 +4,16 @@ type Theme = 'light' | 'dark';
 
 const STORAGE_KEY = 'theme';
 
+const setThemeColorMeta = (color: string) => {
+    const meta = document.querySelector<HTMLMetaElement>(
+        'meta[name="theme-color"]',
+    );
+
+    if (meta) {
+        meta.setAttribute('content', color);
+    }
+};
+
 export const useTheme = () => {
     // Lazy initializer: ensures this logic runs only once during state
     // initialization
@@ -25,6 +35,9 @@ export const useTheme = () => {
 
         // Persist theme preference
         localStorage.setItem(STORAGE_KEY, theme);
+
+        // Set the color in index.html (for PWA theming)
+        setThemeColorMeta(theme === 'dark' ? '#1e2228' : '#e0e5ec');
     }, [theme]);
 
     const toggleTheme = () => {
