@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { RequestHandler } from 'express';
 import mongoose from 'mongoose';
 import { BadRequestError } from '../errors/index.js';
 
@@ -22,24 +22,24 @@ import { BadRequestError } from '../errors/index.js';
  * - If the parameter is not a valid ObjectId, it calls `next` with a `BadRequestError` stating "Invalid {paramName} format".
  */
 const validateObjectId =
-          (paramName: string): RequestHandler =>
-              (req: Request, _res: Response, next: NextFunction): void => {
-                  const id = req.params[paramName];
+    (paramName: string): RequestHandler =>
+    (req, _res, next): void => {
+        const id = req.params[paramName];
 
-                  // Check if the parameter is missing
-                  if (!id) {
-                      next(new BadRequestError(`Missing ${paramName}`));
-                      return;
-                  }
+        // Check if the parameter is missing
+        if (!id) {
+            next(new BadRequestError(`Missing ${paramName}`));
+            return;
+        }
 
-                  // Check if the parameter is not a valid MongoDB ObjectId
-                  if (!mongoose.Types.ObjectId.isValid(id)) {
-                      next(new BadRequestError(`Invalid ${paramName} format`));
-                      return;
-                  }
+        // Check if the parameter is not a valid MongoDB ObjectId
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            next(new BadRequestError(`Invalid ${paramName} format`));
+            return;
+        }
 
-                  // If valid, proceed to the next middleware or route handler
-                  next();
-              };
+        // If valid, proceed to the next middleware or route handler
+        next();
+    };
 
 export default validateObjectId;
