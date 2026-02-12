@@ -5,6 +5,8 @@ const allowedOrigins = [
     'http://localhost:4173',
     'http://10.0.0.102:4173',
     'http://10.0.0.102:5173',
+    'https://journal.frizzera.dev',
+    'https://game-journal-v2.vercel.app',
 ];
 
 const corsOptions = {
