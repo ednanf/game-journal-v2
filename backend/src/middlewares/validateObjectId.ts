@@ -32,6 +32,11 @@ const validateObjectId =
             return;
         }
 
+        if (typeof id !== 'string') {
+            next(new BadRequestError(`Missing ${paramName}`));
+            return;
+        }
+
         // Check if the parameter is not a valid MongoDB ObjectId
         if (!mongoose.Types.ObjectId.isValid(id)) {
             next(new BadRequestError(`Invalid ${paramName} format`));
