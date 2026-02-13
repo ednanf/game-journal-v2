@@ -10,6 +10,8 @@ import EntryCard from '../../components/EntryCard/EntryCard';
 import LoadingCircle from '../../components/LoadingCircle/LoadingCircle';
 import LoadingDots from '../../components/LoadingDots/LoadingDots.tsx';
 
+import styles from './JournalPage.module.css';
+
 const JournalPage = () => {
     // States
     const [journalEntries, setJournalEntries] = useState<OfflineJournalEntry[]>(
@@ -155,7 +157,7 @@ const JournalPage = () => {
     return (
         <VStack align="center" style={{ marginTop: '2rem' }}>
             {journalEntries.length === 0 ? (
-                <p>No journal entries yet.</p>
+                <p className={styles.noEntriesText}>No journal entries yet.</p>
             ) : (
                 journalEntries.map((entry) => (
                     <EntryCard
