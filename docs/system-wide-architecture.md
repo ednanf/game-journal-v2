@@ -13,31 +13,31 @@ This file intentionally complements (not replaces):
 ## 1. High-Level System Overview
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                     User Device                          │
-│                                                         │
+┌───────────────────────────────────────────────────────┐
+│                     User Device                       │
+│                                                       │
 │  ┌───────────────┐      ┌───────────────────────────┐ │
-│  │   React UI    │─────▶│   IndexedDB (Source of     │ │
-│  │ (Components)  │◀─────│   Truth)                   │ │
+│  │   React UI    │─────▶│   IndexedDB (Source of    │ │
+│  │ (Components)  │◀─────│   Truth)                  │ │
 │  └───────┬───────┘      └─────────────┬─────────────┘ │
-│          │                              │               │
-│          │                              ▼               │
+│          │                              │             │
+│          │                              ▼             │
 │          │                   ┌──────────────────────┐ │
-│          │                   │ Background Sync       │ │
-│          │                   │ (Best-effort)         │ │
+│          │                   │ Background Sync      │ │
+│          │                   │ (Best-effort)        │ │
 │          │                   └─────────┬────────────┘ │
-│          │                              │ HTTPS (JWT)   │
-└──────────┼──────────────────────────────┼──────────────┘
-           │                              ▼
+│          │                             │ HTTPS (JWT)  │
+└──────────┼─────────────────────────────┼──────────────┘
+           │                             ▼
            │                ┌──────────────────────────┐
-           │                │        Backend API        │
+           │                │        Backend API       │
            │                │ (Express + Auth + Zod)   │
            │                └─────────┬────────────────┘
            │                              │
            ▼                              ▼
 ┌──────────────────────────┐   ┌──────────────────────────┐
-│ Authentication Boundary  │   │     Persistence Layer     │
-│ JWT Verification         │   │     MongoDB               │
+│ Authentication Boundary  │   │     Persistence Layer    │
+│ JWT Verification         │   │     MongoDB              │
 └──────────────────────────┘   └──────────────────────────┘
 ```
 
