@@ -16,15 +16,15 @@
 
 ## About the Project
 
-This is a personal project rebuilt from the ground up — both frontend and backend — to explore and apply offline-first
-application design in a real, non-trivial use case.
+This project grew out of a journaling app I built for myself and kept using long enough to notice where the original
+design started to get in the way.
 
-The frontend is designed to function fully without network connectivity, using IndexedDB as the source of truth and
-treating the backend strictly as a synchronization layer. This approach prioritizes resilience, predictable UX, and
-clear data ownership boundaries.
+Instead of trying to patch around those issues, I decided to rebuild the application from the ground up, both frontend
+and backend, with offline-first behavior shaping the system from the start. Local persistence via IndexedDB acts as the
+primary source of truth, while the backend exists mainly to synchronize data when connectivity is available.
 
-Beyond functionality, the project focuses on explicit architectural decisions, well-defined contracts between layers,
-and avoiding “magic” abstractions — favoring clarity and correctness over convenience.
+The goal wasn’t feature density, but architectural clarity: clear contracts between layers, minimal hidden coupling, and
+behavior that stays predictable even when the network doesn’t.
 
 ## API Specification
 
