@@ -175,7 +175,7 @@ const getJournalEntriesStatistics = async (
             { $match: { createdBy: userId } },
             {
                 $project: {
-                    year: { $year: '$createdAt' },
+                    year: { $year: '$entryDate' },
                     status: 1,
                 },
             },
