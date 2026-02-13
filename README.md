@@ -1,3 +1,5 @@
+<img width="80" height="79" alt="logo-icon" src="https://github.com/user-attachments/assets/5015aac8-b465-425b-9b94-96a74b86ca86" />
+
 # Game Journal V2
 
 ## Notes
