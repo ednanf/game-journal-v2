@@ -2,30 +2,43 @@
 
 ## Notes
 
-- The backend is hosted on Render and takes a moment to wake up after periods
-  of inactivity. Please allow time for the server to respond on your first
-  request.
+- The backend is hosted on Render’s free tier and may take a moment to wake up after periods of inactivity
 - Currently, the auth token is stored in local storage instead of cookies to
-  avoid CORS complications, particularly with WebKit on iOS.
+  avoid CORS complications, particularly with WebKit on iOS
 
 ## About Me
 
 - **Author**: Ednan Rogério Frizzera Filho
 - [GitHub](https://github.com/ednanf) • [LinkedIn](https://www.linkedin.com/in/ednanrff/)
-- Additional contact info available on my GitHub profile.
+- Additional contact info available on my GitHub profile
 
-## Objective
+## About the Project
 
-This project aims to rebuild a project that I use in my daily life, applying concepts learned and streamlining the code.
+This is a personal project rebuilt from the ground up — both frontend and backend — to explore and apply offline-first
+application design in a real, non-trivial use case.
 
-It is currently under construction...
+The frontend is designed to function fully without network connectivity, using IndexedDB as the source of truth and
+treating the backend strictly as a synchronization layer. This approach prioritizes resilience, predictable UX, and
+clear data ownership boundaries.
+
+Beyond functionality, the project focuses on explicit architectural decisions, well-defined contracts between layers,
+and avoiding “magic” abstractions — favoring clarity and correctness over convenience.
 
 ## API Specification
 
-- ~~For an in-depth look at the API data flow, please refer
-  to [this report]().~~
-- See the API documentation
-  at [Scalar](https://registry.scalar.com/@ednan-frizzera-dev-team/apis/game-journal-v2-api@latest).
+Detailed documentation is available for the following parts of the system:
+
+- **Backend architecture & request lifecycle**  
+  [View document](https://github.com/ednanf/game-journal-v2/blob/master/docs/backend-lifecycle-v4.md)
+
+- **Frontend offline-first architecture**  
+  [View document](https://github.com/ednanf/game-journal-v2/blob/master/docs/frontend-lifecycle-pwa.md)
+
+- **System-wide architecture overview**  
+  [View document](https://github.com/ednanf/game-journal-v2/blob/master/docs/system-wide-architecture.md)
+
+- **Public API reference**  
+  [Scalar](https://registry.scalar.com/@ednan-frizzera-dev-team/apis/game-journal-v2-api@latest)
 
 ## Live Application
 
@@ -149,7 +162,7 @@ frontend (React + Vite + TypeScript)
 │  │  ├─ react-datepicker     (date input)
 │  │  ├─ react-icons          (icon set)
 │  │  ├─ react-toastify       (toast notifications)
-│  │  └─ react-swiftstacks    (stack-based UI transitions)
+│  │  └─ react-swiftstacks    (custom library: SwiftUI-like HStack/VStack layout components)
 │  │
 │  └─ PWA & offline
 │     └─ vite-plugin-pwa      (PWA integration for Vite)
@@ -189,6 +202,8 @@ frontend (React + Vite + TypeScript)
    ├─ preview    → Local production preview
    └─ lint       → ESLint over entire codebase
 ```
+
+_Note: `react-swiftstacks` is a small layout utility I maintain separately, inspired by SwiftUI’s stack primitives._
 
 ## Legal
 
