@@ -1,0 +1,52 @@
+.loading {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    z-index: 10; /* Ensure spinner appears above other elements */
+}
+
+.d1 {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-text-muted);
+    border-left-color: transparent;
+    border-radius: 50%;
+    position: absolute;
+    animation: load161 1s linear infinite;
+    opacity: 0.5;
+}
+
+.d2 {
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--color-text-muted);
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: load2812 1.5s linear infinite;
+    opacity: 0.5;
+}
+
+@keyframes load161 {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes load2812 {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(-360deg);
+    }
+}

@@ -23,3 +23,10 @@ a.lplinks:hover {
     justify-content: center;
     z-index: 9999;
 }
+
+.sleepingHints {
+    color: var(--color-text-muted);
+    margin-top: 1rem;
+    font-style: italic;
+    font-size: 10pt;
+}

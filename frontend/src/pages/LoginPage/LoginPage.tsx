@@ -14,6 +14,7 @@ import { postUnwrapped } from '../../utils/axiosInstance.ts';
 import makeClearHandler from '../../utils/makeClearHandler.ts';
 
 import '../shared.css';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.tsx';
 
 type FormData = {
     email: string;
@@ -32,6 +33,8 @@ type ApiError = {
 };
 
 const LoginPage = () => {
+    const SLEEPING_HINT_TIMEOUT = 5000;
+
     const [formData, setFormData] = useState<FormData>({
         email: '',
         password: '',
@@ -43,6 +46,9 @@ const LoginPage = () => {
     });
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const [showBackendSleepingHint, setShowBackendSleepingHint] =
+        useState(false);
 
     const navigate = useNavigate();
 
@@ -100,6 +106,10 @@ const LoginPage = () => {
 
         setIsLoading(true);
 
+        const sleepingHintTimeout = setTimeout(() => {
+            setShowBackendSleepingHint(true);
+        }, SLEEPING_HINT_TIMEOUT);
+
         try {
             // Send
             const response = await postUnwrapped<RegistrationResponse>(
@@ -123,6 +133,8 @@ const LoginPage = () => {
             const apiError = e as ApiError;
             toast.error(apiError.message || 'Login failed. Please try again.');
         } finally {
+            clearTimeout(sleepingHintTimeout);
+            setShowBackendSleepingHint(false);
             setIsLoading(false);
         }
     };
@@ -177,9 +189,17 @@ const LoginPage = () => {
                             type={'submit'}
                             disabled={isLoading || !isFormReady()}
                         >
-                            Log in
+                            {isLoading ? <LoadingSpinner /> : 'Log in'}
                         </StdButton>
                     </VStack>
+
+                    {showBackendSleepingHint && (
+                        <VStack align={'center'}>
+                            <p className={'sleepingHints'}>
+                                Server is waking up. Hang tight!
+                            </p>
+                        </VStack>
+                    )}
                 </VStack>
             </form>
 
