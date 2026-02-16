@@ -32,6 +32,9 @@ const StatisticsPage = () => {
     // Where the statistics currently come from
     const [source, setSource] = useState<StatsSource>('local');
 
+    // Used to determine if loading dots should be shown
+    const [initialStatsResolved, setInitialStatsResolved] = useState(false);
+
     useEffect(() => {
         let cancelled = false;
 
@@ -43,6 +46,9 @@ const StatisticsPage = () => {
             if (!cancelled) {
                 setStatistics(result.stats);
                 setSource(result.source);
+
+                // Hide loading dots after local or remote data is available
+                setInitialStatsResolved(true);
             }
         };
 
@@ -60,11 +66,6 @@ const StatisticsPage = () => {
         : source === 'waking-up'
           ? 'waking-up'
           : null;
-
-    // Show dots only when we already have yearly data,
-    // and the backend is waking up (upgrade-in-progress)
-    const showLoadingDots =
-        Object.keys(statistics.byYear).length > 0 && banner === 'waking-up';
 
     const sortedYearEntries = Object.entries(statistics.byYear).sort(
         ([yearA], [yearB]) => Number(yearB) - Number(yearA),
@@ -97,8 +98,10 @@ const StatisticsPage = () => {
 
             <InsetDivider />
 
-            {showLoadingDots ? (
-                <LoadingDots />
+            {!initialStatsResolved ? (
+                <HStack style={{ marginTop: '3rem' }}>
+                    <LoadingDots />
+                </HStack>
             ) : (
                 sortedYearEntries.map(([year, stats]) => (
                     <YearlyCard
