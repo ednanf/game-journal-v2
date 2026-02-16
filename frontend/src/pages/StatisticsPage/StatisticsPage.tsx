@@ -47,7 +47,9 @@ const StatisticsPage = () => {
                 setStatistics(result.stats);
                 setSource(result.source);
 
-                // Hide loading dots after local or remote data is available
+                // Marks that the first statistics resolution has completed
+                // Used for LoadingDots display
+                // Never reset during this visit
                 setInitialStatsResolved(true);
             }
         };
