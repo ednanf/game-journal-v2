@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Game Journal API
+  title: Game Journal V2 API
   version: 1.0.0
   description: API specification for game-journal-v2 backend.
 servers:
