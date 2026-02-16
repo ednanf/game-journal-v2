@@ -8,7 +8,7 @@ export default defineConfig({
         VitePWA({
             registerType: 'autoUpdate',
             manifest: {
-                name: 'Game Journal',
+                name: 'GameJournal',
                 short_name: 'Journal',
                 start_url: '/',
                 display: 'standalone',
