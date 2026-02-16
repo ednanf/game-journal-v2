@@ -8,6 +8,7 @@ import YearlyCard from '../../components/Statistics/YearlyCard/YearlyCard';
 import InsetDivider from '../../components/InsetDivider/InsetDivider';
 
 import type { Statistics } from '../../types/statistics';
+import LoadingDots from '../../components/LoadingDots/LoadingDots.tsx';
 
 type StatsSource = 'backend' | 'local' | 'waking-up';
 
@@ -60,6 +61,11 @@ const StatisticsPage = () => {
           ? 'waking-up'
           : null;
 
+    // Show dots only when we already have yearly data,
+    // and the backend is waking up (upgrade-in-progress)
+    const showLoadingDots =
+        Object.keys(statistics.byYear).length > 0 && banner === 'waking-up';
+
     const sortedYearEntries = Object.entries(statistics.byYear).sort(
         ([yearA], [yearB]) => Number(yearB) - Number(yearA),
     );
@@ -91,17 +97,21 @@ const StatisticsPage = () => {
 
             <InsetDivider />
 
-            {sortedYearEntries.map(([year, stats]) => (
-                <YearlyCard
-                    key={year}
-                    title={year}
-                    started={stats.started}
-                    completed={stats.completed}
-                    dropped={stats.dropped}
-                    paused={stats.paused}
-                    revisited={stats.revisited}
-                />
-            ))}
+            {showLoadingDots ? (
+                <LoadingDots />
+            ) : (
+                sortedYearEntries.map(([year, stats]) => (
+                    <YearlyCard
+                        key={year}
+                        title={year}
+                        started={stats.started}
+                        completed={stats.completed}
+                        dropped={stats.dropped}
+                        paused={stats.paused}
+                        revisited={stats.revisited}
+                    />
+                ))
+            )}
         </VStack>
     );
 };
