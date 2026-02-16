@@ -11,6 +11,8 @@ import type { Statistics } from '../../types/statistics';
 
 type StatsSource = 'backend' | 'local' | 'waking-up';
 
+type Banner = 'offline' | 'waking-up' | null;
+
 const EMPTY_STATS: Statistics = {
     lifetime: {
         completed: 0,
@@ -23,6 +25,7 @@ const EMPTY_STATS: Statistics = {
 };
 
 const StatisticsPage = () => {
+    // Statistics values
     const [statistics, setStatistics] = useState<Statistics>(EMPTY_STATS);
 
     // Where the statistics currently come from
@@ -51,14 +54,19 @@ const StatisticsPage = () => {
         };
     }, []);
 
+    const banner: Banner = !navigator.onLine
+        ? 'offline'
+        : source === 'waking-up'
+          ? 'waking-up'
+          : null;
+
     const sortedYearEntries = Object.entries(statistics.byYear).sort(
         ([yearA], [yearB]) => Number(yearB) - Number(yearA),
     );
 
     return (
         <VStack align={'center'} style={{ marginTop: '2rem' }}>
-            {/* True offline case */}
-            {!navigator.onLine && (
+            {banner === 'offline' && (
                 <HStack style={{ marginBottom: '1rem' }}>
                     <p>
                         Offline — statistics reflect locally available entries
@@ -66,8 +74,7 @@ const StatisticsPage = () => {
                 </HStack>
             )}
 
-            {/* Backend asleep but reachable */}
-            {source === 'waking-up' && (
+            {banner === 'waking-up' && (
                 <HStack style={{ marginBottom: '1rem' }}>
                     <p>Backend is waking up — showing local statistics</p>
                 </HStack>
