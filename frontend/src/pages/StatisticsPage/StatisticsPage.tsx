@@ -57,19 +57,19 @@ const StatisticsPage = () => {
 
     return (
         <VStack align={'center'} style={{ marginTop: '2rem' }}>
-            {/* Backend asleep but reachable */}
-            {source === 'waking-up' && (
-                <HStack style={{ marginBottom: '1rem' }}>
-                    <p>Backend is waking up — showing local statistics</p>
-                </HStack>
-            )}
-
             {/* True offline case */}
             {!navigator.onLine && (
                 <HStack style={{ marginBottom: '1rem' }}>
                     <p>
                         Offline — statistics reflect locally available entries
                     </p>
+                </HStack>
+            )}
+
+            {/* Backend asleep but reachable */}
+            {source === 'waking-up' && (
+                <HStack style={{ marginBottom: '1rem' }}>
+                    <p>Backend is waking up — showing local statistics</p>
                 </HStack>
             )}
 

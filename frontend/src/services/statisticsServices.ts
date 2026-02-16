@@ -14,7 +14,7 @@ type InterceptorError = {
 };
 
 export async function getStatistics(
-    timeoutMs = 4000,
+    timeoutMs = 2000,
 ): Promise<{ stats: Statistics; source: StatsSource }> {
     // Case 1: Browser explicitly reports offline.
     if (!navigator.onLine) {
