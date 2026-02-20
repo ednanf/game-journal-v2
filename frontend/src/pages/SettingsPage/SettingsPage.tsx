@@ -18,10 +18,10 @@ const SettingsPage = () => {
 
     const navigate = useNavigate();
     const { logout, forceLogout } = useAuth();
-
     const { toggleTheme, theme } = useOutletContext<ThemeOutletContext>();
 
     const userEmail = localStorage.getItem('email');
+    const isOffline = !navigator.onLine;
 
     const handleAccountSettingsClick = () => {
         navigate('account');
@@ -52,7 +52,11 @@ const SettingsPage = () => {
                     Toggle {theme === 'light' ? 'Dark' : 'Light'} Mode
                 </StdButton>
 
-                <StdButton width={'200px'} onClick={handleAccountSettingsClick}>
+                <StdButton
+                    width={'200px'}
+                    onClick={handleAccountSettingsClick}
+                    disabled={isOffline}
+                >
                     Account Settings
                 </StdButton>
 

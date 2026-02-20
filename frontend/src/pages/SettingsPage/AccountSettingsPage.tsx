@@ -35,8 +35,6 @@ type UpdateAccountPayload = {
 };
 
 const AccountSettingsPage = () => {
-    const navigate = useNavigate();
-
     const [formData, setFormData] = useState<EditAccountFormData>({
         email: '',
         newPassword: '',
@@ -48,6 +46,10 @@ const AccountSettingsPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    const navigate = useNavigate();
+
+    const isOffline = !navigator.onLine;
 
     // Trim email to evaluate changes and to prepare to send to the backend
     const trimmedEmail = formData.email.trim();
@@ -209,6 +211,12 @@ const AccountSettingsPage = () => {
     return (
         <form onSubmit={handleSubmit}>
             <VStack gap={'md'} padding={'md'} className="formVStack">
+                {isOffline && (
+                    <HStack justify={'center'}>
+                        <p>Offline — changes are currently disabled </p>
+                    </HStack>
+                )}
+
                 <InputField
                     label={'Email'}
                     type={'email'}
@@ -260,6 +268,7 @@ const AccountSettingsPage = () => {
                             type={'submit'}
                             width={'150px'}
                             color={'green'}
+                            disabled={isOffline}
                         >
                             Save
                         </StdButton>
@@ -281,6 +290,7 @@ const AccountSettingsPage = () => {
                         width={'250px'}
                         color={'red'}
                         onClick={() => setShowDeleteConfirm(true)}
+                        disabled={isOffline}
                     >
                         Delete Account
                     </StdButton>
