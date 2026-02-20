@@ -14,6 +14,7 @@ import InputField from '../../components/Forms/InputField/InputField';
 import StdButton from '../../components/Buttons/StdButton/StdButton';
 import LoadingCircle from '../../components/LoadingCircle/LoadingCircle.tsx';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal.tsx';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.tsx';
 
 import '../shared.css';
 
@@ -35,6 +36,10 @@ type UpdateAccountPayload = {
 };
 
 const AccountSettingsPage = () => {
+    const SLEEPING_HINT_TIMEOUT = 5000;
+    const [showBackendSleepingHint, setShowBackendSleepingHint] =
+        useState(false);
+
     const [formData, setFormData] = useState<EditAccountFormData>({
         email: '',
         newPassword: '',
@@ -157,6 +162,11 @@ const AccountSettingsPage = () => {
 
         setIsSubmitting(true);
 
+        // Timeout to improve UX when the backend is asleep
+        const sleepingHintTimeout = setTimeout(() => {
+            setShowBackendSleepingHint(true);
+        }, SLEEPING_HINT_TIMEOUT);
+
         try {
             const response = await patchUnwrapped<{ message: string }>(
                 '/user/',
@@ -178,6 +188,8 @@ const AccountSettingsPage = () => {
         } catch (e) {
             toast.error((e as { message: string }).message);
         } finally {
+            clearTimeout(sleepingHintTimeout);
+            setShowBackendSleepingHint(false);
             setIsSubmitting(false);
         }
     };
@@ -213,7 +225,17 @@ const AccountSettingsPage = () => {
             <VStack gap={'md'} padding={'md'} className="formVStack">
                 {isOffline && (
                     <HStack justify={'center'}>
-                        <p>Offline — changes are currently disabled </p>
+                        <p className="sleepingHints">
+                            Offline — changes are currently disabled{' '}
+                        </p>
+                    </HStack>
+                )}
+
+                {showBackendSleepingHint && (
+                    <HStack justify={'center'}>
+                        <p className="sleepingHints">
+                            Server is waking up. Hang tight!
+                        </p>
                     </HStack>
                 )}
 
@@ -279,7 +301,7 @@ const AccountSettingsPage = () => {
                             color={'green'}
                             disabled={isSubmitting}
                         >
-                            Saving...
+                            <LoadingSpinner />
                         </StdButton>
                     )}
                 </HStack>
