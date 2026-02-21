@@ -85,17 +85,44 @@ const getJournalEntries = async (
             }
         }
 
-        // Cursor pagination based on entryDate (chronological order)
-        if (cursor && typeof cursor === 'string') {
-            const cursorDate = new Date(cursor);
-            if (!Number.isNaN(cursorDate.getTime())) {
-                entryDateFilter.$lt = cursorDate;
-            }
-        }
-
         // Apply entryDate filters if any exist
         if (Object.keys(entryDateFilter).length > 0) {
             query.entryDate = entryDateFilter;
+        }
+
+        // Cursor pagination based on entryDate (chronological order)
+        // IMPORTANT: Must match sort({ entryDate: -1, _id: -1 })
+        if (cursor && typeof cursor === 'string') {
+            try {
+                // Necessary for composite cursors (frontend sends
+                // an opaque base64 JSON)
+                const decoded = JSON.parse(
+                    Buffer.from(cursor, 'base64').toString(),
+                ) as { entryDate: string; _id: string };
+
+                const cursorDate = new Date(decoded.entryDate);
+                const cursorId = decoded._id;
+
+                if (
+                    // typeof is necessary even if TS says it's not because
+                    // type assertions are compile-time only and will not do
+                    // runtime validations
+                    !Number.isNaN(cursorDate.getTime()) &&
+                    typeof cursorId === 'string'
+                ) {
+                    query.$or = [
+                        { entryDate: { $lt: cursorDate } },
+                        {
+                            entryDate: cursorDate,
+                            _id: {
+                                $lt: new mongoose.Types.ObjectId(cursorId),
+                            },
+                        },
+                    ];
+                }
+            } catch {
+                // Invalid cursor → ignore and treat as first page
+            }
         }
 
         // Fetch one extra doc to detect next page
@@ -107,9 +134,20 @@ const getJournalEntries = async (
         const hasNextPage = entries.length > limit;
         if (hasNextPage) entries.pop();
 
-        const nextCursor = hasNextPage
-            ? entries[entries.length - 1].entryDate.toISOString()
-            : null;
+        let nextCursor: string | null = null;
+
+        if (hasNextPage) {
+            const lastEntry = entries[entries.length - 1];
+
+            const cursorPayload = {
+                entryDate: lastEntry.entryDate.toISOString(),
+                _id: lastEntry._id.toString(),
+            };
+
+            nextCursor = Buffer.from(JSON.stringify(cursorPayload)).toString(
+                'base64',
+            );
+        }
 
         res.status(200).json({
             status: 'success',

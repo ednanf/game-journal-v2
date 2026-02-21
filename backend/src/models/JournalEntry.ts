@@ -6,7 +6,7 @@ export interface IJournalEntry extends Document {
     title: string;
     platform: string;
     status: 'started' | 'completed' | 'dropped' | 'revisited' | 'paused';
-    entryDate: Date;
+    entryDate: Date; // This should be used for sorting/cursor/etc.
     rating?: number;
     notes?: string;
     createdAt: Date;
