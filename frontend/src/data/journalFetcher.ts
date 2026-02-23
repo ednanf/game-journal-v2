@@ -29,18 +29,9 @@ export async function fetchNextJournalPage(
     }));
 
     // Add remote entries to Indexed DB
-    for (const entry of normalized) {
-        const allEntries = await journalRepository.getAll();
-
-        const alreadyExists = allEntries.find((e) => e._id === entry._id);
-
-        if (alreadyExists) {
-            // Entry already exists locally (likely promoted by sync)
-            continue;
-        }
-
-        await journalRepository.upsert(entry);
-    }
+    await Promise.all(
+        normalized.map((entry) => journalRepository.upsert(entry)),
+    );
 
     return { nextCursor: response.nextCursor };
 }
