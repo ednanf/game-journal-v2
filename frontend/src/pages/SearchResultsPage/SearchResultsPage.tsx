@@ -283,13 +283,21 @@ const SearchResultsPage = () => {
                     <div
                         key={key}
                         onClick={handleClick}
-                        style={{ cursor: 'pointer', width: '400px' }}
+                        style={{
+                            cursor: 'pointer',
+                            width: '100%',
+                            maxWidth: '400px',
+                        }}
                     >
                         {isResolving ? (
                             <HStack
                                 justify={'center'}
                                 padding={'md'}
-                                style={{ marginTop: '2rem', width: '400px' }}
+                                style={{
+                                    cursor: 'pointer',
+                                    width: '100%',
+                                    maxWidth: '400px',
+                                }}
                             >
                                 <LoadingDots />
                             </HStack>
