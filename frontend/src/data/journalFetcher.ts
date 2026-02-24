@@ -6,7 +6,7 @@ import type { PaginatedResponse } from '../types/entry';
 
 export async function fetchNextJournalPage(
     cursor: string | null,
-): Promise<{ nextCursor: string | null }> {
+): Promise<{ nextCursor: string | null; entries: OfflineJournalEntry[] }> {
     const response = await getUnwrappedWithParams<PaginatedResponse>(
         `${API_BASE_URL}/entries`,
         cursor ? { cursor } : undefined,
@@ -33,5 +33,5 @@ export async function fetchNextJournalPage(
         normalized.map((entry) => journalRepository.upsert(entry)),
     );
 
-    return { nextCursor: response.nextCursor };
+    return { nextCursor: response.nextCursor, entries: normalized };
 }

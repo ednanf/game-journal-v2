@@ -44,26 +44,21 @@ const JournalPage = () => {
         setIsFetchingMore(true);
 
         try {
-            // Fetch next page from backend
-            const { nextCursor } = await fetchNextJournalPage(cursor);
+            const { nextCursor, entries: newEntries } =
+                await fetchNextJournalPage(cursor);
 
-            // Update pagination state
             setCursor(nextCursor);
             setHasMore(!!nextCursor);
 
-            // Re-read everything from IndexedDB (source of truth)
-            const entries = await journalRepository.getAll();
-            const visibleEntries = entries.filter((e) => !e.deleted);
+            // Append new entries
+            setJournalEntries((prev) => {
+                const existingIds = new Set(prev.map((e) => e.localId));
+                const filtered = newEntries.filter(
+                    (e) => !existingIds.has(e.localId),
+                );
 
-            // Sort
-            const sorted = [...visibleEntries].sort(
-                (a, b) =>
-                    new Date(b.entryDate).getTime() -
-                    new Date(a.entryDate).getTime(),
-            );
-
-            // Update UI
-            setJournalEntries(sorted);
+                return [...prev, ...filtered];
+            });
         } catch {
             toast.error('Failed to load more entries');
         } finally {
@@ -79,6 +74,9 @@ const JournalPage = () => {
         let ticking = false;
 
         const handleScroll = () => {
+            // Prevent trying to load entries when there are none
+            if (!hasMore) return;
+
             // Prevent layout trash
             if (ticking) return;
             ticking = true;
@@ -103,7 +101,7 @@ const JournalPage = () => {
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [loadNextPage]);
+    }, [loadNextPage, hasMore]);
 
     useEffect(() => {
         let ignore = false;
