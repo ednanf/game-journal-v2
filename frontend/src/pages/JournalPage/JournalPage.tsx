@@ -218,10 +218,10 @@ const JournalPage = () => {
             <div
                 ref={loaderRef}
                 className={`${styles.loaderElement} ${
-                    isFetchingMore ? styles.loaderVisible : styles.loaderHidden
+                    !isFetchingMore ? styles.loaderVisible : styles.loaderHidden
                 }`}
             >
-                {isFetchingMore && <LoadingDots />}
+                {!isFetchingMore && <LoadingDots />}
             </div>
         </VStack>
     );

@@ -3,10 +3,12 @@
 }
 
 .loaderElement {
-    margin: 1rem;
+    margin: 1rem 0;
     overflow: hidden;
-    padding: 10px 5px 0;
-    width: 100px;
+    padding: 10px 0 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .loaderVisible {
