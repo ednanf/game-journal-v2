@@ -4,17 +4,20 @@
 
 .loaderElement {
     margin: 1rem 0;
-    overflow: hidden;
-    padding: 10px 0 0;
+    padding: 10px 0;
     width: 100%;
     display: flex;
     justify-content: center;
+    overflow: hidden;
+    transition: height 0.2s ease;
 }
 
 .loaderVisible {
-    height: 40px;
+    height: auto;
 }
 
 .loaderHidden {
     height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
