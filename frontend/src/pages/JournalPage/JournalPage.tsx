@@ -211,19 +211,17 @@ const JournalPage = () => {
              * Loader element
              *
              * Important:
-             * - Always keep it mounted
+             * - Always keep it mounted (it has to exist for scroll detection)
              * - Only change height/visibility
              * - Do NOT conditionally render it
              */}
             <div
                 ref={loaderRef}
-                style={{
-                    margin: '2rem',
-                    height: hasMore ? '40px' : '0px',
-                    overflow: 'hidden',
-                }}
+                className={`${styles.loaderElement} ${
+                    isFetchingMore ? styles.loaderVisible : styles.loaderHidden
+                }`}
             >
-                {hasMore && isFetchingMore && <LoadingDots />}
+                {isFetchingMore && <LoadingDots />}
             </div>
         </VStack>
     );

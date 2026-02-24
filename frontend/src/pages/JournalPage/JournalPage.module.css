@@ -1,3 +1,18 @@
 .noEntriesText {
     color: var(--color-text-muted)
 }
+
+.loaderElement {
+    margin: 1rem;
+    overflow: hidden;
+    padding: 10px 5px 0;
+    width: 100px;
+}
+
+.loaderVisible {
+    height: 40px;
+}
+
+.loaderHidden {
+    height: 0;
+}
