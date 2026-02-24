@@ -24,23 +24,14 @@ const JournalPage = () => {
     const [hasMore, setHasMore] = useState(true);
     const [isFetchingMore, setIsFetchingMore] = useState(false);
 
-    // Debounce
-    const lastLoadTimeRef = useRef<number>(0);
+    // Loader element reference (required for scroll detection)
+    const loaderRef = useRef<HTMLDivElement | null>(null);
 
-    // Prevent overlapping fetches
-    const isFetchingRef = useRef(false);
-
+    // Pagination loader
     const loadNextPage = useCallback(async () => {
-        const now = Date.now();
+        if (isFetchingMore) return;
+        if (!hasMore) return;
 
-        // Simple debounce
-        if (now - lastLoadTimeRef.current < 250) return;
-
-        // Hard guards
-        if (!hasMore || isFetchingRef.current) return;
-
-        lastLoadTimeRef.current = now;
-        isFetchingRef.current = true;
         setIsFetchingMore(true);
 
         try {
@@ -50,7 +41,7 @@ const JournalPage = () => {
             setCursor(nextCursor);
             setHasMore(!!nextCursor);
 
-            // Append new entries
+            // Append new entries (do NOT rebuild entire list)
             setJournalEntries((prev) => {
                 const existingIds = new Set(prev.map((e) => e.localId));
                 const filtered = newEntries.filter(
@@ -62,46 +53,29 @@ const JournalPage = () => {
         } catch {
             toast.error('Failed to load more entries');
         } finally {
-            isFetchingRef.current = false;
             setIsFetchingMore(false);
         }
-    }, [cursor, hasMore]);
+    }, [cursor, hasMore, isFetchingMore]);
 
-    // Pagination
-    const loaderRef = useRef<HTMLDivElement | null>(null);
-
+    // Scroll-based pagination trigger
     useEffect(() => {
-        let ticking = false;
-
         const handleScroll = () => {
-            // Prevent trying to load entries when there are none
+            if (isFetchingMore) return;
             if (!hasMore) return;
 
-            // Prevent layout trash
-            if (ticking) return;
-            ticking = true;
+            const el = loaderRef.current;
+            if (!el) return;
 
-            requestAnimationFrame(() => {
-                const el = loaderRef.current;
-                if (!el) {
-                    ticking = false;
-                    return;
-                }
+            const rect = el.getBoundingClientRect();
 
-                const rect = el.getBoundingClientRect();
-
-                // Trigger when loader is near viewport
-                if (rect.top <= window.innerHeight + 200) {
-                    void loadNextPage();
-                }
-
-                ticking = false;
-            });
+            if (rect.top <= window.innerHeight + 200) {
+                void loadNextPage();
+            }
         };
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [loadNextPage, hasMore]);
+    }, [isFetchingMore, hasMore, loadNextPage]);
 
     // Initial bootstrapping
     useEffect(() => {
@@ -116,27 +90,15 @@ const JournalPage = () => {
 
                 // Cold start bootstrap
                 if (visibleEntries.length === 0) {
-                    const { nextCursor } = await fetchNextJournalPage(null);
+                    const { nextCursor, entries: newEntries } =
+                        await fetchNextJournalPage(null);
 
                     if (ignore) return;
 
                     setCursor(nextCursor);
                     setHasMore(!!nextCursor);
 
-                    // Get entries in IndexedDB
-                    const refreshedEntries = await journalRepository.getAll();
-                    const refreshedVisible = refreshedEntries.filter(
-                        (e) => !e.deleted,
-                    );
-
-                    // Sort by entryDate (user-facing chronology)
-                    const sorted = [...refreshedVisible].sort(
-                        (a, b) =>
-                            new Date(b.entryDate).getTime() -
-                            new Date(a.entryDate).getTime(),
-                    );
-
-                    setJournalEntries(sorted);
+                    setJournalEntries(newEntries);
                     return;
                 }
 
@@ -165,21 +127,6 @@ const JournalPage = () => {
             ignore = true;
         };
     }, []);
-
-    // Manual "observer" (IntersectionObserver is unpredictable here)
-    useEffect(() => {
-        if (!hasMore) return;
-        if (journalEntries.length === 0) return;
-
-        const el = loaderRef.current;
-        if (!el) return;
-
-        const rect = el.getBoundingClientRect();
-
-        if (rect.top <= window.innerHeight + 200) {
-            void loadNextPage();
-        }
-    }, [journalEntries.length, hasMore, loadNextPage]);
 
     if (initialLoading) {
         return (
@@ -211,9 +158,8 @@ const JournalPage = () => {
              * Loader element
              *
              * Important:
-             * - Always keep it mounted (it has to exist for scroll detection)
-             * - Only change height/visibility
-             * - Do NOT conditionally render it
+             * - Always keep it mounted (required for scroll detection)
+             * - Visibility controlled only by isFetchingMore
              */}
             <div
                 ref={loaderRef}
