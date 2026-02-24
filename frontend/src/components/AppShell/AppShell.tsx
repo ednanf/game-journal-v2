@@ -5,6 +5,7 @@ import {
     useMatches,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 import { useTheme } from '../../hooks/useTheme.ts';
 import { useAuth } from '../../auth/AuthContext.tsx';
@@ -62,6 +63,8 @@ const AppShell = () => {
                 pauseOnHover
                 newestOnTop
             />
+
+            <SpeedInsights />
         </div>
     );
 };
