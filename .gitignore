@@ -7,6 +7,7 @@
 *.njsproj
 *.sln
 *.sw?
+/.idea/
 
 # Dependencies
 node_modules/
@@ -41,3 +42,4 @@ public/uploads/
 
 # VS Code recommended extensions (keep)
 !.vscode/extensions.json
+

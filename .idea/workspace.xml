@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1317860c-cb44-40ee-ab95-61aa1c55cd35" name="Changes" comment="feat: refactor JournalPage to simplify the states/refs" />
+    <list default="true" id="1317860c-cb44-40ee-ab95-61aa1c55cd35" name="Changes" comment="chore: change gitignore to ignore IDE settings">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="37463" />
+    <option name="totalTimeSeconds" value="38703" />
     <option name="naggedAbout" value="1" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -251,31 +253,7 @@
       <workItem from="1771417200297" duration="2545000" />
       <workItem from="1771587432326" duration="12380000" />
       <workItem from="1771679841424" duration="14000" />
-      <workItem from="1771679861278" duration="23889000" />
-    </task>
-    <task id="LOCAL-00286" summary="fix: ensure rating is either sent as a number or undefined. It was inconsistent previously.">
-      <option name="closed" value="true" />
-      <created>1770221044862</created>
-      <option name="number" value="00286" />
-      <option name="presentableId" value="LOCAL-00286" />
-      <option name="project" value="LOCAL" />
-      <updated>1770221044862</updated>
-    </task>
-    <task id="LOCAL-00287" summary="fix: wrong typing in JournalEntry interface">
-      <option name="closed" value="true" />
-      <created>1770291975214</created>
-      <option name="number" value="00287" />
-      <option name="presentableId" value="LOCAL-00287" />
-      <option name="project" value="LOCAL" />
-      <updated>1770291975214</updated>
-    </task>
-    <task id="LOCAL-00288" summary="feature: ensure either remote or local id are used with search cards for entry details">
-      <option name="closed" value="true" />
-      <created>1770379073217</created>
-      <option name="number" value="00288" />
-      <option name="presentableId" value="LOCAL-00288" />
-      <option name="project" value="LOCAL" />
-      <updated>1770379073217</updated>
+      <workItem from="1771679861278" duration="25705000" />
     </task>
     <task id="LOCAL-00289" summary="feature: add feedback to card that is hydrating in cases where loading is slow">
       <option name="closed" value="true" />
@@ -645,7 +623,31 @@
       <option name="project" value="LOCAL" />
       <updated>1771953368234</updated>
     </task>
-    <option name="localTasksCounter" value="335" />
+    <task id="LOCAL-00335" summary="chore: add IDE settings">
+      <option name="closed" value="true" />
+      <created>1771953648297</created>
+      <option name="number" value="00335" />
+      <option name="presentableId" value="LOCAL-00335" />
+      <option name="project" value="LOCAL" />
+      <updated>1771953648297</updated>
+    </task>
+    <task id="LOCAL-00336" summary="bug: fix horizontal scrolling in SearchResultsPage.tsx">
+      <option name="closed" value="true" />
+      <created>1771955463761</created>
+      <option name="number" value="00336" />
+      <option name="presentableId" value="LOCAL-00336" />
+      <option name="project" value="LOCAL" />
+      <updated>1771955463761</updated>
+    </task>
+    <task id="LOCAL-00337" summary="chore: change gitignore to ignore IDE settings">
+      <option name="closed" value="true" />
+      <created>1771955522667</created>
+      <option name="number" value="00337" />
+      <option name="presentableId" value="LOCAL-00337" />
+      <option name="project" value="LOCAL" />
+      <updated>1771955522667</updated>
+    </task>
+    <option name="localTasksCounter" value="338" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -663,9 +665,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat: add scripts to package.json" />
-    <MESSAGE value="feat: change api title" />
-    <MESSAGE value="fix: statistics lock screen up if loading #81&#10;&#10;- update getStatistics() to return the current source&#10;- remove the loader animation in StatisticsPage.tsx&#10;- if the backend is waking up, a 4000ms timeout is triggered, rendering local results, avoiding UI lockup" />
     <MESSAGE value="fix: update PWA name" />
     <MESSAGE value="feat: implement UI message when the backend is waking up and shorten the timeout to 2000ms" />
     <MESSAGE value="feat: change offline/waking-up banner logic to be more reliable" />
@@ -688,6 +687,9 @@
     <MESSAGE value="feat: refactor loader element&#10;&#10;- change logic to isFetchingMore instead of hasMore&#10;- css extraction&#10;- conditionally apply css classes&#10;&#10;Signed-off-by: Ednan Rogério Frizzera Filho &lt;ednan@frizzera.dev&gt;" />
     <MESSAGE value="fix: loading dots container width" />
     <MESSAGE value="feat: refactor JournalPage to simplify the states/refs" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: refactor JournalPage to simplify the states/refs" />
+    <MESSAGE value="chore: add IDE settings" />
+    <MESSAGE value="bug: fix horizontal scrolling in SearchResultsPage.tsx" />
+    <MESSAGE value="chore: change gitignore to ignore IDE settings" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: change gitignore to ignore IDE settings" />
   </component>
 </project>
