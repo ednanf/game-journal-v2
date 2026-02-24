@@ -103,6 +103,7 @@ const JournalPage = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [loadNextPage, hasMore]);
 
+    // Initial bootstrapping
     useEffect(() => {
         let ignore = false;
 
@@ -147,16 +148,6 @@ const JournalPage = () => {
                 );
 
                 setJournalEntries(sorted);
-
-                requestAnimationFrame(() => {
-                    const el = loaderRef.current;
-                    if (!el) return;
-
-                    const rect = el.getBoundingClientRect();
-                    if (rect.top <= window.innerHeight + 200) {
-                        void loadNextPage();
-                    }
-                });
             } catch {
                 if (!ignore) {
                     toast.error('Failed to load journal entries');
@@ -173,7 +164,22 @@ const JournalPage = () => {
         return () => {
             ignore = true;
         };
-    }, [loadNextPage]);
+    }, []);
+
+    // Manual "observer" (IntersectionObserver is unpredictable here)
+    useEffect(() => {
+        if (!hasMore) return;
+        if (journalEntries.length === 0) return;
+
+        const el = loaderRef.current;
+        if (!el) return;
+
+        const rect = el.getBoundingClientRect();
+
+        if (rect.top <= window.innerHeight + 200) {
+            void loadNextPage();
+        }
+    }, [journalEntries.length, hasMore, loadNextPage]);
 
     if (initialLoading) {
         return (
