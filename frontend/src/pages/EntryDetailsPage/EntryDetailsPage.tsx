@@ -181,6 +181,10 @@ const EntryDetailsPage = () => {
                 synced: false,
             });
 
+            if (navigator.onLine) {
+                void syncJournalEntries();
+            }
+
             toast.success('Entry deleted');
             navigate('/journal');
         } finally {
