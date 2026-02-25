@@ -10,12 +10,12 @@ import LoadingCircle from '../../components/LoadingCircle/LoadingCircle.tsx';
 import EntryCard from '../../components/EntryCard/EntryCard.tsx';
 import StdButton from '../../components/Buttons/StdButton/StdButton.tsx';
 import ActiveFilters from '../../components/ActiveFilters/ActiveFilters.tsx';
+import LoadingDots from '../../components/LoadingDots/LoadingDots.tsx';
 
 import type { StatusType } from '../../types/entry.ts';
 import type { OfflineJournalEntry } from '../../types/journalTypes.ts';
 
 import styles from './SearchResultsPage.module.css';
-import LoadingDots from '../../components/LoadingDots/LoadingDots.tsx';
 
 const SearchResultsPage = () => {
     const [searchParams] = useSearchParams();
