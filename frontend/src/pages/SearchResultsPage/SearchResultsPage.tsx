@@ -37,9 +37,6 @@ const SearchResultsPage = () => {
     const [searchSource, setSearchSource] = useState<'remote' | 'local'>(
         'remote',
     );
-    const [prevSearchSource, setPrevSearchSource] = useState<
-        'remote' | 'local'
-    >('remote');
 
     const BACKEND_LIMIT = 10;
 
@@ -103,26 +100,20 @@ const SearchResultsPage = () => {
                     setNextCursor(result.nextCursor);
 
                     // Detect source transition
-                    setSearchSource((currentSource) => {
-                        if (currentSource !== result.source) {
-                            setPrevSearchSource(currentSource);
+                    if (searchSource !== result.source) {
+                        setSearchSource(result.source);
 
-                            // Reset pagination by clearing cursor + page
-                            const params = new URLSearchParams(searchParams);
-                            params.delete('cursor');
-                            params.delete('page');
+                        // Reset pagination by clearing cursor + page
+                        const params = new URLSearchParams(searchParams);
+                        params.delete('cursor');
+                        params.delete('page');
 
-                            navigate(`/search?${params.toString()}`, {
-                                replace: true,
-                            });
-
-                            return result.source;
-                        }
-
-                        return currentSource;
-                    });
-
-                    setSearchSource(result.source);
+                        navigate(`/search?${params.toString()}`, {
+                            replace: true,
+                        });
+                    } else {
+                        setSearchSource(result.source);
+                    }
                 }
             } catch (e: unknown) {
                 if (!ignore) {
@@ -144,7 +135,7 @@ const SearchResultsPage = () => {
         return () => {
             ignore = true;
         };
-    }, [url, searchParams, navigate]);
+    }, [url, searchParams, navigate, searchSource]);
 
     // Maintain page number correctly synchronized
     useEffect(() => {
@@ -199,18 +190,9 @@ const SearchResultsPage = () => {
 
         const params = new URLSearchParams(searchParams);
 
-        // Dealing with online/offline changes during search
-        const isSourceTransition = prevSearchSource !== searchSource;
-
-        if (isSourceTransition) {
-            // Reset pagination only once, on mode change
-            params.delete('cursor');
-            params.set('page', '1');
-        } else {
-            // Normal pagination (remote or local)
-            params.set('cursor', nextCursor);
-            params.set('page', String(page + 1));
-        }
+        // Normal pagination (remote or local)
+        params.set('cursor', nextCursor);
+        params.set('page', String(page + 1));
 
         navigate(`/search?${params.toString()}`);
     };
@@ -344,4 +326,5 @@ const SearchResultsPage = () => {
         </VStack>
     );
 };
+
 export default SearchResultsPage;
