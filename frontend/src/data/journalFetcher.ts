@@ -13,20 +13,29 @@ export async function fetchNextJournalPage(
     );
 
     // Normalize entry by adding local properties
-    const normalized: OfflineJournalEntry[] = response.entries.map((entry) => ({
-        localId: entry._id, // REQUIRED - primary identity
-        _id: entry._id, // backend id - secondary identity
-        createdBy: entry.createdBy,
-        title: entry.title,
-        platform: entry.platform,
-        status: entry.status,
-        entryDate: entry.entryDate,
-        rating: entry.rating ?? undefined,
-        createdAt: entry.createdAt,
-        updatedAt: entry.updatedAt,
-        synced: true, // REQUIRED
-        deleted: false, // REQUIRED
-    }));
+    const existingEntries = await journalRepository.getAll();
+
+    const normalized: OfflineJournalEntry[] = response.entries.map((entry) => {
+        // Avoid duplication
+        const existing = existingEntries.find(
+            (local) => local._id === entry._id,
+        );
+
+        return {
+            localId: existing ? existing.localId : entry._id,
+            _id: entry._id,
+            createdBy: entry.createdBy,
+            title: entry.title,
+            platform: entry.platform,
+            status: entry.status,
+            entryDate: entry.entryDate,
+            rating: entry.rating ?? undefined,
+            createdAt: entry.createdAt,
+            updatedAt: entry.updatedAt,
+            synced: true,
+            deleted: false,
+        };
+    });
 
     // Add remote entries to Indexed DB
     await Promise.all(
