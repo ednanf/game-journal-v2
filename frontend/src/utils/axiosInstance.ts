@@ -15,6 +15,7 @@ import { API_BASE_URL } from '../config/apiURL.ts';
 // This instance will automatically prepend the base URL to all requests
 const api = axios.create({
     baseURL: API_BASE_URL,
+    timeout: 10000, // 10 seconds
 });
 
 // Interceptor to handle responses.
@@ -39,9 +40,9 @@ api.interceptors.response.use(
             // Server responded with a status code that falls out of the range of 2xx
             if (error.response) {
                 const errorMessage =
-                          error.response.data?.data?.message ||
-                          error.response.data?.message ||
-                          error.message;
+                    error.response.data?.data?.message ||
+                    error.response.data?.message ||
+                    error.message;
                 return Promise.reject({
                     message: errorMessage,
                     raw: error.response.data,
@@ -49,7 +50,8 @@ api.interceptors.response.use(
             } else if (error.request) {
                 // The request was made but no response was received
                 return Promise.reject({
-                    message: 'Cannot connect to the server. Please check your network connection.',
+                    message:
+                        'Cannot connect to the server. Please check your network connection.',
                     raw: error,
                 });
             }
@@ -77,8 +79,10 @@ api.interceptors.request.use(
 );
 
 // CRUD helpers
-export const getUnwrapped = <T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T> =>
-    api.get(url, config) as Promise<T>;
+export const getUnwrapped = <T = unknown>(
+    url: string,
+    config?: AxiosRequestConfig,
+): Promise<T> => api.get(url, config) as Promise<T>;
 
 export const getUnwrappedWithParams = <T = unknown>(
     url: string,

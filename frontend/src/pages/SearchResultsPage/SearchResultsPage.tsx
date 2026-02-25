@@ -32,7 +32,6 @@ const SearchResultsPage = () => {
     const [resolvingKey, setResolvingKey] = useState<string | null>(null);
     const [nextCursor, setNextCursor] = useState<string | null>(null);
     const [page, setPage] = useState(pageFromUrl);
-    const [error, setError] = useState<string | null>(null);
 
     // Search source states
     const [searchSource, setSearchSource] = useState<'remote' | 'local'>(
@@ -80,7 +79,6 @@ const SearchResultsPage = () => {
 
         const fetchEntries = async () => {
             setIsLoading(true);
-            setError(null);
 
             try {
                 const statusParam = searchParams.get('status');
@@ -132,8 +130,7 @@ const SearchResultsPage = () => {
                         e instanceof Error
                             ? e.message
                             : 'Failed to fetch search results.';
-                    setError(message);
-                    toast.error(error);
+                    toast.error(message);
                 }
             } finally {
                 if (!ignore) {
@@ -147,7 +144,7 @@ const SearchResultsPage = () => {
         return () => {
             ignore = true;
         };
-    }, [url, error, searchParams, navigate]);
+    }, [url, searchParams, navigate]);
 
     // Maintain page number correctly synchronized
     useEffect(() => {
@@ -240,104 +237,110 @@ const SearchResultsPage = () => {
         navigate(-1);
     };
 
-    if (isLoading) {
-        return (
-            <div className="fullscreenLoader">
-                <LoadingCircle />
-            </div>
-        );
-    }
-
-    if (entries.length === 0) {
-        return (
-            <VStack align="center" className={styles.body} gap={'xl'}>
-                <ActiveFilters filters={visibleFilters} />
-                <p className={styles.noResultsFoundText}>No entries found...</p>
-                <StdButton onClick={handleBack}>Go Back</StdButton>
-            </VStack>
-        );
-    }
-
     return (
         <VStack align="center" className={styles.body}>
-            {visibleFilters.length > 0 && (
-                <ActiveFilters
-                    filters={visibleFilters}
-                    infoChips={
-                        searchSource === 'local' ? ['Local results'] : undefined
-                    }
-                />
+            {/* Inline loading state */}
+            {isLoading && entries.length === 0 && (
+                <HStack justify="center" style={{ marginTop: '3rem' }}>
+                    <LoadingCircle />
+                </HStack>
             )}
 
-            {entries.map((entry) => {
-                const key = entry.localId ?? entry._id;
-                const isResolving = resolvingKey === key;
+            {/* No results (only shown when done loading and empty) */}
+            {!isLoading && entries.length === 0 && (
+                <VStack align="center" gap="xl">
+                    <ActiveFilters filters={visibleFilters} />
+                    <p className={styles.noResultsFoundText}>
+                        No entries found...
+                    </p>
+                    <StdButton onClick={handleBack}>Go Back</StdButton>
+                </VStack>
+            )}
 
-                const handleClick = () => {
-                    if (!entry.localId) {
-                        void handleSelectEntry(entry);
-                    }
-                };
+            {/* Results list */}
+            {!isLoading && entries.length > 0 && (
+                <>
+                    {visibleFilters.length > 0 && (
+                        <ActiveFilters
+                            filters={visibleFilters}
+                            infoChips={
+                                searchSource === 'local'
+                                    ? ['Local results']
+                                    : undefined
+                            }
+                        />
+                    )}
 
-                return (
-                    <div
-                        key={key}
-                        onClick={handleClick}
-                        style={{
-                            cursor: 'pointer',
-                            width: '100%',
-                            maxWidth: '400px',
-                        }}
-                    >
-                        {isResolving ? (
-                            <HStack
-                                justify={'center'}
-                                padding={'md'}
+                    {entries.map((entry) => {
+                        const key = entry.localId ?? entry._id;
+                        const isResolving = resolvingKey === key;
+
+                        const handleClick = () => {
+                            if (!entry.localId) {
+                                void handleSelectEntry(entry);
+                            }
+                        };
+
+                        return (
+                            <div
+                                key={key}
+                                onClick={handleClick}
                                 style={{
                                     cursor: 'pointer',
                                     width: '100%',
                                     maxWidth: '400px',
                                 }}
                             >
-                                <LoadingDots />
-                            </HStack>
-                        ) : (
-                            <EntryCard
-                                title={entry.title}
-                                platform={entry.platform}
-                                status={entry.status}
-                                rating={entry.rating}
-                                entryDate={new Date(entry.entryDate)}
-                                to={
-                                    entry.localId
-                                        ? `/entries/${entry.localId}`
-                                        : undefined
-                                }
-                            />
-                        )}
-                    </div>
-                );
-            })}
+                                {isResolving ? (
+                                    <HStack
+                                        justify="center"
+                                        padding="md"
+                                        style={{
+                                            width: '100%',
+                                            maxWidth: '400px',
+                                        }}
+                                    >
+                                        <LoadingDots />
+                                    </HStack>
+                                ) : (
+                                    <EntryCard
+                                        title={entry.title}
+                                        platform={entry.platform}
+                                        status={entry.status}
+                                        rating={entry.rating}
+                                        entryDate={new Date(entry.entryDate)}
+                                        to={
+                                            entry.localId
+                                                ? `/entries/${entry.localId}`
+                                                : undefined
+                                        }
+                                    />
+                                )}
+                            </div>
+                        );
+                    })}
 
-            <HStack padding="md" gap="md">
-                <StdButton
-                    width="100px"
-                    onClick={handlePrevious}
-                    disabled={isLoading || !hasCursor}
-                >
-                    Previous
-                </StdButton>
+                    <HStack padding="md" gap="md">
+                        <StdButton
+                            width="100px"
+                            onClick={handlePrevious}
+                            disabled={isLoading || !hasCursor}
+                        >
+                            Previous
+                        </StdButton>
 
-                <p className={styles.pageNumber}>Page {page}</p>
+                        <p className={styles.pageNumber}>Page {page}</p>
 
-                <StdButton
-                    width="100px"
-                    onClick={handleNext}
-                    disabled={!nextCursor}
-                >
-                    Next
-                </StdButton>
-            </HStack>
+                        <StdButton
+                            width="100px"
+                            onClick={handleNext}
+                            disabled={!nextCursor}
+                        >
+                            Next
+                        </StdButton>
+                    </HStack>
+                </>
+            )}
         </VStack>
     );
 };
