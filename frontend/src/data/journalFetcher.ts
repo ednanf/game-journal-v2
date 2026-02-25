@@ -15,6 +15,8 @@ export async function fetchNextJournalPage(
     // Normalize entry by adding local properties
     const existingEntries = await journalRepository.getAll();
 
+    // Remote data must never override:
+    // localId, deleted, synced (when false)
     const normalized: OfflineJournalEntry[] = response.entries.map((entry) => {
         // Avoid duplication
         const existing = existingEntries.find(
@@ -22,7 +24,7 @@ export async function fetchNextJournalPage(
         );
 
         return {
-            localId: existing ? existing.localId : entry._id,
+            localId: existing ? existing.localId : entry._id, // Avoid duplication
             _id: entry._id,
             createdBy: entry.createdBy,
             title: entry.title,
@@ -33,7 +35,7 @@ export async function fetchNextJournalPage(
             createdAt: entry.createdAt,
             updatedAt: entry.updatedAt,
             synced: true,
-            deleted: false,
+            deleted: existing ? existing.deleted : false, // Preserve local deleted if exists
         };
     });
 

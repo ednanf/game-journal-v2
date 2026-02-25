@@ -44,8 +44,10 @@ const JournalPage = () => {
             // Append new entries (do NOT rebuild entire list)
             setJournalEntries((prev) => {
                 const existingIds = new Set(prev.map((e) => e.localId));
+
+                // Filter out duplicates AND deleted entries
                 const filtered = newEntries.filter(
-                    (e) => !existingIds.has(e.localId),
+                    (e) => !existingIds.has(e.localId) && !e.deleted,
                 );
 
                 return [...prev, ...filtered];
