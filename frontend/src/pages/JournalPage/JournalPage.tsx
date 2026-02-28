@@ -119,6 +119,39 @@ const JournalPage = () => {
                 );
 
                 setJournalEntries(sorted);
+
+                /**
+                 * Pagination state alignment
+                 *
+                 * Reconstruct the cursor using the last entry in the sorted list,
+                 * matching backend sort order:
+                 *   .sort({ entryDate: -1, _id: -1 })
+                 */
+                if (sorted.length > 0) {
+                    const last = sorted[sorted.length - 1];
+
+                    if (last._id) {
+                        setCursor(
+                            JSON.stringify({
+                                entryDate: last.entryDate,
+                                _id: last._id,
+                            }),
+                        );
+                        setHasMore(true);
+                    } else {
+                        /**
+                         * If the last entry has no Mongo _id yet (unsynced
+                         * local entry), the backend cursor cannot be
+                         * constructed safely.
+                         *
+                         * In this case:
+                         * - Keep cursor as null
+                         * - Allow backend to resolve correct pagination on next fetch
+                         */
+                        setCursor(null);
+                        setHasMore(true);
+                    }
+                }
             } catch {
                 if (!ignore) {
                     toast.error('Failed to load journal entries');
