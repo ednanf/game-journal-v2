@@ -59,11 +59,18 @@ const JournalPage = () => {
         }
     }, [cursor, hasMore, isFetchingMore]);
 
+    // Ref needed to avoid multiple calls at the bottom
+    const hasMoreRef = useRef(hasMore);
+
+    useEffect(() => {
+        hasMoreRef.current = hasMore;
+    }, [hasMore]);
+
     // Scroll-based pagination trigger
     useEffect(() => {
         const handleScroll = () => {
             if (isFetchingMore) return;
-            if (!hasMore) return;
+            if (!hasMoreRef.current) return;
 
             const el = loaderRef.current;
             if (!el) return;
