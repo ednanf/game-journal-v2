@@ -43,7 +43,7 @@ const LandingPage = () => {
 
             <div className={styles.footer}>
                 <a
-                    href="https://github.com/ednanf/game-journal"
+                    href="https://github.com/ednanf/game-journal-v2"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.githubLink}
