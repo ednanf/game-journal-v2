@@ -37,6 +37,7 @@ type UpdateAccountPayload = {
 
 const AccountSettingsPage = () => {
     const SLEEPING_HINT_TIMEOUT = 5000;
+    const RESPONSE_TIMEOUT = 60000;
     const [showBackendSleepingHint, setShowBackendSleepingHint] =
         useState(false);
 
@@ -69,8 +70,10 @@ const AccountSettingsPage = () => {
             setIsInitialLoading(true);
 
             try {
-                const response =
-                    await getUnwrapped<AccountDataApiResponse>('/user/');
+                const response = await getUnwrapped<AccountDataApiResponse>(
+                    '/user/',
+                    { timeout: RESPONSE_TIMEOUT },
+                );
 
                 setFormData((prev) => ({
                     ...prev,
@@ -171,6 +174,7 @@ const AccountSettingsPage = () => {
             const response = await patchUnwrapped<{ message: string }>(
                 '/user/',
                 payload,
+                { timeout: RESPONSE_TIMEOUT },
             );
 
             toast.success(response.message);
@@ -198,8 +202,9 @@ const AccountSettingsPage = () => {
         setIsDeleting(true);
 
         try {
-            const response =
-                await deleteUnwrapped<AccountDataApiResponse>('/user');
+            const response = await deleteUnwrapped<AccountDataApiResponse>('/user', {
+                timeout: RESPONSE_TIMEOUT,
+            });
 
             toast.success(response.message);
 
