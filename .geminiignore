@@ -1,0 +1,31 @@
+# General noise
+node_modules/
+.git/
+.idea/
+.vscode/
+
+# Build artifacts
+dist/
+build/
+.next/
+out/
+
+# Big data/logs
+logs/
+*.log
+npm-debug.log*
+
+# Database (keep our MongoDB configs clean)
+temp-data/
+dump/
+
+# Generated types that are too large
+**/generated/*.ts
+**/*.Typegen.ts
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Env files (Security first)
+.env*
