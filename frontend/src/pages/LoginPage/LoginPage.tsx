@@ -87,7 +87,7 @@ const LoginPage = () => {
 
     const handleClearPassword = makeClearHandler(setFormData, 'password', '');
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // Reset errors
