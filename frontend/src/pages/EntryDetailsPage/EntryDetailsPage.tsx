@@ -89,7 +89,7 @@ const EntryDetailsPage = () => {
     /**
      * UPDATE (LOCAL FIRST, BACKEND OPTIONAL)
      */
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
 
         if (!validate()) {

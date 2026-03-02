@@ -49,7 +49,7 @@ const AddEntryPage: React.FC = () => {
     const handleClearStatus = makeClearHandler(setFormData, 'status', null);
     const handleClearRating = makeClearHandler(setFormData, 'rating', null);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
 
         if (!validate()) {
