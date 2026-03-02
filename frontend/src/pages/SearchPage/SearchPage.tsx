@@ -90,7 +90,7 @@ const SearchPage = () => {
 
     const handleClearRating = makeClearHandler(setFormData, 'rating', null);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.SubmitEvent) => {
         e.preventDefault();
 
         const params = new URLSearchParams();

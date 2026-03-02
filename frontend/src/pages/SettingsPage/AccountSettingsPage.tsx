@@ -124,7 +124,7 @@ const AccountSettingsPage = () => {
         }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
 
         // Prevents submitting before the previous one is done
