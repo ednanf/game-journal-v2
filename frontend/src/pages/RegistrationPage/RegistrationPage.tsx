@@ -159,6 +159,9 @@ const RegistrationPage = () => {
                     email: formData.email,
                     password: formData.password,
                 },
+                {
+                    timeout: 50000, // POST should wait longer than Render
+                },
             );
 
             localStorage.setItem('id', data.id);
