@@ -34,6 +34,7 @@ type ApiError = {
 
 const LoginPage = () => {
     const SLEEPING_HINT_TIMEOUT = 5000;
+    const RESPONSE_TIMEOUT = 60000;
 
     const [formData, setFormData] = useState<FormData>({
         email: '',
@@ -119,7 +120,7 @@ const LoginPage = () => {
                     password: formData.password,
                 },
                 {
-                    timeout: 50000, // POST should wait longer than Render
+                    timeout: RESPONSE_TIMEOUT, // POST should wait longer than Render
                 },
             );
 
