@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { HStack, VStack } from 'react-swiftstacks';
 
+import { useAuth } from '../../auth/AuthContext.tsx';
+
 import makeClearHandler from '../../utils/makeClearHandler.ts';
 import {
     deleteUnwrapped,
@@ -54,6 +56,7 @@ const AccountSettingsPage = () => {
     const [isDeleting, setIsDeleting] = useState(false);
 
     const navigate = useNavigate();
+    const { logout } = useAuth();
 
     const isOffline = !navigator.onLine;
 
@@ -202,13 +205,18 @@ const AccountSettingsPage = () => {
         setIsDeleting(true);
 
         try {
-            const response = await deleteUnwrapped<AccountDataApiResponse>('/user', {
-                timeout: RESPONSE_TIMEOUT,
-            });
+            const response = await deleteUnwrapped<AccountDataApiResponse>(
+                '/user',
+                {
+                    timeout: RESPONSE_TIMEOUT,
+                },
+            );
 
             toast.success(response.message);
 
-            navigate('/');
+            // Use the logout method from AuthContext to change the auth state
+            // This clears the token as well as IndexedDB contents
+            await logout();
         } catch (e) {
             toast.error((e as { message: string }).message);
         } finally {
