@@ -26,7 +26,7 @@ primary source of truth, while the backend exists mainly to synchronize data whe
 The goal wasn’t feature density, but architectural clarity: clear contracts between layers, minimal hidden coupling, and
 behavior that stays predictable even when the network doesn’t.
 
-## API Specification
+## Documentation
 
 Detailed documentation is available for the following parts of the system:
 
