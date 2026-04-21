@@ -12,7 +12,9 @@ export interface MongoDuplicateError extends Error {
 }
 
 // Check if the error is a MongoDB duplicate key error
-export function isMongoDuplicateError(error: unknown): error is MongoDuplicateError {
+export function isMongoDuplicateError(
+    error: unknown,
+): error is MongoDuplicateError {
     return (
         typeof error === 'object' &&
         error !== null &&
